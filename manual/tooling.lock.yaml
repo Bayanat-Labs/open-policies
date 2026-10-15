@@ -2534,8 +2534,7 @@ pending_in_house:
   stages:
   - id: 3
     name: Normalisation
-  note: Bayanat-Norm v1 (arabic-normalize). PyPI JSON for the bare name 'arabic-normalize' returned 404 on 2026-10-14 (name
-    not taken then; verify before release).
+  note: bayanat-norm-v1 (arabic-normalize, public on GitHub).
 - key: bayanatlabs:arabic-recogniser-pack
   kind: in-house
   status: Bayanat Labs tool, not yet released; not version-pinned in this lock

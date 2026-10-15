@@ -254,7 +254,7 @@ Generated from `manual/stages.yaml`. Paths are relative to their root: `job` = t
 **What the agent does**
 
 - Text: keep text_raw byte-exact, text_diac in NFC with diacritics, and derive text_norm with the Bayanat Labs normalisation recipe (presentation forms mapped, zero-width and bidi controls stripped except a meaningful ZWNJ, tatweel removed, alef variants to bare alef, alef maqsura to yaa, Arabic-Indic and Persian digits to ASCII, diacritics stripped with diacritization_ratio recorded); taa marbuta is kept and flagged in text_norm and folded only in text_search.
-- Record normalisation_version (the Bayanat-Norm id from arabic-normalize once released) and the code commit.
+- Record normalisation_version (bayanat-norm-v1 from arabic-normalize) and the code commit.
 - Language ID with GlotLID or fastText at the right unit (document, paragraph or segment); keep code-switch spans and cs_ratio.
 - Audio: FLAC mono, 16 kHz for every non-consented release; higher-rate originals stay internal; loudness -20 dBFS in the release copy with parameters recorded.
 - Speech segmentation and transcription (done here because stage 4 needs transcript MinHash and stage 5 drops clips with PII): Silero VAD into 2-20 s chunks; set music_flag (UVR-MDX-Net or Demucs only on music-flagged segments, for internal ASR only; music-flagged segments are excluded from audio releases); manual captions go to CTC forced alignment (ctc-forced-aligner with a commercially usable Arabic wav2vec2 model, never its default MMS model, which is non-commercial); without manual captions, dual ASR with Whisper large-v3 (faster-whisper) plus an Arabic second system whose licence allows release use in tooling.lock.yaml (NVIDIA FastConformer Arabic pc, or Nemotron 3.5 ASR fine-tuned on our own pseudo-labels; the pcd variant was trained partly on recitation audio whose licence is unclear), keeping a segment only if cer_between_systems <= 15% and labelling it silver. Never auto-captions.
@@ -282,7 +282,7 @@ Generated from `manual/stages.yaml`. Paths are relative to their root: `job` = t
 | Threshold | Default (a memo may tighten, never loosen) | Adopted from |
 |---|---|---|
 | `T3.schema` Schema validation | 100% of records | Bayanat Labs practice |
-| `T3.recipe` text_norm recipe | the Bayanat Labs normalisation recipe (NFKC-based, taa marbuta kept and flagged). The alternative 'Bayanat-Norm v1 = NFC plus presentation-form mapping' is recorded as choice C-03 and needs founder approval before it replaces this recipe. | Bayanat Labs practice |
+| `T3.recipe` text_norm recipe | bayanat-norm-v1 from arabic-normalize (https://github.com/Bayanat-Labs/arabic-normalize): NFC plus mapping of Arabic presentation forms, taa marbuta kept and flagged; text_raw is kept alongside, so nothing is lost. | Bayanat Labs practice |
 | `T3.audio` Release audio | FLAC mono 16 kHz (48 kHz only for consented or public-domain sets); -20 dBFS | Bayanat Labs practice |
 | `T3.dual_asr` Dual-ASR agreement | keep a segment only if cer_between_systems <= 15%; label it silver | Bayanat Labs practice |
 | `T3.vad` VAD chunks | 2-20 s | Bayanat Labs practice |
@@ -713,7 +713,7 @@ All defaults, by stage. A memo may tighten any of them; loosening needs written 
 | `T2.denials` | 2 | 401/403/login/CAPTCHA/WAF | stop and log; source moves to permission_required | Bayanat Labs practice |
 | `T2.first_party` | 2 | First-party content | web-etiquette checks n/a only when every source is Bayanat Labs' own content (memo third_party_sources false); the upstream commit is pinned instead | approved by the founder for v1.0, 15 Oct 2026 |
 | `T3.schema` | 3 | Schema validation | 100% of records | Bayanat Labs practice |
-| `T3.recipe` | 3 | text_norm recipe | the Bayanat Labs normalisation recipe (NFKC-based, taa marbuta kept and flagged). The alternative 'Bayanat-Norm v1 = NFC plus presentation-form mapping' is recorded as choice C-03 and needs founder approval before it replaces this recipe. | Bayanat Labs practice |
+| `T3.recipe` | 3 | text_norm recipe | bayanat-norm-v1 from arabic-normalize (https://github.com/Bayanat-Labs/arabic-normalize): NFC plus mapping of Arabic presentation forms, taa marbuta kept and flagged; text_raw is kept alongside, so nothing is lost. | Bayanat Labs practice |
 | `T3.audio` | 3 | Release audio | FLAC mono 16 kHz (48 kHz only for consented or public-domain sets); -20 dBFS | Bayanat Labs practice |
 | `T3.dual_asr` | 3 | Dual-ASR agreement | keep a segment only if cer_between_systems <= 15%; label it silver | Bayanat Labs practice |
 | `T3.vad` | 3 | VAD chunks | 2-20 s | Bayanat Labs practice |

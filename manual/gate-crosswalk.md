@@ -63,7 +63,7 @@ Each row records the value adopted in `stages.yaml` and the alternative that was
 |---|---|---|---|
 | C-01 | Request rate | At least 3 s per host for every host, APIs and dumps included, and inside any documented quota; at least 5 s for government and small hosts; concurrency 1 | 1 request per second per host, or a faster rate for APIs and dumps that document higher limits (needs written founder approval) |
 | C-02 | Parallel connections to bulk-dump hosts | 1 connection per host, resumable | 2 parallel connections |
-| C-03 | Text normalisation recipe | `text_raw` byte-exact; `text_diac` NFC; `text_norm` NFKC-based with taa marbuta kept and flagged; taa marbuta folded only in `text_search`; `normalisation_version` recorded | NFC plus presentation-form mapping only (Bayanat-Norm v1). Both keep the raw text, so neither is destructive |
+| C-03 | Text normalisation recipe | `text_raw` byte-exact; `text_diac` NFC; `text_norm` NFKC-based with taa marbuta kept and flagged; taa marbuta folded only in `text_search`; `normalisation_version` recorded | Adopted: bayanat-norm-v1 (NFC plus Arabic presentation-form mapping), implemented by arabic-normalize. The raw text is always kept, so the recipe is not destructive |
 | C-04 | PII audit | Zero hits in at least 3,000 stratified records; the residual rate on the first 1,000 reported alongside | Residual PII under 0.1% on a 1,000-item audit |
 | C-05 | Agreement | κ ≥ 0.6 (≥ 0.7 for eval sets) as a floor under the memo threshold | The memo threshold alone |
 | C-06 | Human QA sample | Text: 1,000 per subset and at least 200 per stratum family. Speech: the larger of 2% of segments and 2 h per subset. A 50-record calibration batch | 1,000 records or 2 hours per subset; or 2-5% of speech segments |

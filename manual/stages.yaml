@@ -267,7 +267,7 @@ stages:
         - {id: S3.music_excluded, type: metric, root: job, path: validation/schema_report.json, field: audio.music_flagged_segments_in_release, op: "==", value: 0, applies_if: {field: "memo:profile", op: in, value: [P-SPEECH]}}
     thresholds:
       - {id: T3.schema, name: "Schema validation", value: "100% of records", adopted_from: "Bayanat Labs practice"}
-      - {id: T3.recipe, name: "text_norm recipe", value: "the Bayanat Labs normalisation recipe (NFKC-based, taa marbuta kept and flagged). The alternative 'Bayanat-Norm v1 = NFC plus presentation-form mapping' is recorded as choice C-03 and needs founder approval before it replaces this recipe.", adopted_from: "Bayanat Labs practice"}
+      - {id: T3.recipe, name: "text_norm recipe", value: "bayanat-norm-v1 from arabic-normalize (https://github.com/Bayanat-Labs/arabic-normalize): NFC plus mapping of Arabic presentation forms, taa marbuta kept and flagged; text_raw is kept alongside, so nothing is lost.", adopted_from: "Bayanat Labs practice"}
       - {id: T3.audio, name: "Release audio", value: "FLAC mono 16 kHz (48 kHz only for consented or public-domain sets); -20 dBFS", adopted_from: "Bayanat Labs practice"}
       - {id: T3.dual_asr, name: "Dual-ASR agreement", value: "keep a segment only if cer_between_systems <= 15%; label it silver", adopted_from: "Bayanat Labs practice"}
       - {id: T3.vad, name: "VAD chunks", value: "2-20 s", adopted_from: "Bayanat Labs practice"}
