@@ -1,0 +1,29 @@
+{
+  "candidate_id": "EX-001",
+  "title": "Bayanat Labs example corpus of official documents (illustrative)",
+  "scores": {
+    "impact": 5,
+    "claim_strength": 4,
+    "ease": 5,
+    "legal_cleanliness": 5,
+    "commercial_pull": 4
+  },
+  "legal_tier": "green",
+  "effort": "S",
+  "weighted_score_0_100": 92.5,
+  "legal_verdict": "tier1_eligible",
+  "max_release_tier": 1,
+  "suggested_priority": "P0",
+  "priority_rule": "score >= 75 and effort in S/M",
+  "seo_demand": 4,
+  "warnings": [],
+  "weights": {
+    "impact": 30.0,
+    "claim_strength": 20.0,
+    "ease": 20.0,
+    "legal_cleanliness": 20.0,
+    "commercial_pull": 10.0
+  },
+  "thresholds_status": "Adopted for v1.0, provisional. The coordinator decides each case.",
+  "policy_version": "1.0.1"
+}

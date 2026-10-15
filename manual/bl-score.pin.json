@@ -1,0 +1,40 @@
+{
+  "tool": "bl-score",
+  "version_string": "0.1.0",
+  "tree_sha256": "daf73c4e0139cb2d7e489dce2db293e5ea50880df1ceb2effc9e794161da27bc",
+  "files": [
+    {
+      "path": "src/bl_score/__init__.py",
+      "sha256": "32aa3de780aca4d2439ffe3f943be53975524ec72d3f1fbda5f6e72f00ad9a23"
+    },
+    {
+      "path": "src/bl_score/__main__.py",
+      "sha256": "13a1a5b340cdcfc1902b62be90e508c7c71886000d5bf087e7854aadf09fb35e"
+    },
+    {
+      "path": "src/bl_score/cli.py",
+      "sha256": "62070a4fa209ce7ceddf4542001da80435619cbd853254aa22d7587fab0dfed2"
+    },
+    {
+      "path": "src/bl_score/data/memo.schema.json",
+      "sha256": "1af38d8c620ed8d61994519abab0ae648b9eeb013242c401e9f49101805e4c84"
+    },
+    {
+      "path": "src/bl_score/data/output.schema.json",
+      "sha256": "41c9f53ebc1d00bb6ed31a727f72a37385e568e669adc3554ebb0cbdf4a00a51"
+    },
+    {
+      "path": "src/bl_score/data/rubric.schema.json",
+      "sha256": "8a4f050cea551b73f48e69572009827fffc5fd8999c7aa354878f962fe0adeaf"
+    },
+    {
+      "path": "src/bl_score/data/rubric.yaml",
+      "sha256": "b8519e43583fd8a545eeab19df1c2d0db5bbdd3619c232599ac6bf799d78e557"
+    },
+    {
+      "path": "src/bl_score/scoring.py",
+      "sha256": "794c4062a31a2d82a77125bb0bcbd060befcef50912483e2121ce31d0bf09034"
+    }
+  ],
+  "method": "sha256 over sorted '<path>\\t<sha256>\\n' lines for src/bl_score/*.py and src/bl_score/data/*"
+}

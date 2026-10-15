@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bayanatlabs.com/open/schemas/provenance_ledger_row/v1.json",
+  "title": "Bayanat Labs per-item provenance ledger row (PROVENANCE.parquet / .jsonl)",
+  "description": "One row per released item: where it came from, under which licence and evidence, and every transform applied. A row that fails validation is not released.",
+  "type": "object",
+  "required": [
+    "item_id", "release_version", "source_id", "source_platform", "source_item_id", "source_url",
+    "acquisition_method", "retrieved_at", "raw_sha256", "license_detected", "license_url",
+    "license_evidence", "tos_basis", "licence_route", "release_tier", "release_form", "transform_chain",
+    "annotation_origin", "synthetic", "pii_flags", "opt_out_status"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "item_id": {"type": "string", "description": "Stable ID of the released record or clip"},
+    "release_version": {"type": "string", "pattern": "^v[0-9]+\\.[0-9]+$"},
+    "config": {"type": "string", "description": "HF config, i.e. the licence partition"},
+    "split": {"type": "string"},
+    "source_id": {"type": "string", "description": "Key into sources.jsonl"},
+    "source_platform": {"type": "string", "description": "e.g. wikimedia_dump, gov_portal, video_host_cc, rss, gov_open_data, contributor_programme, synthetic"},
+    "source_item_id": {"type": "string", "description": "Upstream ID: page ID + revision, video ID, feed GUID, file name, etc."},
+    "source_url": {"type": "string", "format": "uri"},
+    "upstream_version": {"type": ["string", "null"], "description": "Dump date, revision ID, commit or ETag"},
+    "parent_id": {"type": ["string", "null"], "description": "item_id this record was derived from"},
+    "acquisition_method": {
+      "type": "string",
+      "enum": ["official_dump", "documented_api", "approved_direct_file", "rss_feed", "polite_crawler",
+               "local_renderer", "public_specification", "permission_backed_original",
+               "contributor_upload", "synthetic_generation"]
+    },
+    "retrieved_at": {"type": "string", "format": "date-time"},
+    "http_status": {"type": ["integer", "null"]},
+    "crawler_user_agent": {"enum": ["BayanatLabs-OpenData/1.0 (+https://bayanatlabs.com/open; hello@bayanatlabs.com)", null], "description": "Null only when no HTTP fetch was involved (synthetic, contributor upload)"},
+    "fetch_region": {"type": ["string", "null"], "enum": ["in_kingdom", "other", null]},
+    "robots_allowed": {"type": ["boolean", "null"]},
+    "robots_txt_sha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+    "ai_bot_block_present": {"type": ["boolean", "null"], "description": "GPTBot/CCBot/Google-Extended blocked; if true, the item is IDs-only"},
+    "tdm_reservation": {"type": ["string", "null"], "enum": ["0", "1", "absent", null]},
+    "content_signal": {"type": ["string", "null"], "description": "Raw Content-Signal value, e.g. 'search=yes, ai-train=no'"},
+    "raw_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "bytes": {"type": ["integer", "null"], "minimum": 0},
+    "license_detected": {"type": "string", "description": "SPDX-style ID: CC0-1.0, CC-BY-4.0, CC-BY-SA-4.0, ODC-By-1.0, ODbL-1.0, PD, statutory-exclusion, other"},
+    "license_url": {"type": "string", "format": "uri"},
+    "license_evidence": {
+      "type": "object",
+      "required": ["quote", "url", "sha256", "checked_at"],
+      "additionalProperties": false,
+      "properties": {
+        "quote": {"type": "string", "maxLength": 500, "description": "Shortest necessary clause, never a whole terms page"},
+        "url": {"type": "string", "format": "uri"},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$", "description": "Hash of the evidence page snapshot"},
+        "checked_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "license_rechecked_at": {"type": ["string", "null"], "format": "date-time", "description": "Re-verification at release; required for items whose licence is shown per item"},
+    "tos_basis": {
+      "type": "string",
+      "enum": ["open-license", "gov-open-data", "written-permission", "synthetic", "consented",
+               "public-domain-verified", "statutory-exclusion"]
+    },
+    "permission_doc_id": {"type": ["string", "null"], "description": "Founder-held agreement, consent record or recorded legal decision reference"},
+    "decision_ref": {"type": ["string", "null"], "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,63}$", "description": "ID of the recorded decision, in the organisation's legal record, that the item's release rests on; never free text"},
+    "licence_route": {"type": ["string", "null"], "pattern": "^IN-[AB][0-9]{2}$", "description": "Input-licence ID in policy/licence-matrix.yaml that the item's source licence falls under; null for Bayanat Labs' own content"},
+    "release_tier": {"enum": ["tier1_open_content", "tier2_manifests_annotations", "tier3_partner_licensed"], "description": "Release tier of the item (policy/tiers.yaml)"},
+    "release_form": {"type": "string", "enum": ["full_content", "ids_metadata_only", "rebuild_recipe"]},
+    "attribution": {"type": ["string", "null"], "description": "Required attribution string (author, channel, page title)"},
+    "video_host": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "video_id": {"type": "string"},
+        "channel_id": {"type": "string"},
+        "status_license": {"type": "string", "description": "Licence value the host's API reports for the video"},
+        "status_license_checked_at": {"type": "string", "format": "date-time"},
+        "trainability": {"type": ["string", "null"], "description": "The host's third-party training setting for the video, when it exposes one; a filter column, not an opt-out"},
+        "laundering_screen_passed": {"type": "boolean"},
+        "caption_type": {"enum": ["manual", "none"], "description": "Uploader-provided captions or none; automatic captions are not used as transcripts"}
+      }
+    },
+    "media": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "original_duration_ms": {"type": ["integer", "null"]},
+        "original_width": {"type": ["integer", "null"]},
+        "original_height": {"type": ["integer", "null"]},
+        "source_start_ms": {"type": ["integer", "null"]},
+        "source_end_ms": {"type": ["integer", "null"]},
+        "original_sample_rate": {"type": ["integer", "null"]},
+        "release_sample_rate": {"type": ["integer", "null"], "enum": [16000, 48000, null]},
+        "resample_params": {"type": ["string", "null"]},
+        "music_flag": {"type": ["boolean", "null"]},
+        "faces_blurred": {"type": ["boolean", "null"]},
+        "plates_blurred": {"type": ["boolean", "null"]},
+        "exif_stripped": {"type": ["boolean", "null"]},
+        "csam_hash_check": {"type": ["string", "null"], "enum": ["passed", "not_applicable", null]}
+      }
+    },
+    "pii_flags": {"type": "array", "items": {"type": "string"}, "description": "Types found before redaction: PHONE, NATIONAL_ID, IQAMA, EMIRATES_ID, IBAN, EMAIL, PLATE, PERSON_NAME, URL"},
+    "pii_action": {"type": ["string", "null"], "enum": ["none_found", "redacted_placeholder", "clip_dropped", "record_dropped", null]},
+    "sensitive_content_flags": {"type": "array", "items": {"type": "string"}},
+    "transform_chain": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["step", "tool", "version", "code_commit", "output_sha256"],
+        "additionalProperties": false,
+        "properties": {
+          "step": {"type": "string", "description": "normalise, dedup, pii, vad, asr, align, enrich, render, ..."},
+          "tool": {"type": "string"},
+          "version": {"type": "string"},
+          "params": {"type": ["string", "object", "null"]},
+          "code_commit": {"type": "string"},
+          "input_sha256": {"type": ["string", "null"]},
+          "output_sha256": {"type": "string"}
+        }
+      }
+    },
+    "annotation_origin": {"type": "string", "enum": ["source", "deterministic", "model_proposed", "human_reviewed", "adjudicated"]},
+    "synthetic": {"type": "boolean"},
+    "synthetic_generator": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "model": {"type": "string"},
+        "version": {"type": "string"},
+        "prompt_id": {"type": "string"},
+        "seed": {"type": ["integer", "string"]},
+        "terms_permit_publication": {"type": "boolean"}
+      }
+    },
+    "dedup_group": {"type": ["string", "null"]},
+    "independence_unit_id": {"type": ["string", "null"], "description": "Source/work/speaker/channel/template group used for splits"},
+    "output_ids": {"type": "array", "items": {"type": "string"}},
+    "opt_out_status": {"type": "string", "enum": ["none", "requested", "removed", "index_only"]},
+    "takedown_ticket_id": {"type": ["string", "null"]},
+    "notes": {"type": ["string", "null"]}
+  },
+  "$defs": {
+    "source_record": {
+      "title": "sources.jsonl row (one per source)",
+      "type": "object",
+      "required": ["source_id", "data_url", "license_url", "retrieved_at", "acquisition_mechanism", "status", "licence_route", "recheck_by"],
+      "properties": {
+        "source_id": {"type": "string"},
+        "owner": {"type": "string"},
+        "data_url": {"type": "string", "format": "uri"},
+        "documentation_url": {"type": ["string", "null"], "format": "uri"},
+        "license_url": {"type": "string", "format": "uri"},
+        "version_or_commit": {"type": ["string", "null"]},
+        "retrieved_at": {"type": "string", "format": "date-time"},
+        "acquisition_mechanism": {"type": "string"},
+        "status": {
+          "type": "object",
+          "description": "Each value: allowed | not_allowed | unknown (unknown stays unknown)",
+          "properties": {
+            "access": {"enum": ["allowed", "not_allowed", "unknown"]},
+            "redistribution": {"enum": ["allowed", "not_allowed", "unknown"]},
+            "derivatives": {"enum": ["allowed", "not_allowed", "unknown"]},
+            "commercial_reuse": {"enum": ["allowed", "not_allowed", "unknown"]},
+            "training": {"enum": ["allowed", "not_allowed", "unknown"]},
+            "evaluation": {"enum": ["allowed", "not_allowed", "unknown"]},
+            "identifiable_persons": {"enum": ["none", "present_removable", "present_blocking", "unknown"]}
+          }
+        },
+        "evidence": {"$ref": "#/properties/license_evidence"},
+        "attribution_required": {"type": ["string", "null"]},
+        "share_alike": {"type": "boolean"},
+        "removal_obligations": {"type": ["string", "null"]},
+        "host_limits": {"type": ["string", "null"], "description": "Rate, quota or load limits stated by the host"},
+        "licence_route": {"type": ["string", "null"], "pattern": "^IN-[AB][0-9]{2}$", "description": "Input-licence ID in policy/licence-matrix.yaml; null for Bayanat Labs' own content"},
+        "release_tier": {"enum": ["tier1_open_content", "tier2_manifests_annotations", "tier3_partner_licensed"], "description": "Release tier this source's content may reach"},
+        "rejected": {"type": "boolean"},
+        "rejection_reason": {"type": ["string", "null"]},
+        "recheck_by": {"type": "string", "format": "date"}
+      }
+    }
+  }
+}

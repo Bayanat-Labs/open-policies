@@ -1,0 +1,231 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Bayanat-Labs/open-policies/policy/schemas/tiers.schema.json",
+  "title": "Bayanat Labs release tiers (tiers.yaml)",
+  "type": "object",
+  "required": [
+    "policy_version",
+    "document",
+    "status",
+    "tiers",
+    "internal_only_rule",
+    "exceptions",
+    "unit_of_value",
+    "where_tier_surfaces"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "policy_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "document": {
+      "const": "tiers"
+    },
+    "status": {
+      "type": "string"
+    },
+    "licence": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object"
+    },
+    "heading": {
+      "type": "string"
+    },
+    "tiers": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "number",
+          "name",
+          "publishes",
+          "licences_text",
+          "licences",
+          "typical_sources_text",
+          "typical_sources",
+          "collection_basis_required",
+          "release_modes"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "tier1",
+              "tier2",
+              "tier3"
+            ]
+          },
+          "number": {
+            "enum": [
+              1,
+              2,
+              3
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "publishes": {
+            "type": "string"
+          },
+          "published_fields": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "no_verbatim_content": {
+            "type": "boolean"
+          },
+          "licences_text": {
+            "type": "string"
+          },
+          "licences": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "applies_to",
+                "licence",
+                "hf_licence_tag"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "applies_to": {
+                  "type": "string"
+                },
+                "licence": {
+                  "type": "string"
+                },
+                "hf_licence_tag": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          },
+          "typical_sources_text": {
+            "type": "string"
+          },
+          "typical_sources": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "typical_sources_status": {
+            "type": "string"
+          },
+          "collection_basis_required": {
+            "type": "boolean"
+          },
+          "collection_basis_options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "scale_rule": {
+            "type": "string"
+          },
+          "permission_rule": {
+            "type": "string"
+          },
+          "release_modes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "enum": [
+                "redistributable",
+                "license_partitioned",
+                "metadata_or_recipe_only",
+                "permission_required",
+                "rejected"
+              ]
+            }
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "collection_basis_required": {
+                  "const": true
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "collection_basis_options"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "internal_only_rule": {
+      "type": "object",
+      "required": [
+        "text",
+        "allowed_internal_uses",
+        "never_published_even_if"
+      ]
+    },
+    "exceptions": {
+      "type": "object",
+      "required": [
+        "text",
+        "items"
+      ],
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "source_lines": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "catalogue_ref",
+              "what",
+              "conditions"
+            ]
+          }
+        }
+      }
+    },
+    "unit_of_value": {
+      "type": "object",
+      "required": [
+        "text",
+        "components"
+      ]
+    },
+    "where_tier_surfaces": {
+      "type": "object",
+      "required": [
+        "text",
+        "card_sections",
+        "record_field"
+      ]
+    }
+  }
+}

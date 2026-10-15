@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif">
+<title id="t">How Bayanat Labs builds open datasets: 13 gated stages</title>
+<desc id="d">Stage 0 scoping memo, then stages 1 to 12, grouped into five phases: plan, build, verify, ship and maintain. Each stage ends in a blocking gate; the boxes show each gate and the release gates G0 to G7 it maps to.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4a5568"/></marker></defs>
+<rect x="0" y="0" width="1200" height="800" fill="#ffffff"/>
+<text x="30" y="46" font-size="24" font-weight="700" fill="#1a202c">How Bayanat Labs builds open datasets</text>
+<text x="30" y="74" font-size="15" fill="#4a5568">A scoping memo and twelve gated stages: 13 gates, all blocking. A failed gate blocks the release; a release that skipped a gate is reverted.</text>
+<rect x="39" y="98" width="210" height="28" rx="6" fill="#2b5c8a"/>
+<text x="144.0" y="117" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Plan</text>
+<g aria-label="Stage 0: Scoping memo">
+<rect x="39" y="140" width="210" height="88" rx="8" fill="#eaf1f8" stroke="#2b5c8a" stroke-width="1.5"/>
+<text x="51" y="163" font-size="15" font-weight="700" fill="#1a202c"><tspan fill="#2b5c8a">0</tspan>  Scoping memo</text>
+<text x="51" y="184" font-size="12" fill="#2d3748">Coordinator approves;</text>
+<text x="51" y="200" font-size="12" fill="#2d3748">legal tier is not red</text>
+<text x="51" y="218" font-size="11" font-weight="600" fill="#2b5c8a">G0 · G6</text>
+</g>
+<g aria-label="Stage 1: Discovery">
+<rect x="39" y="248" width="210" height="88" rx="8" fill="#eaf1f8" stroke="#2b5c8a" stroke-width="1.5"/>
+<text x="51" y="271" font-size="15" font-weight="700" fill="#1a202c"><tspan fill="#2b5c8a">1</tspan>  Discovery</text>
+<text x="51" y="292" font-size="12" fill="#2d3748">Ledger started;</text>
+<text x="51" y="308" font-size="12" fill="#2d3748">sources checked</text>
+<text x="51" y="326" font-size="11" font-weight="600" fill="#2b5c8a">G0</text>
+</g>
+<line x1="144.0" y1="228" x2="144.0" y2="246" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="273" y="98" width="210" height="28" rx="6" fill="#276749"/>
+<text x="378.0" y="117" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Build</text>
+<g aria-label="Stage 2: Acquisition">
+<rect x="273" y="140" width="210" height="88" rx="8" fill="#e8f5ee" stroke="#276749" stroke-width="1.5"/>
+<text x="285" y="163" font-size="15" font-weight="700" fill="#1a202c"><tspan fill="#276749">2</tspan>  Acquisition</text>
+<text x="285" y="184" font-size="12" fill="#2d3748">Checksum per item;</text>
+<text x="285" y="200" font-size="12" fill="#2d3748">≥ 3 s per host, no bypass</text>
+<text x="285" y="218" font-size="11" font-weight="600" fill="#276749">G1</text>
+</g>
+<g aria-label="Stage 3: Normalisation">
+<rect x="273" y="248" width="210" height="88" rx="8" fill="#e8f5ee" stroke="#276749" stroke-width="1.5"/>
+<text x="285" y="271" font-size="15" font-weight="700" fill="#1a202c"><tspan fill="#276749">3</tspan>  Normalisation</text>
+<text x="285" y="292" font-size="12" fill="#2d3748">100% schema-valid;</text>
+<text x="285" y="308" font-size="12" fill="#2d3748">raw kept beside normalised</text>
+<text x="285" y="326" font-size="11" font-weight="600" fill="#276749">G2</text>
+</g>
+<g aria-label="Stage 4: Deduplication">
+<rect x="273" y="356" width="210" height="88" rx="8" fill="#e8f5ee" stroke="#276749" stroke-width="1.5"/>
+<text x="285" y="379" font-size="15" font-weight="700" fill="#1a202c"><tspan fill="#276749">4</tspan>  Deduplication</text>
+<text x="285" y="400" font-size="12" fill="#2d3748">Duplicate rate reported;</text>
+<text x="285" y="416" font-size="12" fill="#2d3748">0 test-set overlap</text>
+<text x="285" y="434" font-size="11" font-weight="600" fill="#276749">G2</text>
+</g>
+<g aria-label="Stage 5: Safety and PII">
+<rect x="273" y="464" width="210" height="88" rx="8" fill="#e8f5ee" stroke="#276749" stroke-width="1.5"/>
+<text x="285" y="487" font-size="15" font-weight="700" fill="#1a202c"><tspan fill="#276749">5</tspan>  Safety and PII</text>
+<text x="285" y="508" font-size="12" fill="#2d3748">0 PII hits in 3,000;</text>
+<text x="285" y="524" font-size="12" fill="#2d3748">R1–R7 pass, no minors</text>
+<text x="285" y="542" font-size="11" font-weight="600" fill="#276749">G3</text>
+</g>
+<g aria-label="Stage 6: Enrichment">
+<rect x="273" y="572" width="210" height="88" rx="8" fill="#e8f5ee" stroke="#276749" stroke-width="1.5"/>
+<text x="285" y="595" font-size="15" font-weight="700" fill="#1a202c"><tspan fill="#276749">6</tspan>  Enrichment</text>
+<text x="285" y="616" font-size="12" fill="#2d3748">Label report;</text>
+<text x="285" y="632" font-size="12" fill="#2d3748">1% spot-check per dialect</text>
+<text x="285" y="650" font-size="11" font-weight="600" fill="#276749">G4</text>
+</g>
+<line x1="378.0" y1="228" x2="378.0" y2="246" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="378.0" y1="336" x2="378.0" y2="354" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="378.0" y1="444" x2="378.0" y2="462" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="378.0" y1="552" x2="378.0" y2="570" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="507" y="98" width="210" height="28" rx="6" fill="#975a16"/>
+<text x="612.0" y="117" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Verify</text>
+<g aria-label="Stage 7: Human QA">
+<rect x="507" y="140" width="210" height="88" rx="8" fill="#fbf3e4" stroke="#975a16" stroke-width="1.5"/>
+<text x="519" y="163" font-size="15" font-weight="700" fill="#1a202c"><tspan fill="#975a16">7</tspan>  Human QA</text>
+<text x="519" y="184" font-size="12" fill="#2d3748">κ ≥ memo threshold;</text>
+<text x="519" y="200" font-size="12" fill="#2d3748">named native reviewer</text>
+<text x="519" y="218" font-size="11" font-weight="600" fill="#975a16">G4 · G5</text>
+</g>
+<g aria-label="Stage 8: Packaging">
+<rect x="507" y="248" width="210" height="88" rx="8" fill="#fbf3e4" stroke="#975a16" stroke-width="1.5"/>
+<text x="519" y="271" font-size="15" font-weight="700" fill="#1a202c"><tspan fill="#975a16">8</tspan>  Packaging</text>
+<text x="519" y="292" font-size="12" fill="#2d3748">Loads, renders, lints;</text>
+<text x="519" y="308" font-size="12" fill="#2d3748">licences compatible</text>
+<text x="519" y="326" font-size="11" font-weight="600" fill="#975a16">G6 · G7</text>
+</g>
+<g aria-label="Stage 9: Baseline or benchmark">
+<rect x="507" y="356" width="210" height="88" rx="8" fill="#fbf3e4" stroke="#975a16" stroke-width="1.5"/>
+<text x="519" y="379" font-size="13.5" font-weight="700" fill="#1a202c"><tspan fill="#975a16">9</tspan>  Baseline or benchmark</text>
+<text x="519" y="400" font-size="12" fill="#2d3748">A printable number,</text>
+<text x="519" y="416" font-size="12" fill="#2d3748">computed by a script</text>
+<text x="519" y="434" font-size="11" font-weight="600" fill="#975a16">G7</text>
+</g>
+<line x1="612.0" y1="228" x2="612.0" y2="246" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="612.0" y1="336" x2="612.0" y2="354" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="741" y="98" width="210" height="28" rx="6" fill="#9b2c2c"/>
+<text x="846.0" y="117" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Ship</text>
+<g aria-label="Stage 10: Release">
+<rect x="741" y="140" width="210" height="88" rx="8" fill="#f9ecec" stroke="#9b2c2c" stroke-width="1.5"/>
+<text x="753" y="163" font-size="15" font-weight="700" fill="#1a202c"><tspan fill="#9b2c2c">10</tspan>  Release</text>
+<text x="753" y="184" font-size="12" fill="#2d3748">Checklist run, claims</text>
+<text x="753" y="200" font-size="12" fill="#2d3748">re-verified; founder go</text>
+<text x="753" y="218" font-size="11" font-weight="600" fill="#9b2c2c">G7</text>
+</g>
+<g aria-label="Stage 11: Promotion and measurement">
+<rect x="741" y="248" width="210" height="88" rx="8" fill="#f9ecec" stroke="#9b2c2c" stroke-width="1.5"/>
+<text x="753" y="271" font-size="13.5" font-weight="700" fill="#1a202c"><tspan fill="#9b2c2c">11</tspan>  Promotion, measurement</text>
+<text x="753" y="292" font-size="12" fill="#2d3748">Metrics row added</text>
+<text x="753" y="308" font-size="12" fill="#2d3748">to the monthly digest</text>
+<text x="753" y="326" font-size="11" font-weight="600" fill="#9b2c2c">coordinator check</text>
+</g>
+<line x1="846.0" y1="228" x2="846.0" y2="246" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arrow)"/>
+<rect x="975" y="98" width="210" height="28" rx="6" fill="#553c9a"/>
+<text x="1080.0" y="117" font-size="14" font-weight="700" fill="#ffffff" text-anchor="middle">Maintain</text>
+<g aria-label="Stage 12: Maintenance">
+<rect x="975" y="140" width="210" height="88" rx="8" fill="#f0ecf9" stroke="#553c9a" stroke-width="1.5"/>
+<text x="987" y="163" font-size="15" font-weight="700" fill="#1a202c"><tspan fill="#553c9a">12</tspan>  Maintenance</text>
+<text x="987" y="184" font-size="12" fill="#2d3748">Next version date set;</text>
+<text x="987" y="200" font-size="12" fill="#2d3748">index-only triggers reviewed</text>
+<text x="987" y="218" font-size="11" font-weight="600" fill="#553c9a">coordinator check</text>
+</g>
+<path d="M249,292.0 H261 V184.0 H271" fill="none" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M483,616.0 H495 V184.0 H505" fill="none" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M717,400.0 H729 V184.0 H739" fill="none" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M951,292.0 H963 V184.0 H973" fill="none" stroke="#4a5568" stroke-width="1.5" marker-end="url(#arrow)"/>
+<path d="M1080.0,228 V690 H16 V184.0 H37" fill="none" stroke="#553c9a" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#arrow)"/>
+<text x="1072.0" y="682" font-size="12" fill="#553c9a" text-anchor="end">Next version: back to stage 0, licences and claims re-verified</text>
+<text x="30" y="736" font-size="12.5" fill="#2d3748"><tspan font-weight="700">G0–G7</tspan> are the release gates: Source, Acquisition, Processing, Privacy, Quality, Human, Legal, Claims. Stages 11 and 12 close with a coordinator check.</text>
+<text x="30" y="756" font-size="12.5" fill="#2d3748">Agents prepare everything; only the founder publishes, sends or signs. Thresholds are defaults: a scoping memo may tighten them, never loosen them.</text>
+<text x="30" y="776" font-size="11" fill="#718096">Bayanat Labs operating manual v1.0.1 · approved by the founder on 15 Oct 2026 · CC BY 4.0 · generated from manual/stages.yaml</text>
+</svg>

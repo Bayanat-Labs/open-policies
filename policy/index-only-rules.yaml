@@ -1,0 +1,46 @@
+# Bayanat Labs open-programme policy: when a release moves from publish to index-only
+# Version 1.0.1. Reviewed by counsel, October 2026.
+# Documentation, not legal advice. Licence: CC BY 4.0.
+policy_version: 1.0.1
+document: index-only-rules
+status: adopted_v1_counsel_reviewed_2026_10
+licence: CC-BY-4.0
+source_text: 'What moves from publish to index-only: anything whose source terms changed since collection,
+  any item hit by a takedown, any video whose licence is no longer Creative Commons at re-verification,
+  any record with residual PII found in audit, and any source whose portal licence could not be read.'
+index_only_means: The affected items leave the published content and stay only as IDs, URLs, timestamps,
+  metadata and our own annotations (Tier 2), in a new version with a changelog entry.
+rules:
+- id: IO-1
+  trigger: anything whose source terms changed since collection
+  action: Quarantine affected payloads, re-assess against the new terms, and move them to index-only if
+    the new terms do not allow publication.
+  evidence: Archived old and new terms pages with sha256 and dates; a changed hash in the quarterly recheck
+    triggers review.
+  deadline: On detection
+- id: IO-2
+  trigger: any item hit by a takedown
+  action: Exclude the item from the next build at once; publish a corrected version with the item removed
+    or index-only; record the ticket in opt_out_status.
+  evidence: Takedown ticket ID, affected item IDs found through the provenance ledger, new version number.
+  deadline: Acknowledgement within 2 business days; removal within 30 days; 24 h for platform requests
+    and personal-data reports
+- id: IO-3
+  trigger: any video whose licence is no longer Creative Commons at re-verification
+  action: Prune the video's media and text from the release and keep it as index-only, or remove it if
+    it was deleted or made private.
+  evidence: status.license value with the re-verification timestamp, per video.
+  deadline: Every 30 days
+- id: IO-4
+  trigger: any record with residual PII found in audit
+  action: Stop serving the affected files (new commit without them); keep the record as index-only only
+    if the index entry itself carries no personal data.
+  evidence: PII audit report with record IDs and the detector or reviewer that found them.
+  deadline: Within 24 h
+- id: IO-5
+  trigger: any source whose portal licence could not be read
+  action: Publish IDs, URLs and metadata only until the licence text has been read and filed.
+  evidence: Fetch log showing the failed read (for example needs_in_kingdom_fetch) and, later, the archived
+    licence text.
+  deadline: Until the licence text has been read and filed
+  note: 'A failed fetch is not ''no licence'': the source is marked unread, not cleared.'

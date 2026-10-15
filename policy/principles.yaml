@@ -1,0 +1,36 @@
+# Bayanat Labs open-programme policy: operating principles
+# Version 1.0.1. Reviewed by counsel, October 2026.
+# Documentation, not legal advice. Licence: CC BY 4.0.
+policy_version: 1.0.1
+document: principles
+status: adopted_v1_counsel_reviewed_2026_10
+licence: CC-BY-4.0
+principles:
+- id: PR-1
+  number: 1
+  short: publish only what we can license
+  text: Publish only what we can license. Our commercial moat is rights clarity, so the open programme
+    uses three release tiers (open content; manifests plus our own annotations; partner-licensed) and
+    never publishes verbatim text or audio we cannot license; the one written exception is ODC-By packaging
+    of web text on the FineWeb and HPLT precedent, with per-document source URLs and a takedown route.
+  note: 'tiers.yaml lists a second written exception: corrections to non-commercial public sets.'
+- id: PR-2
+  number: 2
+  short: never gate, permissive licences, full launch bundle every time
+  text: 'Never gate, use permissive licences, and ship the full launch bundle every time: technical blog,
+    11-section dataset card, paper page, founder thread, press note.'
+  note: 'No release is gated: safety sets ship only as hidden test sets evaluated by submission (gating-exception.md).'
+- id: PR-3
+  number: 3
+  short: every dataset ships with a benchmark or baseline
+  text: Every dataset ships with a benchmark or a baseline run; compute is our cheapest credibility.
+- id: PR-4
+  number: 4
+  short: claims go through the ledger
+  text: 'Claims go through the claims ledger before copy: every "largest" names the unit, licence class,
+    date and the incumbent it beats.'
+- id: PR-5
+  number: 5
+  short: we build no models, and every leaderboard carries that statement
+  text: We build no models; every leaderboard carries that statement; national models appear only through
+    their own leaderboards or by opt-in.

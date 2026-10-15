@@ -1,0 +1,706 @@
+# Fidelity checklist. Generated from the policy files; do not edit by hand.
+document: fidelity-checklist
+policy_version: 1.0.1
+description: Wording each policy file must keep. Checked by scripts/validate_policy.py.
+items:
+- id: S1-statement
+  kind: statement
+  file: rubric.yaml
+  path: statement
+  policy_text: Every candidate is scored on five criteria, and anything that fails the legal gate is dropped
+    regardless of score.
+- id: S1-criterion-impact
+  kind: criterion
+  file: rubric.yaml
+  path: criteria[id=impact].name
+  policy_text: Impact (citations, press, developer use)
+- id: S1-weight-impact
+  kind: weight
+  file: rubric.yaml
+  path: criteria[id=impact].weight
+  expect: 30
+- id: S1-anchor-impact-1
+  kind: anchor
+  file: rubric.yaml
+  path: criteria[id=impact].anchors.1
+  policy_text: Nobody searches for it; no downstream use
+- id: S1-anchor-impact-3
+  kind: anchor
+  file: rubric.yaml
+  path: criteria[id=impact].anchors.3
+  policy_text: Useful to Arabic NLP researchers
+- id: S1-anchor-impact-5
+  kind: anchor
+  file: rubric.yaml
+  path: criteria[id=impact].anchors.5
+  policy_text: Used by model labs, cited by press and AI assistants, pulled by leaderboards
+- id: S1-criterion-claim_strength
+  kind: criterion
+  file: rubric.yaml
+  path: criteria[id=claim_strength].name
+  policy_text: Claim strength
+- id: S1-weight-claim_strength
+  kind: weight
+  file: rubric.yaml
+  path: criteria[id=claim_strength].weight
+  expect: 20
+- id: S1-anchor-claim_strength-1
+  kind: anchor
+  file: rubric.yaml
+  path: criteria[id=claim_strength].anchors.1
+  policy_text: Many equivalents exist
+- id: S1-anchor-claim_strength-3
+  kind: anchor
+  file: rubric.yaml
+  path: criteria[id=claim_strength].anchors.3
+  policy_text: Better than incumbents on one axis
+- id: S1-anchor-claim_strength-5
+  kind: anchor
+  file: rubric.yaml
+  path: criteria[id=claim_strength].anchors.5
+  policy_text: No credible incumbent for a precise "first/largest" claim
+- id: S1-criterion-ease
+  kind: criterion
+  file: rubric.yaml
+  path: criteria[id=ease].name
+  policy_text: Ease
+- id: S1-weight-ease
+  kind: weight
+  file: rubric.yaml
+  path: criteria[id=ease].weight
+  expect: 20
+- id: S1-anchor-ease-1
+  kind: anchor
+  file: rubric.yaml
+  path: criteria[id=ease].anchors.1
+  policy_text: Needs humans at scale or partner consent
+- id: S1-anchor-ease-3
+  kind: anchor
+  file: rubric.yaml
+  path: criteria[id=ease].anchors.3
+  policy_text: Agent-buildable with some human QA
+- id: S1-anchor-ease-5
+  kind: anchor
+  file: rubric.yaml
+  path: criteria[id=ease].anchors.5
+  policy_text: Agent-buildable from dumps/APIs in days
+- id: S1-criterion-legal_cleanliness
+  kind: criterion
+  file: rubric.yaml
+  path: criteria[id=legal_cleanliness].name
+  policy_text: Legal cleanliness (gate)
+- id: S1-weight-legal_cleanliness
+  kind: weight
+  file: rubric.yaml
+  path: criteria[id=legal_cleanliness].weight
+  expect: 20
+- id: S1-anchor-legal_cleanliness-1
+  kind: anchor
+  file: rubric.yaml
+  path: criteria[id=legal_cleanliness].anchors.1
+  policy_text: 'Red legal tier: not built'
+- id: S1-anchor-legal_cleanliness-3
+  kind: anchor
+  file: rubric.yaml
+  path: criteria[id=legal_cleanliness].anchors.3
+  policy_text: 'Yellow: manifests and our own annotations only'
+- id: S1-anchor-legal_cleanliness-5
+  kind: anchor
+  file: rubric.yaml
+  path: criteria[id=legal_cleanliness].anchors.5
+  policy_text: 'Green: full content redistributable under an open licence'
+- id: S1-criterion-commercial_pull
+  kind: criterion
+  file: rubric.yaml
+  path: criteria[id=commercial_pull].name
+  policy_text: Commercial pull
+- id: S1-weight-commercial_pull
+  kind: weight
+  file: rubric.yaml
+  path: criteria[id=commercial_pull].weight
+  expect: 10
+- id: S1-anchor-commercial_pull-1
+  kind: anchor
+  file: rubric.yaml
+  path: criteria[id=commercial_pull].anchors.1
+  policy_text: No product link
+- id: S1-anchor-commercial_pull-3
+  kind: anchor
+  file: rubric.yaml
+  path: criteria[id=commercial_pull].anchors.3
+  policy_text: Feeds one service page
+- id: S1-anchor-commercial_pull-5
+  kind: anchor
+  file: rubric.yaml
+  path: criteria[id=commercial_pull].anchors.5
+  policy_text: Feeds a product family and a sales conversation (Voice, Search, Bench, Documents, Agents)
+- id: S1-gate-legal
+  kind: gate
+  file: rubric.yaml
+  path: criteria[id=legal_cleanliness].is_gate
+  expect: true
+- id: S1-priority-P0
+  kind: priority_code
+  file: rubric.yaml
+  path: priority_codes.codes[code=P0].meaning
+  policy_text: ships within 60 days
+- id: S1-priority-P1
+  kind: priority_code
+  file: rubric.yaml
+  path: priority_codes.codes[code=P1].meaning
+  policy_text: by LEAP on 12 Apr 2027
+- id: S1-priority-P2
+  kind: priority_code
+  file: rubric.yaml
+  path: priority_codes.codes[code=P2].meaning
+  policy_text: within year one
+- id: S1-priority-P3
+  kind: priority_code
+  file: rubric.yaml
+  path: priority_codes.codes[code=P3].meaning
+  policy_text: opportunistic
+- id: S1-effort-S
+  kind: effort_code
+  file: rubric.yaml
+  path: effort_codes.codes[code=S].meaning
+  policy_text: under one agent-week
+- id: S1-effort-M
+  kind: effort_code
+  file: rubric.yaml
+  path: effort_codes.codes[code=M].meaning
+  policy_text: one to four agent-weeks
+- id: S1-effort-L
+  kind: effort_code
+  file: rubric.yaml
+  path: effort_codes.codes[code=L].meaning
+  policy_text: one to three agent-months
+- id: S1-effort-XL
+  kind: effort_code
+  file: rubric.yaml
+  path: effort_codes.codes[code=XL].meaning
+  policy_text: longer or needing a partner
+- id: S2-tier1-name
+  kind: tier
+  file: tiers.yaml
+  path: tiers[id=tier1].name
+  policy_text: 'Tier 1: open content'
+- id: S2-tier1-publishes
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier1].publishes
+  policy_text: Full text or audio plus our annotations
+- id: S2-tier1-licence-1
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier1].licences_text
+  policy_text: CC0 for manifests and metadata
+- id: S2-tier1-licence-2
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier1].licences_text
+  policy_text: CC BY 4.0 for our annotations
+- id: S2-tier1-licence-3
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier1].licences_text
+  policy_text: CC BY-SA 4.0 where Wikipedia-derived
+- id: S2-tier1-licence-4
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier1].licences_text
+  policy_text: ODC-By for web-text packaging
+- id: S2-tier1-licence-5
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier1].licences_text
+  policy_text: per-record `source_license`
+- id: S2-tier1-source-1
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier1].typical_sources_text
+  policy_text: Content under an open licence (CC0, CC BY, CC BY-SA, ODC-By, ODbL)
+- id: S2-tier1-source-2
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier1].typical_sources_text
+  policy_text: or in the public domain
+- id: S2-tier1-source-3
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier1].typical_sources_text
+  policy_text: content from consented contributors
+- id: S2-tier2-name
+  kind: tier
+  file: tiers.yaml
+  path: tiers[id=tier2].name
+  policy_text: 'Tier 2: manifests plus our annotations'
+- id: S2-tier2-publishes-1
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: IDs
+- id: S2-tier2-publishes-2
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: URLs
+- id: S2-tier2-publishes-3
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: timestamps
+- id: S2-tier2-publishes-4
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: dialect/city labels
+- id: S2-tier2-publishes-5
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: speaker turns
+- id: S2-tier2-publishes-6
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: quality scores
+- id: S2-tier2-publishes-7
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: topics
+- id: S2-tier2-publishes-8
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: entity tags
+- id: S2-tier2-publishes-9
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: alignment anchors
+- id: S2-tier2-publishes-10
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: one-command rebuild script
+- id: S2-tier2-publishes-11
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: no verbatim content
+- id: S2-tier2-basis-1
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: Bayanat Labs relies on no Saudi text-and-data-mining exception
+- id: S2-tier2-basis-2
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: each Tier 2 scoping memo names its collection basis
+- id: S2-tier2-basis-3
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: an academic partner collecting under EU DSM Art. 3/4
+- id: S2-tier2-basis-4
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: written rights-holder permission
+- id: S2-tier2-basis-5
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: lawyer sign-off
+- id: S2-tier2-basis-6
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].publishes
+  policy_text: scale stays capped until one exists
+- id: S2-tier2-basis-required
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].collection_basis_required
+  expect: true
+- id: S2-tier2-licences
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].licences_text
+  policy_text: CC BY 4.0 on annotations, CC0 on IDs
+- id: S2-tier2-source-1
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].typical_sources_text
+  policy_text: Content that is not redistributed
+- id: S2-tier2-source-2
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].typical_sources_text
+  policy_text: standard-licence, all-rights-reserved or unclear-licence content
+- id: S2-tier2-source-3
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier2].typical_sources_text
+  policy_text: referenced by identifier
+- id: S2-tier3-name
+  kind: tier
+  file: tiers.yaml
+  path: tiers[id=tier3].name
+  policy_text: 'Tier 3: partner-licensed'
+- id: S2-tier3-publishes
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier3].publishes
+  policy_text: Content released under a written permission (CC BY or a custom open licence)
+- id: S2-tier3-permission
+  kind: tier_field
+  file: tiers.yaml
+  path: tiers[id=tier3].permission_rule
+  policy_text: Each Tier 3 release needs the written permission on file before collection.
+- id: S2-internal-only
+  kind: tier_field
+  file: tiers.yaml
+  path: internal_only_rule.text
+  policy_text: Verbatim transcripts or text of content we cannot license stay internal
+- id: S2-internal-uses
+  kind: tier_field
+  file: tiers.yaml
+  path: internal_only_rule.text
+  policy_text: They may feed aggregate statistics, benchmark scoring and internal tooling
+- id: S2-internal-never
+  kind: tier_field
+  file: tiers.yaml
+  path: internal_only_rule.text
+  policy_text: but they are never published, even gated or "research only"
+- id: S2-exception-1
+  kind: exception
+  file: tiers.yaml
+  path: exceptions.text
+  policy_text: ODC-By packaging of web text follows the FineWeb and HPLT precedent with per-document source
+    URLs and a takedown route
+- id: S2-exception-2
+  kind: exception
+  file: tiers.yaml
+  path: exceptions.text
+  policy_text: corrections to non-commercial public sets are released under the source's own licence and
+    labelled as derivatives
+- id: S2-exception-2-noNC
+  kind: exception
+  file: tiers.yaml
+  path: exceptions.items[id=EXC-2].conditions
+  expect: never under a Bayanat Labs NC licence
+- id: S2-tier-surfaces
+  kind: tier_field
+  file: tiers.yaml
+  path: where_tier_surfaces.text
+  policy_text: Each card's 'What is being released (per subset, with licence tier)' and 'Licensing' sections
+    and the per-record source_license field are where the tier surfaces publicly.
+- id: S3-OUT-01-tag
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-01].hf_licence_tag
+  expect: cc0-1.0
+- id: S3-OUT-01-content
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-01].content_type
+  policy_text: Manifests, IDs, timestamps, metadata
+- id: S3-OUT-02-tag
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-02].hf_licence_tag
+  expect: cc-by-4.0
+- id: S3-OUT-02-content
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-02].content_type
+  policy_text: transcripts of CC content, segmentations, labels
+- id: S3-OUT-03-tag
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-03].hf_licence_tag
+  expect: cc-by-4.0
+- id: S3-OUT-03-content
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-03].content_type
+  policy_text: Structured reference data
+- id: S3-OUT-04-tag
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-04].hf_licence_tag
+  expect: cc-by-sa-4.0
+- id: S3-OUT-04-content
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-04].content_type
+  policy_text: Wikipedia-derived text
+- id: S3-OUT-05-tag
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-05].hf_licence_tag
+  expect: odc-by
+- id: S3-OUT-05-content
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-05].content_type
+  policy_text: Web-text packaging (crawl-derived text)
+- id: S3-OUT-06-tag
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-06].hf_licence_tag
+  expect: gpl-3.0
+- id: S3-OUT-06-content
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-06].content_type
+  policy_text: GPL-licensed inputs
+- id: S3-OUT-07-tag
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-07].hf_licence_tag
+  expect: other
+- id: S3-OUT-07-content
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-07].content_type
+  policy_text: Verbatim-only inputs (terms that forbid modification)
+- id: S3-OUT-01-rationale
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-01].rationale
+  policy_text: Pure facts; AudioSet releases the same fields under CC BY 4.0, and we waive even attribution
+- id: S3-OUT-03-alt
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-03].alternative_hf_licence_tag
+  expect: cdla-permissive-2.0
+- id: S3-OUT-04-fields-url
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-04].required_record_fields
+  expect: page_url
+- id: S3-OUT-04-fields-rev
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-04].required_record_fields
+  expect: revision_id
+- id: S3-OUT-05-fields
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-05].required_record_fields
+  expect: source_url
+- id: S3-OUT-06-separate
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-06].separate_repo
+  expect: true
+- id: S3-OUT-07-licence-file
+  kind: licence_row
+  file: licence-matrix.yaml
+  path: output_licence_tags.rows[id=OUT-07].tag_text
+  policy_text: with the source terms in `LICENSE`
+- id: S3-never-nc
+  kind: licence_rule
+  file: licence-matrix.yaml
+  path: output_rules.never[id=NEVER-01].rule
+  policy_text: Never `cc-by-nc` for our own work
+- id: S3-never-apache-mit
+  kind: licence_rule
+  file: licence-matrix.yaml
+  path: output_rules.never[id=NEVER-02].rule
+  policy_text: never Apache/MIT for data
+- id: S3-never-custom
+  kind: licence_rule
+  file: licence-matrix.yaml
+  path: output_rules.never[id=NEVER-03].rule
+  policy_text: never a custom licence
+- id: S3-nc-derivatives
+  kind: licence_rule
+  file: licence-matrix.yaml
+  path: output_rules.nc_derivatives
+  policy_text: inherit the source licence and are labelled as derivatives
+- id: S3-mixed-statement
+  kind: licence_rule
+  file: licence-matrix.yaml
+  path: output_rules.mixed_sources_statement
+  expect: Underlying content is not licensed by Bayanat Labs; see per-record fields
+- id: S3-allow-IN-A01
+  kind: allowlist
+  file: licence-matrix.yaml
+  path: input_licences.allowlist[id=IN-A01].name
+  policy_text: CC0
+- id: S3-allow-IN-A02
+  kind: allowlist
+  file: licence-matrix.yaml
+  path: input_licences.allowlist[id=IN-A02].name
+  policy_text: CC BY
+- id: S3-allow-IN-A03
+  kind: allowlist
+  file: licence-matrix.yaml
+  path: input_licences.allowlist[id=IN-A03].name
+  policy_text: CC BY-SA
+- id: S3-allow-IN-A04
+  kind: allowlist
+  file: licence-matrix.yaml
+  path: input_licences.allowlist[id=IN-A04].name
+  policy_text: ODC-BY
+- id: S3-allow-IN-A05
+  kind: allowlist
+  file: licence-matrix.yaml
+  path: input_licences.allowlist[id=IN-A05].name
+  policy_text: ODbL
+- id: S3-allow-IN-A06
+  kind: allowlist
+  file: licence-matrix.yaml
+  path: input_licences.allowlist[id=IN-A06].name
+  policy_text: PD
+- id: S3-allow-IN-A07
+  kind: allowlist
+  file: licence-matrix.yaml
+  path: input_licences.allowlist[id=IN-A07].name
+  policy_text: Saudi Open Data License
+- id: S3-allow-IN-A08
+  kind: allowlist
+  file: licence-matrix.yaml
+  path: input_licences.allowlist[id=IN-A08].name
+  policy_text: written permission
+- id: S3-block-IN-B01
+  kind: blocklist
+  file: licence-matrix.yaml
+  path: input_licences.blocklist[id=IN-B01].name
+  policy_text: NC (unless intentional)
+- id: S3-block-IN-B02
+  kind: blocklist
+  file: licence-matrix.yaml
+  path: input_licences.blocklist[id=IN-B02].name
+  policy_text: ND
+- id: S3-block-IN-B03
+  kind: blocklist
+  file: licence-matrix.yaml
+  path: input_licences.blocklist[id=IN-B03].name
+  policy_text: unknown
+- id: S3-block-IN-B04
+  kind: blocklist
+  file: licence-matrix.yaml
+  path: input_licences.blocklist[id=IN-B04].name
+  policy_text: all rights reserved
+- id: S3-split-subsets
+  kind: licence_rule
+  file: licence-matrix.yaml
+  path: input_licences.rules[id=IN-R01].rule
+  policy_text: Mixed licences are split into per-licence subsets.
+- id: S3-sa-separate
+  kind: licence_rule
+  file: licence-matrix.yaml
+  path: input_licences.rules[id=IN-R02].rule
+  policy_text: SA data stays separate from CC BY data.
+- id: S3-code
+  kind: licence_rule
+  file: licence-matrix.yaml
+  path: code_licence.hf_licence_tag
+  expect: apache-2.0
+- id: S3-docs
+  kind: licence_rule
+  file: licence-matrix.yaml
+  path: output_rules.bayanat_authored_data_and_docs
+  expect: cc-by-4.0
+- id: S4-principle-1
+  kind: principle
+  file: principles.yaml
+  path: principles[id=PR-1].text
+  policy_text: Publish only what we can license.
+- id: S4-principle-2
+  kind: principle
+  file: principles.yaml
+  path: principles[id=PR-2].text
+  policy_text: Never gate, use permissive licences, and ship the full launch bundle every time
+- id: S4-principle-3
+  kind: principle
+  file: principles.yaml
+  path: principles[id=PR-3].text
+  policy_text: Every dataset ships with a benchmark or a baseline run
+- id: S4-principle-4
+  kind: principle
+  file: principles.yaml
+  path: principles[id=PR-4].text
+  policy_text: Claims go through the claims ledger before copy
+- id: S4-principle-5
+  kind: principle
+  file: principles.yaml
+  path: principles[id=PR-5].text
+  policy_text: We build no models; every leaderboard carries that statement
+- id: S5-index-only-1
+  kind: index_only_trigger
+  file: index-only-rules.yaml
+  path: rules[id=IO-1].trigger
+  policy_text: anything whose source terms changed since collection
+- id: S5-index-only-2
+  kind: index_only_trigger
+  file: index-only-rules.yaml
+  path: rules[id=IO-2].trigger
+  policy_text: any item hit by a takedown
+- id: S5-index-only-3
+  kind: index_only_trigger
+  file: index-only-rules.yaml
+  path: rules[id=IO-3].trigger
+  policy_text: any video whose licence is no longer Creative Commons at re-verification
+- id: S5-index-only-4
+  kind: index_only_trigger
+  file: index-only-rules.yaml
+  path: rules[id=IO-4].trigger
+  policy_text: any record with residual PII found in audit
+- id: S5-index-only-5
+  kind: index_only_trigger
+  file: index-only-rules.yaml
+  path: rules[id=IO-5].trigger
+  policy_text: any source whose portal licence could not be read
+- id: S5-stop-1
+  kind: stop_rule
+  file: stop-rules.md
+  policy_text: a release that cannot pass the legal gate is converted to Tier 2 or dropped, never delayed
+    indefinitely
+- id: S5-stop-2
+  kind: stop_rule
+  file: stop-rules.md
+  policy_text: a benchmark whose test set leaks is rotated within 30 days
+- id: S5-stop-3
+  kind: stop_rule
+  file: stop-rules.md
+  policy_text: any partner audio whose permission is withdrawn is removed within the SLA and the counter
+    corrected publicly
+- id: S5-gating-2
+  kind: gating_exception
+  file: gating-exception.md
+  policy_text: Every other release is ungated.
+- id: S5-claims-1
+  kind: claims_rule
+  file: claims-rules.md
+  policy_text: Count only what is released
+- id: S5-claims-2
+  kind: claims_rule
+  file: claims-rules.md
+  policy_text: Name the licence class in the claim
+- id: S5-claims-3
+  kind: claims_rule
+  file: claims-rules.md
+  policy_text: Date every claim
+- id: S5-claims-4
+  kind: claims_rule
+  file: claims-rules.md
+  policy_text: never pool tiers
+- id: S5-claims-5
+  kind: claims_rule
+  file: claims-rules.md
+  policy_text: never compare an open set with a non-commercial or request-only set without saying so
+- id: S5-claims-6
+  kind: claims_rule
+  file: claims-rules.md
+  policy_text: '"First" claims require a documented search of Hugging Face, Masader, Kaggle, Zenodo, the
+    ACL Anthology and arXiv, saved in the evidence file.'
+- id: S5-claims-7
+  kind: claims_rule
+  file: claims-rules.md
+  policy_text: stay in the commercial claims register and are never mixed with open-data counts

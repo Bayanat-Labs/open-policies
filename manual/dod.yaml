@@ -1,0 +1,191 @@
+# Bayanat Labs operating manual: definition of done (12 items), v1.0.1.
+# Consumed by the dataset template's `bl-gates --dod` (and by scripts/validate_stages.py --dod for tests).
+# Check types and roots are the ones defined in manual/stages.yaml.
+# Two phases:
+#   rc   = release candidate. Everything agents can prepare before the founder's go. A release is done
+#          only when every box is true; every release artefact (release_artefacts at the end of this
+#          file) maps to one of the 12 items below (see artefacts on each item).
+#   done = after launch. Adds what exists only once the founder has released, listed and sent
+#          ("DOI, hub page, listings, launch bundle sent, metrics row created, next-version date set").
+# `done` on each item is computed by the checker; it is null in this template.
+# Licence: CC BY 4.0. Documentation, not legal advice.
+
+schema_version: 1
+manual_version: "1.0.1"
+consumer: "bl-gates --dod --phase rc|done (dataset template)"
+source:
+  practice: "Bayanat Labs practice, October 2026 (definition of done, 12 items; gates G0-G7 and the release artefact list)"
+release_record: "job:release/published.yaml is written by the coordinator after each founder action (sending, publication); agents never perform those actions"
+
+preconditions:
+  - id: D00.gates
+    text: "Every gate G0-G7 passes for stages 0-9 (bl-gates output)."
+    check: {id: D00.gates, type: metric, root: job, path: qa/reports/gates.json, field: failed, op: "==", value: 0}
+
+items:
+  - id: D01
+    item: Scoping memo
+    artefacts: ["the scoping memo (approved)", "job.json"]
+    evidence_path: "job:scoping_memo.md"
+    checks:
+      rc:
+        - {id: D01.memo, type: file_exists, root: job, path: [scoping_memo.md, scoping_memo.yaml, scoping_memo.score.yaml, scoping_memo.score.json, job.json]}
+        - {id: D01.approved, type: signoff, root: job, path: scoping_memo.yaml, field: decision.coordinator, role: coordinator, require_verdict: approve}
+      done: []
+    done: null
+
+  - id: D02
+    item: Provenance ledger
+    artefacts: ["sources.jsonl", "PROVENANCE.parquet"]
+    evidence_path: "hf_repo:PROVENANCE.parquet"
+    checks:
+      rc:
+        - {id: D02.sources, type: schema_validates, root: job, path: sources.jsonl, schema: "templates/provenance_ledger_schema.json#/$defs/source_record", scope: all_rows}
+        - {id: D02.items, type: schema_validates, root: hf_repo, any_of: [PROVENANCE.parquet, PROVENANCE.jsonl], schema: templates/provenance_ledger_schema.json, scope: all_rows}
+      done: []
+    done: null
+
+  - id: D03
+    item: QA report
+    artefacts: ["the QA report"]
+    evidence_path: "job:qa/reports/QA_REPORT.md"
+    checks:
+      rc:
+        - {id: D03.report, type: file_exists, root: job, path: [qa/reports/QA_REPORT.md, qa/reports/qa_report.json]}
+        - {id: D03.signoff, type: signoff, root: job, path: qa/signoff.yaml, field: native_reviewer, role: native-reviewer, require_verdict: approve}
+      done: []
+    done: null
+
+  - id: D04
+    item: Claims ledger
+    artefacts: ["CLAIMS.md"]
+    evidence_path: "hf_repo:CLAIMS.md"
+    checks:
+      rc:
+        - {id: D04.file, type: file_exists, root: hf_repo, path: CLAIMS.md}
+        - {id: D04.numbers, type: file_exists, root: gh_repo, path: qa/reports/numbers.json}
+        - {id: D04.reverified, type: metric, root: job, path: qa/reports/release_checklist.json, field: claims_reverified_on, op: not_null}
+      done:
+        - {id: D04.claims_approval, type: signoff, root: job, path: release/published.yaml, field: claims_approval, role: founder, require_verdict: approve, applies_if: {field: "memo:claim_to_make.comparative", op: is_true}}
+    done: null
+
+  - id: D05
+    item: Card and release files
+    artefacts: ["bilingual card (EN + AR)", "LICENSE + LICENSES/", "CITATION.cff", "CHANGELOG.md", "MANIFEST.json", "SHA256SUMS", "croissant.json (validated)", "a runnable example that reproduces its expected output in a clean environment"]
+    evidence_path: "hf_repo:README.md"
+    checks:
+      rc:
+        - {id: D05.files, type: file_exists, root: hf_repo, path: [README.md, README.ar.md, LICENSE, LICENSES/LICENSE-sources.md, CITATION.cff, CHANGELOG.md, MANIFEST.json, SHA256SUMS, croissant.json]}
+        - {id: D05.lint, type: metric, root: job, path: qa/reports/package.json, field: card_lint_errors, op: "==", value: 0}
+        - {id: D05.croissant, type: metric, root: job, path: qa/reports/package.json, field: croissant_valid, op: is_true}
+        - {id: D05.example, type: metric, root: job, path: qa/reports/package.json, field: example_reproduced_clean_env, op: is_true}
+      done: []
+    done: null
+
+  - id: D06
+    item: DOI
+    artefacts: ["a reserved Zenodo DOI"]
+    evidence_path: "hf_repo:CITATION.cff"
+    checks:
+      rc:
+        - {id: D06.reserved, type: metric, root: job, path: qa/reports/release_checklist.json, field: doi_reserved, op: not_null}
+      done:
+        - {id: D06.published, type: metric, root: job, path: release/published.yaml, field: doi_published, op: is_true}
+    done: null
+
+  - id: D07
+    item: Hub page
+    artefacts: ["the hub page draft with JSON-LD and the paid-family link"]
+    evidence_path: "job:qa/reports/release_checklist.json"
+    checks:
+      rc:
+        - {id: D07.draft, type: metric, root: job, path: qa/reports/release_checklist.json, field: hub_page_draft_path, op: not_null}
+        - {id: D07.jsonld, type: metric, root: job, path: qa/reports/release_checklist.json, field: hub_page_jsonld_valid, op: is_true}
+        - {id: D07.family, type: metric, root: job, path: qa/reports/release_checklist.json, field: hub_page_paid_family_link, op: is_true}
+      done:
+        - {id: D07.live, type: metric, root: job, path: release/published.yaml, field: hub_page_url, op: not_null}
+    done: null
+
+  - id: D08
+    item: Baseline chart
+    artefacts: ["a baseline or benchmark chart (a number a journalist can print)"]
+    evidence_path: "gh_repo:launch/chart.png"
+    checks:
+      rc:
+        - {id: D08.chart, type: file_exists, root: gh_repo, path: [eval/results.json, launch/chart.png]}
+        - {id: D08.number, type: metric, root: gh_repo, path: eval/results.json, field: headline_metric.value, op: not_null}
+      done: []
+    done: null
+
+  - id: D09
+    item: Listings (Masader, Kaggle, Google Dataset Search)
+    artefacts: ["drafts of the listings (Masader, Kaggle)"]
+    evidence_path: "job:release/published.yaml"
+    checks:
+      rc:
+        - {id: D09.drafts, type: file_exists, root: gh_repo, path: [launch/masader_entry.json, kaggle/dataset-metadata.json]}
+      done:
+        - {id: D09.masader, type: metric, root: job, path: release/published.yaml, field: listings.masader, op: in, value: [submitted, live]}
+        - {id: D09.kaggle, type: metric, root: job, path: release/published.yaml, field: listings.kaggle, op: in, value: [submitted, live, not_applicable]}
+        - {id: D09.gds, type: metric, root: job, path: release/published.yaml, field: listings.google_dataset_search, op: in, value: [submitted, live]}
+    done: null
+    note: "Kaggle only after its terms are read; not_applicable then needs a reason in published.yaml. Never mark a listing live before it exists."
+
+  - id: D10
+    item: Launch bundle sent
+    artefacts: ["the launch-bundle drafts in outbox/ (technical post, AR/EN press paragraph, thread with one chart and one precise number, partner list)"]
+    evidence_path: "job:outbox/launch/"
+    checks:
+      rc:
+        - {id: D10.drafts, type: file_exists, root: job, path: [outbox/launch/technical_post.md, outbox/launch/press.md, outbox/launch/thread.md, outbox/launch/partners.yaml]}
+      done:
+        - {id: D10.sent, type: signoff, root: job, path: release/published.yaml, field: launch_bundle_sent, role: founder, require_verdict: sent}
+    done: null
+
+  - id: D11
+    item: Metrics row created
+    artefacts: ["a metrics row template"]
+    evidence_path: "programme:coordinator/metrics_digest.jsonl"
+    checks:
+      rc:
+        - {id: D11.template, type: file_exists, root: programme, path: coordinator/metrics_digest_row.schema.json}
+      done:
+        - {id: D11.row, type: row_exists, root: programme, path: coordinator/metrics_digest.jsonl, match: {asset_id: "memo:candidate_id"}, schema: coordinator/metrics_digest_row.schema.json}
+    done: null
+
+  - id: D12
+    item: Next-version date set
+    artefacts: ["a next-version date", "the takedown route live"]
+    evidence_path: "job:job.json"
+    checks:
+      rc:
+        - {id: D12.date, type: metric, root: job, path: job.json, field: release.next_version_date, op: not_null}
+        - {id: D12.takedown, type: metric, root: job, path: qa/reports/release_checklist.json, field: takedown_route_live, op: is_true}
+      done:
+        - {id: D12.calendar, type: row_exists, root: programme, path: coordinator/release_calendar.jsonl, match: {item_id: "memo:candidate_id", kind: next_version}}
+    done: null
+
+# Every release artefact, each covered by one item above (checked by the test suite).
+release_artefacts:
+  - "the scoping memo (approved)"
+  - "job.json"
+  - "sources.jsonl"
+  - "PROVENANCE.parquet"
+  - "the QA report"
+  - "CLAIMS.md"
+  - "bilingual card (EN + AR)"
+  - "LICENSE + LICENSES/"
+  - "CITATION.cff"
+  - "CHANGELOG.md"
+  - "MANIFEST.json"
+  - "SHA256SUMS"
+  - "croissant.json (validated)"
+  - "a baseline or benchmark chart (a number a journalist can print)"
+  - "a runnable example that reproduces its expected output in a clean environment"
+  - "the hub page draft with JSON-LD and the paid-family link"
+  - "a reserved Zenodo DOI"
+  - "drafts of the listings (Masader, Kaggle)"
+  - "the launch-bundle drafts in outbox/ (technical post, AR/EN press paragraph, thread with one chart and one precise number, partner list)"
+  - "a metrics row template"
+  - "a next-version date"
+  - "the takedown route live"

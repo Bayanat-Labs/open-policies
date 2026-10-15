@@ -1,0 +1,742 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bayanatlabs.com/open/schemas/stages/v1.json",
+  "title": "Bayanat Labs operating manual: stages.yaml",
+  "description": "Schema for manual/stages.yaml, the single source of the 13-stage gated pipeline (stage 0 scoping memo plus stages 1-12). Read by scripts/validate_stages.py and by the dataset template's bl-gates. Apache-2.0.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "manual_version",
+    "status",
+    "date",
+    "rules_version",
+    "skip_rule",
+    "legal_basis_rule",
+    "roots",
+    "owners",
+    "signoff_roles",
+    "check_types",
+    "metric_ops",
+    "cr_gates",
+    "stages"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "manual_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "status": {
+      "type": "string"
+    },
+    "approval": {
+      "type": "object",
+      "description": "Who approved this manual version, when, and where the approval is recorded.",
+      "required": [
+        "by",
+        "date",
+        "source"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "by": {
+          "enum": [
+            "founder"
+          ]
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "type": "string"
+        }
+      }
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "licence": {
+      "type": "string"
+    },
+    "rules_version": {
+      "type": "string"
+    },
+    "precedence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "memo_override_rule": {
+      "type": "string"
+    },
+    "skip_rule": {
+      "type": "string"
+    },
+    "legal_basis_rule": {
+      "type": "string",
+      "minLength": 1,
+      "description": "How a stage, gate or stop rule gets a legal position: it cites the decision ID of a recorded decision; no stage waits for a separate legal sign-off."
+    },
+    "roots": {
+      "type": "object",
+      "required": [
+        "job",
+        "hf_repo",
+        "gh_repo",
+        "programme"
+      ],
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "One path per root (a directory; for legal_record, the configured path of the organisation's legal record). job, hf_repo, gh_repo and programme are required; legal_record is optional."
+    },
+    "value_ref_prefixes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "owners": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "agent",
+          "coordinator",
+          "founder"
+        ]
+      },
+      "minItems": 3,
+      "uniqueItems": true
+    },
+    "signoff_roles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/role"
+      },
+      "uniqueItems": true
+    },
+    "check_types": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/check_type"
+      },
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "metric_ops": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/op"
+      }
+    },
+    "cr_gates": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/cr_gate"
+      },
+      "minProperties": 8,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "name",
+          "stages"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "stages": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 12
+            }
+          }
+        }
+      }
+    },
+    "phases": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        }
+      }
+    },
+    "stages": {
+      "type": "array",
+      "minItems": 13,
+      "maxItems": 13,
+      "items": {
+        "$ref": "#/$defs/stage"
+      }
+    }
+  },
+  "$defs": {
+    "role": {
+      "enum": [
+        "dataset-agent",
+        "coordinator",
+        "native-reviewer",
+        "founder"
+      ]
+    },
+    "cr_gate": {
+      "enum": [
+        "G0",
+        "G1",
+        "G2",
+        "G3",
+        "G4",
+        "G5",
+        "G6",
+        "G7"
+      ]
+    },
+    "check_type": {
+      "enum": [
+        "file_exists",
+        "file_absent",
+        "schema_validates",
+        "metric",
+        "signoff",
+        "row_exists"
+      ]
+    },
+    "op": {
+      "enum": [
+        "==",
+        "!=",
+        ">=",
+        "<=",
+        ">",
+        "<",
+        "in",
+        "not_in",
+        "contains",
+        "exists",
+        "is_true",
+        "is_false",
+        "not_null"
+      ]
+    },
+    "root": {
+      "enum": [
+        "job",
+        "hf_repo",
+        "gh_repo",
+        "programme",
+        "legal_record"
+      ]
+    },
+    "path_or_list": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ]
+    },
+    "check": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "root"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^S([0-9]|1[0-2])\\.[a-z0-9_]+$"
+        },
+        "type": {
+          "$ref": "#/$defs/check_type"
+        },
+        "root": {
+          "$ref": "#/$defs/root"
+        },
+        "path": {
+          "$ref": "#/$defs/path_or_list"
+        },
+        "any_of": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "min_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "schema": {
+          "type": "string"
+        },
+        "scope": {
+          "enum": [
+            "file",
+            "all_rows"
+          ]
+        },
+        "field": {
+          "type": "string"
+        },
+        "op": {
+          "$ref": "#/$defs/op"
+        },
+        "value": {},
+        "value_ref": {
+          "type": "string",
+          "pattern": "^memo:"
+        },
+        "value_field": {
+          "type": "string"
+        },
+        "role": {
+          "$ref": "#/$defs/role"
+        },
+        "require_verdict": {
+          "type": "string"
+        },
+        "match": {
+          "type": "object"
+        },
+        "applies_if": {
+          "$ref": "#/$defs/condition"
+        },
+        "note": {
+          "type": "string"
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "file_absent only: globs (relative to the root) that do not count as matches"
+        },
+        "require_nonempty": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          },
+          "description": "row_exists only: fields that must be non-empty in the matching row"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "file_exists"
+              }
+            }
+          },
+          "then": {
+            "anyOf": [
+              {
+                "required": [
+                  "path"
+                ]
+              },
+              {
+                "required": [
+                  "any_of"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "file_absent"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "path"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "schema_validates"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "schema"
+            ],
+            "anyOf": [
+              {
+                "required": [
+                  "path"
+                ]
+              },
+              {
+                "required": [
+                  "any_of"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "metric"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "path",
+              "field",
+              "op"
+            ],
+            "if": {
+              "properties": {
+                "op": {
+                  "enum": [
+                    "==",
+                    "!=",
+                    ">=",
+                    "<=",
+                    ">",
+                    "<",
+                    "in",
+                    "not_in"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "oneOf": [
+                {
+                  "required": [
+                    "value"
+                  ]
+                },
+                {
+                  "required": [
+                    "value_ref"
+                  ]
+                },
+                {
+                  "required": [
+                    "value_field"
+                  ]
+                }
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "signoff"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "path",
+              "field",
+              "role",
+              "require_verdict"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "row_exists"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "path",
+              "match"
+            ]
+          }
+        }
+      ]
+    },
+    "output": {
+      "type": "object",
+      "required": [
+        "root",
+        "path"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "root": {
+          "$ref": "#/$defs/root"
+        },
+        "path": {
+          "type": "string"
+        }
+      }
+    },
+    "threshold": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "value",
+        "adopted_from"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^T([0-9]|1[0-2])\\.[a-z0-9_]+$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "value": {},
+        "adopted_from": {
+          "type": "string"
+        },
+        "also_reported": {
+          "type": "string"
+        }
+      }
+    },
+    "stage": {
+      "type": "object",
+      "required": [
+        "id",
+        "key",
+        "name",
+        "phase",
+        "purpose",
+        "actions",
+        "tools",
+        "inputs",
+        "outputs",
+        "gate",
+        "thresholds",
+        "owner",
+        "signoff_roles",
+        "cr_gates",
+        "stop_conditions",
+        "blocking"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 12
+        },
+        "key": {
+          "type": "string",
+          "pattern": "^[a-z_]+$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 3
+        },
+        "phase": {
+          "enum": [
+            "plan",
+            "build",
+            "verify",
+            "ship",
+            "maintain"
+          ]
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 10
+        },
+        "actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "inputs": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/output"
+              }
+            ]
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/output"
+          }
+        },
+        "gate": {
+          "type": "object",
+          "required": [
+            "summary",
+            "checks"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "summary": {
+              "type": "string"
+            },
+            "checks": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/check"
+              }
+            }
+          }
+        },
+        "thresholds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/threshold"
+          }
+        },
+        "owner": {
+          "enum": [
+            "agent",
+            "coordinator",
+            "founder"
+          ]
+        },
+        "signoff_roles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/role"
+          }
+        },
+        "cr_gates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/cr_gate"
+          }
+        },
+        "coordinator_check": {
+          "type": "string"
+        },
+        "stop_conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "blocking": {
+          "const": true
+        }
+      },
+      "if": {
+        "properties": {
+          "cr_gates": {
+            "maxItems": 0
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "coordinator_check"
+        ]
+      }
+    },
+    "simple_condition": {
+      "type": "object",
+      "required": [
+        "field",
+        "op"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "type": "string",
+          "pattern": "^memo:"
+        },
+        "op": {
+          "$ref": "#/$defs/op"
+        },
+        "value": {}
+      }
+    },
+    "condition": {
+      "description": "A memo condition. Either one {field, op, value} test or {all_of: [tests]}, which applies only when every test holds. A memo field that is missing makes the check an error, never n/a.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/simple_condition"
+        },
+        {
+          "type": "object",
+          "required": [
+            "all_of"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "all_of": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "$ref": "#/$defs/simple_condition"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

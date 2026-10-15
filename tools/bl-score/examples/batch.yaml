@@ -1,0 +1,13 @@
+# Illustrative example only: a YAML list of memos is scored in one call.
+- candidate_id: EX-006
+  title: "Bayanat Labs example A (illustrative)"
+  scores: {impact: 3, claim_strength: 3, ease: 3, legal_cleanliness: 5, commercial_pull: 3}
+  legal_tier: green
+  effort: M
+  seo_demand: 2
+- candidate_id: EX-007
+  title: "Bayanat Labs example B (illustrative)"
+  scores: {impact: 3, claim_strength: 3, ease: 3, legal_cleanliness: 5, commercial_pull: 3}
+  legal_tier: green
+  effort: M
+  seo_demand: 5

@@ -1,0 +1,11 @@
+# Deliberately invalid: shows bl-score's error messages (exit code 2).
+candidate_id: EX-005
+title: "Bayanat Labs example with mistakes (illustrative)"
+scores:
+  impact: 6
+  claim_strength: 3
+  ease: "high"
+  legal_cleanliness: 5
+legal_tier: amber
+effort: M
+scroes_note: "typo field"

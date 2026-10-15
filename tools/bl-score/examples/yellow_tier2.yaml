@@ -1,0 +1,17 @@
+# Illustrative example only: a yellow candidate is capped at Tier 2 whatever its score.
+candidate_id: EX-002
+title: "Bayanat Labs example speech manifests (illustrative)"
+scores:
+  impact: 4
+  claim_strength: 4
+  ease: 3
+  legal_cleanliness: 3
+  commercial_pull: 5
+legal_tier: yellow
+effort: M
+justifications:
+  impact: "Illustrative."
+  claim_strength: "Illustrative."
+  ease: "Illustrative."
+  legal_cleanliness: "Illustrative: manifests and our own annotations only."
+  commercial_pull: "Illustrative."

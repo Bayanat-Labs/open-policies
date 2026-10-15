@@ -1,0 +1,666 @@
+# Bayanat Labs operating manual: the 13-stage gated pipeline (stage 0 scoping memo + stages 1-12).
+# This file is the single source of truth for stages and gates. PUBLIC.md, PUBLIC.ar.md, gate-crosswalk.md
+# and the dataset template's bl-gates tool read it; nobody edits a stage table anywhere else.
+# Licence: CC BY 4.0 (text). Validate with: python scripts/validate_stages.py manual/stages.yaml
+# Documentation, not legal advice. A scoping memo may tighten any default in this file; loosening one needs
+# written founder approval. A legal position is cited by the decision ID of the recorded decision it rests on.
+# Thresholds reflect Bayanat Labs practice and the public works cited where they are used.
+
+schema_version: 1
+manual_version: "1.0.1"
+status: approved
+date: "2026-10-15"
+approval:
+  by: founder
+  date: "2026-10-15"
+  source: "founder approval, 15 Oct 2026"
+  scope: "Thresholds in this file, the choices C-01 to C-21 recorded in gate-crosswalk.md and the gate changes made after the 14 Oct 2026 test run."
+licence: CC-BY-4.0
+rules_version: "Bayanat Labs practice, October 2026"
+precedence:
+  - "A tighter value in the approved scoping memo"
+  - "Defaults in this file"
+memo_override_rule: "A scoping memo may tighten any threshold in this file. Loosening one needs written founder approval, logged in the memo's deviations block and in CHANGELOG.md."
+skip_rule: "Every gate is blocking. A failed gate blocks the release. A release that skipped a gate is reverted."
+legal_basis_rule: "A stage, gate or stop rule that needs a legal position cites the recorded decision it rests on by its decision_id in the organisation's legal record (configured path). No stage waits for a separate legal sign-off."
+
+# Path roots used by gate checks. A checker receives one path per root (for legal_record, the configured path of the
+# organisation's legal record).
+roots:
+  job: "the job directory of one release version (working layout)"
+  hf_repo: "Hugging Face Bayanat-Labs/<slug> local checkout"
+  gh_repo: "GitHub Bayanat-Labs/<slug> local checkout (the builder repository)"
+  programme: "coordinator workspace holding the release calendar and the metrics digest (coordinator/)"
+  legal_record: "the organisation's legal record (configured path): its table of recorded decisions, one row per decision_id, the only citable source for a legal position"
+
+# Value references: "memo:<dotted.field>" reads the approved scoping-memo record (job/scoping_memo.yaml).
+# A check whose applies_if names a memo field that is not set is an error, never n/a.
+value_ref_prefixes: ["memo:"]
+
+owners: [agent, coordinator, founder]
+signoff_roles: [dataset-agent, coordinator, native-reviewer, founder]
+
+check_types:
+  file_exists: "Every path in `path` (or at least one path in `any_of`) exists under `root`. Globs allowed; `min_count` sets how many matches are needed."
+  file_absent: "No file under `root` matches any glob in `path` (recursive `**` allowed), apart from files matching `exclude`. Run it on a clean checkout, so git-ignored local files do not count."
+  schema_validates: "The file at `path` validates against the JSON Schema at `schema`. For .jsonl every row is validated; `scope: all_rows` makes that explicit."
+  metric: "Read `field` (dotted path) from the JSON or YAML file at `path`; compare with `op` against `value`, `value_ref` (memo field) or `value_field` (another field in the same file)."
+  signoff: "The YAML or JSON file at `path` holds, under `field`, an entry with a non-empty `name`, a `date` (ISO 8601) and `verdict` equal to `require_verdict`, given by someone in `role`."
+  row_exists: "A row in the JSONL or CSV file at `path` matches every key in `match` (values may be memo refs), has a non-empty value in every field of `require_nonempty` and, if `schema` is set, validates against it."
+metric_ops: ["==", "!=", ">=", "<=", ">", "<", "in", "not_in", "contains", "exists", "is_true", "is_false", "not_null"]
+# Report schemas: manual/schemas/reports/ holds one JSON Schema per report file the checks read, generated from the
+# check fields by scripts/gen_report_schemas.py. A report never declares a check n/a: only a
+# memo condition (applies_if) does.
+
+# The eight release gates G0-G7 and the stages that implement them.
+cr_gates:
+  G0: {name: Source, stages: [0, 1]}
+  G1: {name: Acquisition, stages: [2]}
+  G2: {name: Processing, stages: [3, 4]}
+  G3: {name: Privacy, stages: [5]}
+  G4: {name: Quality, stages: [6, 7]}
+  G5: {name: Human, stages: [7]}
+  G6: {name: Legal, stages: [0, 8]}
+  G7: {name: Claims, stages: [8, 9, 10]}
+
+phases:
+  plan: [0, 1]
+  build: [2, 3, 4, 5, 6]
+  verify: [7, 8, 9]
+  ship: [10, 11]
+  maintain: [12]
+
+stages:
+
+  # ---------------------------------------------------------------------------------------------
+  - id: 0
+    key: scoping_memo
+    name: Scoping memo
+    phase: plan
+    purpose: "Decide, on one page plus tables, whether the release is worth building and legally buildable, before anything is fetched."
+    actions:
+      - "Fill manual/SCOPING_MEMO.md and its record scoping_memo.yaml: candidate ID, claim to make, incumbents and sizes with URLs, sources with their licences and terms, release tier, licence plan per config, collection basis for Tier 2, priority, product link, risks, QA sample and agreement threshold, budget, owner, dates, stop conditions."
+      - "Write the rubric block scoping_memo.score.yaml in the exact bl-score format (five 1-5 scores, legal tier, effort, one-line justifications), run the pinned bl-score (manual/bl-score.pin.json: pinned by file hash, not by version) and save its JSON output as scoping_memo.score.json; record the scorer's tree hash as score_tool_sha256. A red legal tier, or a legal_cleanliness score of 1, ends the job; a score of 2-3 caps the release at Tier 2."
+      - "Record for every source its licence route (licence_route, an input-licence ID in policy/licence-matrix.yaml) and the release tier its content may reach (release_tier), and cite any legal position only by the ID of the recorded decision it rests on (decision_ref). Free text is not accepted there."
+      - "Re-check the claim's incumbent and every source licence on the day the memo is written."
+      - "Write job.json (schema: manual/schemas/reports/job.schema.json) with external_actions_authorized false."
+    tools: ["bayanatlabs:bl-score"]
+    inputs:
+      - "the candidate's scoping entry"
+      - "each source's licence and terms"
+      - "the organisation's legal record (configured path): recorded decisions by decision_id, the only citable source for a legal position"
+      - "open-programme policy: rubric, tiers, licence matrix (policy/ in Bayanat-Labs/open-policies)"
+      - "manual/bl-score.pin.json (bl-score tree hash)"
+      - "budget estimate from manual/budget.py"
+    outputs:
+      - {root: job, path: scoping_memo.md}
+      - {root: job, path: scoping_memo.yaml}
+      - {root: job, path: scoping_memo.score.yaml}
+      - {root: job, path: scoping_memo.score.json}
+      - {root: job, path: job.json}
+    gate:
+      summary: "Coordinator approves the memo and assigns the legal tier, which is not red; job.json exists with external actions off."
+      checks:
+        - {id: S0.memo, type: file_exists, root: job, path: [scoping_memo.md, scoping_memo.yaml, scoping_memo.score.yaml, scoping_memo.score.json]}
+        - {id: S0.memo_schema, type: schema_validates, root: job, path: scoping_memo.yaml, schema: manual/schemas/scoping_memo_record.schema.json}
+        - {id: S0.score_schema, type: schema_validates, root: job, path: scoping_memo.score.yaml, schema: manual/scoping_memo.schema.json, note: "Same format as the bl-score memo schema"}
+        - {id: S0.legal_tier, type: metric, root: job, path: scoping_memo.score.yaml, field: legal_tier, op: in, value: [green, yellow]}
+        - {id: S0.rubric_scored, type: metric, root: job, path: scoping_memo.score.json, field: legal_verdict, op: in, value: [tier1_eligible, tier2_only], note: "bl-score output; the more restrictive of legal_tier and the legal_cleanliness score applies (policy/rubric.yaml legal_gate.score_overrides)"}
+        - {id: S0.score_tool_pinned, type: metric, root: job, path: scoping_memo.yaml, field: score_tool_sha256, op: in, value: ["daf73c4e0139cb2d7e489dce2db293e5ea50880df1ceb2effc9e794161da27bc"], note: "bl-score is pinned by tree hash (manual/bl-score.pin.json, scripts/pin_bl_score.py), not by version: the scoring changed under an unchanged 0.1.0. A new scorer needs a stages.yaml change."}
+        - {id: S0.same_candidate, type: metric, root: job, path: scoping_memo.score.json, field: candidate_id, op: "==", value_ref: "memo:candidate_id"}
+        - {id: S0.coordinator_approval, type: signoff, root: job, path: scoping_memo.yaml, field: decision.coordinator, role: coordinator, require_verdict: approve}
+        - {id: S0.legal_tier_assigned, type: metric, root: job, path: scoping_memo.yaml, field: decision.legal_tier_assigned, op: is_true, note: "The coordinator assigns the legal tier; legal_tier in the score block is the agent's proposal."}
+        - {id: S0.job_spec, type: schema_validates, root: job, path: job.json, schema: manual/schemas/reports/job.schema.json, note: "Generated from the check fields that read job.json"}
+        - {id: S0.no_external_actions, type: metric, root: job, path: job.json, field: external_actions_authorized, op: is_false, note: "Must be false at stage 0. Only the founder can later write a scope into job.json."}
+    thresholds:
+      - {id: T0.legal, name: "Legal tier allowed to proceed", value: "green or yellow; red is not built", adopted_from: "policy/rubric.yaml legal gate"}
+      - {id: T0.tighten_only, name: "Memo overrides", value: "tighten only; loosening needs written founder approval", adopted_from: "Bayanat Labs practice"}
+    owner: coordinator
+    signoff_roles: [coordinator]
+    cr_gates: [G0, G6]
+    stop_conditions:
+      - "Legal tier red, or bl-score legal_verdict excluded: drop the candidate, record why, and move to an independently cleared source."
+      - "A source's terms have not been read: read and file them before the memo can be approved."
+      - "The claim needs a 'first' or 'only' and no saved search exists: write 'no comparative claim' until the search is done."
+      - "Coordinator rejects or asks for revision: no fetching of any payload."
+    blocking: true
+
+  # ---------------------------------------------------------------------------------------------
+  - id: 1
+    key: discovery
+    name: Discovery
+    phase: plan
+    purpose: "List every candidate item and record its rights signals before acquiring any payload."
+    actions:
+      - "Enumerate dumps, APIs, sitemaps, RSS feeds and channel upload playlists."
+      - "Record per item: robots.txt (hashed), TDMRep, Content-Signal, and for video hosts the licence status and any training opt-in setting the host exposes."
+      - "Start sources.jsonl (one row per source) and the per-item provenance ledger."
+      - "Check every item's licence and its own terms. Treat a GPTBot, CCBot or Google-Extended block as a statement of intent: such hosts are IDs-only."
+      - "Store a host's training opt-in setting as a filter column. It is off by default, so it is never treated as an opt-out."
+      - "Screen Creative Commons uploaders for licence laundering: a provenance review per uploader, fingerprint matches against known rights-holder material, exclusion of uploaders who re-post mixed-licence material."
+      - "Standard-licence items are released as Tier 2 (API metadata and IDs). Automatic captions are never used as transcripts."
+      - "Probe 10-100 representative records, or the smallest permitted file, before any bulk run."
+    tools: ["bayanatlabs:discover"]
+    inputs:
+      - {root: job, path: scoping_memo.yaml}
+      - {root: job, path: job.json}
+      - {root: legal_record, path: "."}
+    outputs:
+      - {root: job, path: sources.jsonl}
+      - {root: job, path: "PROVENANCE.parquet or PROVENANCE.jsonl (under 100k rows)"}
+      - {root: job, path: qa/reports/discovery.json}
+    gate:
+      summary: "Provenance ledger started; every item's licence and terms checked; training opt-in settings stored as a filter column; Creative Commons uploaders screened for licence laundering; every source has a tos_basis."
+      checks:
+        - {id: S1.sources, type: file_exists, root: job, path: sources.jsonl}
+        - {id: S1.sources_schema, type: schema_validates, root: job, path: sources.jsonl, schema: "templates/provenance_ledger_schema.json#/$defs/source_record", scope: all_rows}
+        - {id: S1.ledger_started, type: file_exists, root: job, any_of: [PROVENANCE.parquet, PROVENANCE.jsonl]}
+        - {id: S1.report, type: file_exists, root: job, path: qa/reports/discovery.json}
+        - {id: S1.red_excluded, type: metric, root: job, path: qa/reports/discovery.json, field: red_items_included, op: "==", value: 0}
+        - {id: S1.tos_basis, type: metric, root: job, path: qa/reports/discovery.json, field: sources_without_tos_basis, op: "==", value: 0}
+        - {id: S1.terms_read, type: metric, root: job, path: qa/reports/discovery.json, field: sources_terms_not_reviewed, op: "==", value: 0}
+        - {id: S1.rights_signals, type: metric, root: job, path: qa/reports/discovery.json, field: items_missing_rights_signals, op: "==", value: 0, applies_if: {field: "memo:third_party_sources", op: is_true}, note: "robots, TDMRep and Content-Signal recorded per item; n/a only when every source is Bayanat Labs' own content"}
+        - {id: S1.trainability_column, type: metric, root: job, path: qa/reports/discovery.json, field: video_host.trainability_stored_as_filter_column, op: is_true, applies_if: {field: "memo:uses_video_host", op: is_true}}
+        - {id: S1.laundering_screen, type: metric, root: job, path: qa/reports/discovery.json, field: video_host.cc_uploaders_unscreened, op: "==", value: 0, applies_if: {field: "memo:uses_video_host", op: is_true}}
+        - {id: S1.no_auto_captions, type: metric, root: job, path: qa/reports/discovery.json, field: video_host.auto_captions_used, op: "==", value: 0, applies_if: {field: "memo:uses_video_host", op: is_true}}
+        - {id: S1.probe, type: metric, root: job, path: qa/reports/discovery.json, field: probe_records, op: ">=", value: 10, applies_if: {field: "memo:third_party_sources", op: is_true}}
+    thresholds:
+      - {id: T1.probe, name: "Probe before bulk", value: "10-100 records or the smallest permitted file", adopted_from: "Bayanat Labs practice"}
+      - {id: T1.cohorts, name: "New source cohorts in parallel", value: "at most 3", adopted_from: "Bayanat Labs practice"}
+      - {id: T1.red, name: "Items in scope whose licence or terms do not allow the release", value: 0, adopted_from: "Bayanat Labs practice"}
+    owner: agent
+    signoff_roles: [dataset-agent]
+    cr_gates: [G0]
+    stop_conditions:
+      - "robots.txt, TDMRep (tdm-reservation: 1) or Content-Signal (ai-train=no) reserves the content: the host is IDs-only."
+      - "Terms unread for a source: read and file them before touching it."
+      - "Licence laundering suspected on an uploader: exclude the uploader."
+      - "Real personal data appears that the memo did not plan for: stop and ask the coordinator."
+    blocking: true
+
+  # ---------------------------------------------------------------------------------------------
+  - id: 2
+    key: acquisition
+    name: Acquisition
+    phase: build
+    purpose: "Fetch only what the memo allows, politely, resumably and with a checksum per object."
+    actions:
+      - "Fetch with the User-Agent BayanatLabs-OpenData/1.0 (+https://bayanatlabs.com/open; hello@bayanatlabs.com); never spoof a browser UA."
+      - "At most 1 request per 3 s per host (1 per 5 s for government portals, small sites and slowing hosts); concurrency 1 per host; honour a longer Crawl-delay."
+      - "Resumable downloads; SHA-256 per object; fetch timestamp and HTTP status per object; raw payloads in the content-addressed staging store."
+      - "Hosts that block requests from outside Saudi Arabia only from the Bayanat Labs in-Kingdom host; never through proxies, VPNs or mirrors."
+      - "Creative Commons video, only where the memo sets video_media_download and check S2.media_download_decision passes: yt-dlp with --download-archive, sleep and rate limits, one stable IP per worker; no proxy rotation, no CAPTCHA, WAF or bot-detection bypass, never personal cookies; residual terms-of-service risk recorded in the memo."
+      - "Every Tier 2 item is covered by the collection basis named in the memo (academic partner under EU DSM Art. 3/4, written permission, or a recorded decision that permits it); scale stays capped until one exists."
+      - "Tier 3: the partner's written permission is on file before collection, and its reference goes in permission_doc_id on every row (policy/tiers.yaml Tier 3)."
+    tools: ["bayanatlabs:fetch", yt-dlp, huggingface_hub]
+    inputs:
+      - {root: job, path: sources.jsonl}
+      - {root: job, path: job.json}
+      - {root: legal_record, path: "."}
+    outputs:
+      - {root: job, path: intake/manifest.parquet}
+      - {root: job, path: "intake/objects/<sha256>"}
+      - {root: job, path: qa/reports/acquisition.json}
+    gate:
+      summary: "Raw store complete with a checksum and fetch timestamp per item; etiquette followed; access denials logged, never bypassed; every Tier 2 item covered by the named collection basis."
+      checks:
+        - {id: S2.manifest, type: file_exists, root: job, path: intake/manifest.parquet}
+        - {id: S2.report, type: file_exists, root: job, path: qa/reports/acquisition.json}
+        - {id: S2.checksums, type: metric, root: job, path: qa/reports/acquisition.json, field: items_with_sha256, op: "==", value_field: items_total}
+        - {id: S2.timestamps, type: metric, root: job, path: qa/reports/acquisition.json, field: items_with_retrieved_at, op: "==", value_field: items_total}
+        - {id: S2.user_agent, type: metric, root: job, path: qa/reports/acquisition.json, field: user_agent, op: "==", value: "BayanatLabs-OpenData/1.0 (+https://bayanatlabs.com/open; hello@bayanatlabs.com)", applies_if: {field: "memo:third_party_sources", op: is_true}}
+        - {id: S2.rate, type: metric, root: job, path: qa/reports/acquisition.json, field: min_seconds_between_requests_per_host, op: ">=", value: 3, applies_if: {field: "memo:third_party_sources", op: is_true}}
+        - {id: S2.rate_gov, type: metric, root: job, path: qa/reports/acquisition.json, field: min_seconds_between_requests_government_or_small_hosts, op: ">=", value: 5, applies_if: {field: "memo:third_party_sources", op: is_true}}
+        - {id: S2.pinned_upstream, type: metric, root: job, path: qa/reports/acquisition.json, field: upstream_commit, op: not_null, applies_if: {field: "memo:third_party_sources", op: is_false}, note: "First-party content is taken from a pinned commit or release of Bayanat Labs' own repository"}
+        - {id: S2.concurrency, type: metric, root: job, path: qa/reports/acquisition.json, field: max_concurrency_per_host, op: "<=", value: 1}
+        - {id: S2.denials_not_bypassed, type: metric, root: job, path: qa/reports/acquisition.json, field: access_denials_bypassed, op: "==", value: 0}
+        - {id: S2.no_rotation, type: metric, root: job, path: qa/reports/acquisition.json, field: proxy_or_ip_rotation_used, op: is_false}
+        - {id: S2.tier2_basis, type: metric, root: job, path: qa/reports/acquisition.json, field: tier2_items_without_collection_basis, op: "==", value: 0}
+        - {id: S2.media_download_decision, type: row_exists, root: legal_record, path: ".", match: {decision_id: "memo:media_download_decision_ref"}, require_nonempty: [answer, effective_date, source], applies_if: {field: "memo:video_media_download", op: is_true}, note: "Applies when the memo sets video_media_download. The memo names the recorded decision in media_download_decision_ref; its row in the legal record must have its answer, effective date and source filled, and the coordinator confirms that the recorded answer permits the download"}
+    thresholds:
+      - {id: T2.rate, name: "Requests per host", value: "at most 1 per 3 s; 1 per 5 s for government, small or slowing hosts; concurrency 1", adopted_from: "Bayanat Labs practice (slower than the 1 request per second also considered)"}
+      - {id: T2.429, name: "429 handling", value: "honour Retry-After, back off exponentially; after 3 consecutive 429s pause the host 24 h; never retry from another IP", adopted_from: "Bayanat Labs practice"}
+      - {id: T2.denials, name: "401/403/login/CAPTCHA/WAF", value: "stop and log; source moves to permission_required", adopted_from: "Bayanat Labs practice"}
+      - {id: T2.first_party, name: "First-party content", value: "web-etiquette checks n/a only when every source is Bayanat Labs' own content (memo third_party_sources false); the upstream commit is pinned instead", adopted_from: "approved by the founder for v1.0, 15 Oct 2026"}
+    owner: agent
+    signoff_roles: [dataset-agent, coordinator]
+    cr_gates: [G1]
+    stop_conditions:
+      - "HTTP 429: stop requesting from that host, honour Retry-After; after 3 consecutive 429s pause 24 h and log it."
+      - "401, 403, login wall, CAPTCHA or WAF challenge: stop, log the denial; never retry with another IP, account, cookie or mirror."
+      - "Geo-blocked portal: use only the in-Kingdom host; if that is blocked too, stop and draft an official access request for the founder."
+      - "Creative Commons video before the recorded decision that check S2.media_download_decision reads permits the download: the work stays at Tier 2 (IDs only) until it does."
+      - "Tier 2 item without a named collection basis: do not scale beyond the pilot."
+      - "Tier 3 source without the partner's written permission on file: do not collect."
+      - "The approved compute or download budget is reached: stop and report the partial result."
+    blocking: true
+
+  # ---------------------------------------------------------------------------------------------
+  - id: 3
+    key: normalisation
+    name: Normalisation
+    phase: build
+    purpose: "Produce consistent, schema-valid records without destroying the original; for speech, segment and transcribe."
+    actions:
+      - "Text: keep text_raw byte-exact, text_diac in NFC with diacritics, and derive text_norm with the Bayanat Labs normalisation recipe (presentation forms mapped, zero-width and bidi controls stripped except a meaningful ZWNJ, tatweel removed, alef variants to bare alef, alef maqsura to yaa, Arabic-Indic and Persian digits to ASCII, diacritics stripped with diacritization_ratio recorded); taa marbuta is kept and flagged in text_norm and folded only in text_search."
+      - "Record normalisation_version (the Bayanat-Norm id from arabic-normalize once released) and the code commit."
+      - "Language ID with GlotLID or fastText at the right unit (document, paragraph or segment); keep code-switch spans and cs_ratio."
+      - "Audio: FLAC mono, 16 kHz for every non-consented release; higher-rate originals stay internal; loudness -20 dBFS in the release copy with parameters recorded."
+      - "Speech segmentation and transcription (done here because stage 4 needs transcript MinHash and stage 5 drops clips with PII): Silero VAD into 2-20 s chunks; set music_flag (UVR-MDX-Net or Demucs only on music-flagged segments, for internal ASR only; music-flagged segments are excluded from audio releases); manual captions go to CTC forced alignment (ctc-forced-aligner with a commercially usable Arabic wav2vec2 model, never its default MMS model, which is non-commercial); without manual captions, dual ASR with Whisper large-v3 (faster-whisper) plus an Arabic second system whose licence allows release use in tooling.lock.yaml (NVIDIA FastConformer Arabic pc, or Nemotron 3.5 ASR fine-tuned on our own pseudo-labels; the pcd variant was trained partly on recitation audio whose licence is unclear), keeping a segment only if cer_between_systems <= 15% and labelling it silver. Never auto-captions."
+      - "Validate 100% of records against the text or speech release schema."
+    tools: ["bayanatlabs:arabic-normalize", camel-tools, fasttext, glotlid, ffmpeg, silero-vad, demucs, audio-separator, uvr-mdx-net-models, faster-whisper, faster-whisper-large-v3, whisper-large-v3, nemo_toolkit, nvidia-ar-fastconformer-pc, nemotron-3.5-asr, ctc-forced-aligner, wav2vec2-xlsr-53-arabic]
+    inputs:
+      - {root: job, path: intake/manifest.parquet}
+    outputs:
+      - {root: job, path: transforms/recipes/}
+      - {root: job, path: validation/schema_report.json}
+    gate:
+      summary: "Schema validation passes on 100% of records; the normalisation version is recorded; raw and normalised fields sit side by side; speech transcripts come from manual captions or dual-ASR agreement (CER <= 15%), never auto-captions."
+      checks:
+        - {id: S3.report, type: file_exists, root: job, path: validation/schema_report.json}
+        - {id: S3.all_valid, type: metric, root: job, path: validation/schema_report.json, field: records_valid, op: "==", value_field: records_total}
+        - {id: S3.norm_version, type: metric, root: job, path: validation/schema_report.json, field: normalisation_version, op: not_null}
+        - {id: S3.raw_kept, type: metric, root: job, path: validation/schema_report.json, field: records_missing_raw_field, op: "==", value: 0}
+        - {id: S3.sample_rate, type: metric, root: job, path: validation/schema_report.json, field: audio.max_release_sample_rate_hz, op: "<=", value: 16000, applies_if: {all_of: [{field: "memo:modalities", op: contains, value: speech}, {field: "memo:consented_audio", op: is_false}]}, note: "Applies to releases with speech only"}
+        - {id: S3.no_auto_captions, type: metric, root: job, path: validation/schema_report.json, field: audio.segments_from_auto_captions, op: "==", value: 0, applies_if: {field: "memo:profile", op: in, value: [P-SPEECH]}}
+        - {id: S3.dual_asr, type: metric, root: job, path: validation/schema_report.json, field: audio.max_cer_between_systems_kept, op: "<=", value: 0.15, applies_if: {field: "memo:profile", op: in, value: [P-SPEECH]}}
+        - {id: S3.music_excluded, type: metric, root: job, path: validation/schema_report.json, field: audio.music_flagged_segments_in_release, op: "==", value: 0, applies_if: {field: "memo:profile", op: in, value: [P-SPEECH]}}
+    thresholds:
+      - {id: T3.schema, name: "Schema validation", value: "100% of records", adopted_from: "Bayanat Labs practice"}
+      - {id: T3.recipe, name: "text_norm recipe", value: "the Bayanat Labs normalisation recipe (NFKC-based, taa marbuta kept and flagged). The alternative 'Bayanat-Norm v1 = NFC plus presentation-form mapping' is recorded as choice C-03 and needs founder approval before it replaces this recipe.", adopted_from: "Bayanat Labs practice"}
+      - {id: T3.audio, name: "Release audio", value: "FLAC mono 16 kHz (48 kHz only for consented or public-domain sets); -20 dBFS", adopted_from: "Bayanat Labs practice"}
+      - {id: T3.dual_asr, name: "Dual-ASR agreement", value: "keep a segment only if cer_between_systems <= 15%; label it silver", adopted_from: "Bayanat Labs practice"}
+      - {id: T3.vad, name: "VAD chunks", value: "2-20 s", adopted_from: "Bayanat Labs practice"}
+    owner: agent
+    signoff_roles: [dataset-agent]
+    cr_gates: [G2]
+    stop_conditions:
+      - "A task needs a distinction that text_norm folds (OCR, vocalisation, phonology): use text_raw or text_diac and say so in the memo; never fold silently."
+      - "Records fail validation: fix the transform and re-run; never drop failing records silently (count them by reason)."
+    blocking: true
+
+  # ---------------------------------------------------------------------------------------------
+  - id: 4
+    key: deduplication
+    name: Deduplication
+    phase: build
+    purpose: "Remove duplicates and make sure no benchmark test item leaks into a training release."
+    actions:
+      - "Text: exact SHA-256, then normalised text, then MinHash-LSH on text_norm (5-gram, Jaccard 0.8), then shared source, template, author or workflow group; keep dedup_group."
+      - "Audio: Chromaprint fingerprints plus transcript MinHash."
+      - "Cross-check against OpenITI, FineWeb-2 ar, YODAS, SADA, MASC and every public test set in scope, including Bayanat Labs' own published evaluation sets and fixtures."
+      - "Report the duplicate rate and the language-ID statistics from stage 3, and compare them with the memo's ranges (ranges.duplicate_rate_max, ranges.langid_min_share over ranges.expected_languages)."
+    tools: [datasketch, datatrove, chromaprint, pyacoustid]
+    inputs:
+      - {root: job, path: validation/schema_report.json}
+    outputs:
+      - {root: job, path: qa/reports/dedup.json}
+    gate:
+      summary: "Duplicate rate and language-ID statistics reported and inside the memo's ranges; zero overlap between any benchmark test set and any training release."
+      checks:
+        - {id: S4.report, type: file_exists, root: job, path: qa/reports/dedup.json}
+        - {id: S4.dup_rate, type: metric, root: job, path: qa/reports/dedup.json, field: duplicate_rate, op: "<=", value_ref: "memo:ranges.duplicate_rate_max", note: "Compared with the memo's ranges"}
+        - {id: S4.langid, type: metric, root: job, path: qa/reports/dedup.json, field: langid.expected_language_share, op: ">=", value_ref: "memo:ranges.langid_min_share", note: "Share of units whose language ID is in memo ranges.expected_languages"}
+        - {id: S4.test_overlap, type: metric, root: job, path: qa/reports/dedup.json, field: test_set_overlap_items, op: "==", value: 0}
+        - {id: S4.cross_dedup, type: metric, root: job, path: qa/reports/dedup.json, field: cross_dedup_targets_missing, op: "==", value: 0, note: "bl-gates computes this from job.json cross_dedup_against; a report may not declare it itself"}
+    thresholds:
+      - {id: T4.minhash, name: "Near-duplicate threshold", value: "MinHash-LSH, 5-gram, Jaccard >= 0.8 on text_norm", adopted_from: "Bayanat Labs practice"}
+      - {id: T4.overlap, name: "Benchmark test-set overlap with training releases", value: 0, adopted_from: "Bayanat Labs practice (gate G2)"}
+      - {id: T4.ranges, name: "Duplicate rate and language-ID share", value: "inside the memo's ranges (ranges.duplicate_rate_max, ranges.langid_min_share)", adopted_from: "gate G2 ('statistics in range')"}
+    owner: agent
+    signoff_roles: [dataset-agent]
+    cr_gates: [G2]
+    stop_conditions:
+      - "Any test-set overlap: remove the items from the training release, or rotate the test set; never ship with overlap."
+      - "Version conflict is itself the task: keep conflicting versions with their dedup_group instead of deleting them."
+    blocking: true
+
+  # ---------------------------------------------------------------------------------------------
+  - id: 5
+    key: safety_pii
+    name: Safety and PII
+    phase: build
+    purpose: "Remove personal data and unsafe content before anything leaves the Kingdom-side staging store."
+    actions:
+      - "Regex pack for Saudi and GCC IDs, Iqama, Emirates ID, IBANs, phones in both digit scripts, plates, emails and URLs with personal paths; Arabic NER for person names in user-generated content; Presidio with the Bayanat Labs Arabic recogniser pack."
+      - "Text: replace PII with typed placeholders. Audio: drop clips with PII; never bleep."
+      - "Images and video: CSAM hash checks through link-and-hash methods that never touch suspect items; NSFW classifier; blur faces and plates; strip EXIF and GPS."
+      - "Toxicity and NSFW flags: a human reviews 100% of flagged items. Once a toxicity classifier is pinned in tooling.lock.yaml, safety.json records its key and S5.flags_reviewed is read with it; until then a pass with no classifier is vacuous and is reported as such."
+      - "Drop any clip or image in which a child is identifiable, and log the count only. No child-speech, face or biometric set is built; the only exception is consented sign-language video."
+      - "Run re-identification tests R1-R7."
+      - "Run the 3,000-record stratified PII audit. It must pass before any upload to a host outside KSA/UAE (Hugging Face, GitHub, Zenodo), private repos included."
+    tools: [presidio-analyzer, presidio-anonymizer, "bayanatlabs:arabic-recogniser-pack"]
+    inputs:
+      - {root: job, path: qa/reports/dedup.json}
+    outputs:
+      - {root: job, path: qa/reports/pii_audit.json}
+      - {root: job, path: qa/reports/reid.json}
+      - {root: job, path: qa/reports/safety.json}
+    gate:
+      summary: "Zero PII hits in a 3,000-record stratified audit (a residual rate under 0.1% on the first 1,000 is also reported); R1-R7 pass; no sensitive-category labels; faces and plates blurred; no minors; audit passed before any upload outside KSA/UAE."
+      checks:
+        - {id: S5.audit_file, type: file_exists, root: job, path: [qa/reports/pii_audit.json, qa/reports/reid.json, qa/reports/safety.json]}
+        - {id: S5.audit_n, type: metric, root: job, path: qa/reports/pii_audit.json, field: n, op: ">=", value: 3000}
+        - {id: S5.audit_stratified, type: metric, root: job, path: qa/reports/pii_audit.json, field: stratified, op: is_true}
+        - {id: S5.audit_hits, type: metric, root: job, path: qa/reports/pii_audit.json, field: hits, op: "==", value: 0}
+        - {id: S5.cr_rate_reported, type: metric, root: job, path: qa/reports/pii_audit.json, field: cr_first_1000.residual_rate, op: "<", value: 0.001, note: "A second audit figure, reported alongside the 3,000-record audit"}
+        - {id: S5.before_upload, type: metric, root: job, path: qa/reports/pii_audit.json, field: passed_before_any_upload, op: is_true}
+        - {id: S5.reid, type: metric, root: job, path: qa/reports/reid.json, field: failed_tests, op: "==", value: 0, note: "R1-R7; tests that do not apply are listed as n/a with a reason"}
+        - {id: S5.reid_complete, type: metric, root: job, path: qa/reports/reid.json, field: tests_not_completed_count, op: "==", value: 0, note: "A test that was started but not finished (for example R1 without Arabic NER) is not a pass"}
+        - {id: S5.sensitive_labels, type: metric, root: job, path: qa/reports/reid.json, field: sensitive_category_fields, op: "==", value: 0}
+        - {id: S5.minors, type: metric, root: job, path: qa/reports/safety.json, field: identifiable_minor_items_remaining, op: "==", value: 0}
+        - {id: S5.flags_reviewed, type: metric, root: job, path: qa/reports/safety.json, field: flagged_items_without_human_decision, op: "==", value: 0}
+        - {id: S5.faces_plates, type: metric, root: job, path: qa/reports/safety.json, field: images.unblurred_faces_or_plates, op: "==", value: 0, applies_if: {field: "memo:has_images", op: is_true}}
+        - {id: S5.csam, type: metric, root: job, path: qa/reports/safety.json, field: images.csam_hash_check_done, op: is_true, applies_if: {field: "memo:has_images", op: is_true}}
+        - {id: S5.exif, type: metric, root: job, path: qa/reports/safety.json, field: images.exif_or_gps_remaining, op: "==", value: 0, applies_if: {field: "memo:has_images", op: is_true}}
+    thresholds:
+      - {id: T5.pii, name: "PII audit", value: "0 hits in >= 3,000 stratified records (95% upper bound about 0.1%)", adopted_from: "Bayanat Labs practice", also_reported: "residual PII < 0.1% on a 1,000-item audit"}
+      - {id: T5.k, name: "Quasi-identifier groups (R2)", value: "every group >= 5 records, else coarsen or drop", adopted_from: "Bayanat Labs practice"}
+      - {id: T5.voice, name: "Voice linkage (R4)", value: "0 names in a 500-segment sample", adopted_from: "Bayanat Labs practice"}
+      - {id: T5.images, name: "Image check (R6)", value: "100% of a 300-item check passes", adopted_from: "Bayanat Labs practice"}
+      - {id: T5.flags, name: "Toxicity, NSFW and PII flags", value: "100% human-reviewed", adopted_from: "Bayanat Labs practice"}
+    owner: agent
+    signoff_roles: [dataset-agent, coordinator]
+    cr_gates: [G3]
+    stop_conditions:
+      - "Any PII hit in the audit: fix the cause, redact or drop, and re-audit on a fresh stratified sample. No upload outside KSA/UAE until it passes."
+      - "CSAM hash match: do not open, view or redistribute; quarantine the reference; notify the founder at once."
+      - "Probable child voice or image: drop before release and log the count, never the content."
+      - "Residual PII found after release: stop serving the affected files within 24 h and move the release to index-only until fixed. An index entry that itself carries personal data is removed, not kept (policy index-only rule IO-4)."
+    blocking: true
+
+  # ---------------------------------------------------------------------------------------------
+  - id: 6
+    key: enrichment
+    name: Enrichment
+    phase: build
+    purpose: "Add labels and quality signals, each marked with where it came from."
+    actions:
+      - "Dialect or country top-3 with probabilities (text dialect ID, ADI-20 speech models, channel geography), each with its label origin. Only models cleared for the release path in tooling.lock.yaml may produce released labels; the others give internal pre-labels for human review."
+      - "pyannote speaker pseudo-IDs, salted per release."
+      - "gender_est and city_hint, labelled as estimates; never presented as fact."
+      - "DNSMOS P.835, SNR and bandwidth; the TorchAudio-SQUIM objective model (squim-objective, CC BY 4.0) as a second proxy, never the subjective model (squim-subjective, non-commercial); topics; code-switch ratio; length statistics."
+      - "LLM suggestions (Qwen3 or ALLaM via vLLM) for punctuation and labels only with a 5% CER change guard; record annotation_origin."
+    tools: [pyannote.audio, pyannote-community-1, adi20-whisper, sentence-aldi, camelbert-did-nadi, camelbert-did-madar26, camel-tools, dnsmos, onnxruntime, torchaudio, squim-objective, vllm, qwen3-8b, allam-7b-instruct]
+    inputs:
+      - {root: job, path: qa/reports/pii_audit.json}
+    outputs:
+      - {root: job, path: annotations/}
+      - {root: job, path: qa/reports/labels.json}
+    gate:
+      summary: "Label distribution report exists; a manual spot-check of at least 1% per dialect by speakers of that dialect is done; every label carries annotation_origin."
+      checks:
+        - {id: S6.report, type: file_exists, root: job, path: qa/reports/labels.json}
+        - {id: S6.distribution, type: metric, root: job, path: qa/reports/labels.json, field: label_distribution, op: exists}
+        - {id: S6.spotcheck, type: metric, root: job, path: qa/reports/labels.json, field: min_spotcheck_fraction_per_dialect, op: ">=", value: 0.01}
+        - {id: S6.native_dialect, type: metric, root: job, path: qa/reports/labels.json, field: spotchecks_by_non_dialect_speakers, op: "==", value: 0}
+        - {id: S6.origin, type: metric, root: job, path: qa/reports/labels.json, field: labels_missing_annotation_origin, op: "==", value: 0}
+        - {id: S6.estimates, type: metric, root: job, path: qa/reports/labels.json, field: estimates_presented_as_fact, op: "==", value: 0}
+        - {id: S6.llm_guard, type: metric, root: job, path: qa/reports/labels.json, field: llm_edits_over_cer_guard, op: "==", value: 0, applies_if: {field: "memo:uses_llm_suggestions", op: is_true}}
+    thresholds:
+      - {id: T6.spotcheck, name: "Dialect spot-check", value: ">= 1% per dialect label, by speakers of that dialect", adopted_from: "Bayanat Labs practice; gate G5 (speakers of that dialect)"}
+      - {id: T6.llm, name: "LLM change guard", value: "reject any change that moves CER by more than 5%", adopted_from: "Bayanat Labs practice"}
+      - {id: T6.dnsmos, name: "Speech quality floor", value: "dnsmos_ovrl >= 3.0 unless the memo sets a stricter value", adopted_from: "Bayanat Labs practice"}
+    owner: agent
+    signoff_roles: [dataset-agent, native-reviewer]
+    cr_gates: [G4]
+    stop_conditions:
+      - "Systematic dialect errors in the spot-check: fix and re-audit the stratum before stage 7."
+      - "A label encodes a sensitive category about a person: remove the field (back to stage 5)."
+    blocking: true
+
+  # ---------------------------------------------------------------------------------------------
+  - id: 7
+    key: human_qa
+    name: Human QA
+    phase: verify
+    purpose: "Measure quality with paid native reviewers on a stratified sample fixed in the memo, and record a named sign-off."
+    actions:
+      - "Guideline calibration on 50 records before scaling; rater instructions in Arabic."
+      - "Text or label QA: 1,000 records per subset, stratified, never below 200 per stratum family. Speech: the larger of 2% of segments (memo picks 2-5%) and 2 h per subset."
+      - "Transcripts: CER against gold. Labels: agreement. PII: re-check."
+      - "Three raters adjudicate disagreements; store adjudicated labels."
+      - "Report counts and error rates per stratum with 95% intervals; zero errors in n bounds the error at about 3/n, not zero."
+      - "A named native reviewer signs off; dialect labels are checked by speakers of that dialect. Automated review may screen internal pilots only."
+    tools: ["bayanatlabs:qa-sampler"]
+    inputs:
+      - {root: job, path: qa/reports/labels.json}
+      - {root: job, path: scoping_memo.yaml}
+    outputs:
+      - {root: job, path: qa/reports/qa_report.json}
+      - {root: job, path: qa/reports/QA_REPORT.md}
+      - {root: job, path: qa/signoff.yaml}
+    gate:
+      summary: "Agreement meets the memo threshold (floor kappa 0.6, 0.7 for eval sets); sample sizes meet the T7 minimums; a named native reviewer signs; the QA report goes into the card."
+      checks:
+        - {id: S7.report, type: file_exists, root: job, path: [qa/reports/qa_report.json, qa/reports/QA_REPORT.md]}
+        - {id: S7.kappa_floor, type: metric, root: job, path: qa/reports/qa_report.json, field: kappa, op: ">=", value: 0.6}
+        - {id: S7.kappa_eval, type: metric, root: job, path: qa/reports/qa_report.json, field: kappa, op: ">=", value: 0.7, applies_if: {field: "memo:qa.is_eval_set", op: is_true}}
+        - {id: S7.kappa_memo, type: metric, root: job, path: qa/reports/qa_report.json, field: kappa, op: ">=", value_ref: "memo:qa.agreement_threshold"}
+        - {id: S7.sample, type: metric, root: job, path: qa/reports/qa_report.json, field: sample_size, op: ">=", value_ref: "memo:qa.sample_size"}
+        - {id: S7.calibration, type: metric, root: job, path: qa/reports/qa_report.json, field: calibration_batch, op: ">=", value: 50}
+        - {id: S7.intervals, type: metric, root: job, path: qa/reports/qa_report.json, field: per_stratum_intervals_reported, op: is_true}
+        - {id: S7.native_signoff, type: signoff, root: job, path: qa/signoff.yaml, field: native_reviewer, role: native-reviewer, require_verdict: approve}
+        - {id: S7.dialect_signoff, type: metric, root: job, path: qa/signoff.yaml, field: dialects_without_native_checker, op: "==", value: 0}
+    thresholds:
+      - {id: T7.kappa, name: "Agreement floor", value: "kappa >= 0.6 (>= 0.7 for eval sets), or the stricter memo threshold", adopted_from: "gate G4; Bayanat Labs practice"}
+      - {id: T7.text_sample, name: "Text or label sample", value: "1,000 records per subset; >= 200 per stratum family", adopted_from: "Bayanat Labs practice"}
+      - {id: T7.speech_sample, name: "Speech sample", value: "max(2% of segments, 2 h) per subset; capping below needs founder approval", adopted_from: "Bayanat Labs practice (larger than the '1,000 records or 2 hours' also considered)"}
+      - {id: T7.calibration, name: "Guideline calibration", value: "50 records before scaling", adopted_from: "Bayanat Labs practice"}
+      - {id: T7.synthetic, name: "Synthetic data verified by natives", value: ">= 5% (>= 10% for eval sets)", adopted_from: "Bayanat Labs practice"}
+      - {id: T7.ocr, name: "Documents and OCR", value: "300 pages checked by a human plus baseline-OCR CER", adopted_from: "Bayanat Labs practice"}
+      - {id: T7.tiebreak, name: "Commercial ASR tie-breaker sample", value: "5% sample, only from vendors whose terms allow it", adopted_from: "Bayanat Labs practice"}
+    owner: agent
+    signoff_roles: [native-reviewer, coordinator]
+    cr_gates: [G4, G5]
+    stop_conditions:
+      - "Agreement below threshold: fix the guideline, relabel the pilot and re-measure; never lower the threshold."
+      - "No named native reviewer available: status blocked_founder (reviewer pay is a founder action)."
+      - "Sample would have to be capped below the T7 minimums: needs written founder approval, recorded as a deviation."
+    blocking: true
+
+  # ---------------------------------------------------------------------------------------------
+  - id: 8
+    key: packaging
+    name: Packaging
+    phase: verify
+    purpose: "Build a release candidate that loads, renders, carries its licences and passes the card linter."
+    actions:
+      - "Parquet shards <= 500 MB (speech: Parquet with the HF Audio feature up to 1 TB; WebDataset above that or when the memo chooses it); one config per licence."
+      - "MANIFEST.json, SHA256SUMS, LICENSE, LICENSES/ with LICENSE-sources.md, PROVENANCE.parquet (JSONL under 100k rows), CLAIMS.md, CHANGELOG.md, CITATION.cff."
+      - "Bilingual card (README.md + README.ar.md) from the Bayanat Labs dataset template: FineWeb's 11 sections plus Bayanat Labs' 5, the QA report, re-identification results and the manual_version in the Creation section."
+      - "Croissant fetched from the HF API, validated with mlcroissant and committed as croissant.json."
+      - "Licence compatibility check; SA and NC obligations propagated; every item whose release needs a recorded legal decision cites the decision ID that permits it (decision_ref). Without one, the item ships at Tier 2 (IDs only) or is dropped, and the point is noted in the job's work log."
+      - "Re-download into a clean environment and verify checksums, datasets.load_dataset, the viewer and the documented example."
+    tools: ["bayanatlabs:bl-card-lint", "bayanatlabs:bl-manifest", mlcroissant, huggingface_hub, datasets]
+    inputs:
+      - {root: job, path: qa/reports/qa_report.json}
+    outputs:
+      - {root: hf_repo, path: README.md}
+      - {root: hf_repo, path: README.ar.md}
+      - {root: hf_repo, path: CLAIMS.md}
+      - {root: hf_repo, path: MANIFEST.json}
+      - {root: hf_repo, path: SHA256SUMS}
+      - {root: hf_repo, path: croissant.json}
+      - {root: job, path: qa/reports/package.json}
+      - {root: job, path: qa/reports/licence_check.json}
+    gate:
+      summary: "Viewer renders; datasets.load_dataset works in a clean environment; card linter passes; licence compatibility checked with obligations propagated; every item that needs a recorded legal decision cites it; required files present."
+      checks:
+        - {id: S8.files, type: file_exists, root: hf_repo, path: [README.md, README.ar.md, CLAIMS.md, LICENSE, LICENSES/LICENSE-sources.md, CITATION.cff, CHANGELOG.md, MANIFEST.json, SHA256SUMS, croissant.json]}
+        - {id: S8.provenance, type: file_exists, root: hf_repo, any_of: [PROVENANCE.parquet, PROVENANCE.jsonl]}
+        - {id: S8.builder_files, type: file_exists, root: gh_repo, path: [README.md, LICENSE, CITATION.cff, CHANGELOG.md, job.json], note: "Builder-repo layout"}
+        - {id: S8.no_data_in_gh, type: file_absent, root: gh_repo, path: ["data/**", "**/*.parquet", "**/*.arrow", "**/*.jsonl", "**/*.flac", "**/*.wav", "**/*.mp3", "**/*.opus", "**/*.tar"], exclude: ["tests/**"], note: "Data never in git. Run on a clean clone; small test fixtures under tests/ are allowed"}
+        - {id: S8.provenance_schema, type: schema_validates, root: hf_repo, any_of: [PROVENANCE.parquet, PROVENANCE.jsonl], schema: templates/provenance_ledger_schema.json, scope: all_rows, note: "Parquet rows are validated one by one after conversion to JSON."}
+        - {id: S8.viewer, type: metric, root: job, path: qa/reports/package.json, field: viewer_renders, op: is_true}
+        - {id: S8.loader, type: metric, root: job, path: qa/reports/package.json, field: load_dataset_clean_env_ok, op: is_true}
+        - {id: S8.lint, type: metric, root: job, path: qa/reports/package.json, field: card_lint_errors, op: "==", value: 0}
+        - {id: S8.croissant, type: metric, root: job, path: qa/reports/package.json, field: croissant_valid, op: is_true}
+        - {id: S8.checksums, type: metric, root: job, path: qa/reports/package.json, field: checksum_mismatches, op: "==", value: 0}
+        - {id: S8.manual_version, type: metric, root: job, path: qa/reports/package.json, field: card_manual_version, op: not_null}
+        - {id: S8.licence, type: metric, root: job, path: qa/reports/licence_check.json, field: incompatible_items, op: "==", value: 0}
+        - {id: S8.obligations, type: metric, root: job, path: qa/reports/licence_check.json, field: sa_nc_obligations_propagated, op: is_true}
+        - {id: S8.decision_cited, type: metric, root: job, path: qa/reports/licence_check.json, field: items_without_decision_ref, op: "==", value: 0, note: "Items that need a recorded legal decision, released without the decision ID that permits them"}
+        - {id: S8.undecided_points_logged, type: metric, root: job, path: qa/reports/licence_check.json, field: undecided_points_not_logged, op: "==", value: 0, note: "Points, at any stage of this release, where no recorded decision existed and that were not noted in the job's work log"}
+        - {id: S8.release_tools, type: metric, root: job, path: qa/reports/licence_check.json, field: blocked_tools_on_release_path, op: "==", value: 0, note: "tooling.lock.yaml entries flagged blocked_for_release_path (NC or unknown licence), counted by lock key: name the model key (e.g. squim-objective), not only its package"}
+        - {id: S8.synthetic_labelled, type: metric, root: job, path: qa/reports/package.json, field: synthetic_records_unlabelled, op: "==", value: 0, note: "Gate G7: synthetic records carry synthetic: true"}
+        - {id: S8.claims_draft, type: file_exists, root: gh_repo, path: qa/reports/numbers.json, note: "G7: every card number comes from a script"}
+    thresholds:
+      - {id: T8.shards, name: "Shard size", value: "<= 500 MB Parquet; WebDataset tar <= 8 GB", adopted_from: "Bayanat Labs practice"}
+      - {id: T8.github, name: "GitHub files", value: "< 100 MiB; data never in git", adopted_from: "Bayanat Labs practice"}
+      - {id: T8.manifests, name: "Files per folder", value: "fewer than 10k", adopted_from: "Bayanat Labs practice"}
+    owner: agent
+    signoff_roles: [dataset-agent, coordinator]
+    cr_gates: [G6, G7]
+    stop_conditions:
+      - "Licence incompatibility: split into one config per licence or drop the incompatible part; never flatten licences."
+      - "A tool or model with an NC or unknown licence produced released artefacts: rebuild without it."
+      - "Viewer or loader fails in a clean environment: fix before stage 9."
+    blocking: true
+
+  # ---------------------------------------------------------------------------------------------
+  - id: 9
+    key: baseline
+    name: Baseline or benchmark
+    phase: verify
+    purpose: "Give every release a number a journalist can print, computed by a script from the released files."
+    actions:
+      - "Train or evaluate something on it: Whisper fine-tune, retrieval nDCG, OCR CER or classifier F1. Any model is labelled 'reference baseline, not a product'."
+      - "Draw the chart from a script and put it in the card."
+      - "Benchmarks: public dev/test plus a hidden test split, canary GUID, immutable versions, human-ceiling and baseline scores."
+    tools: ["bayanatlabs:eval", lighteval, lm_eval, nemotron-3.5-asr]
+    inputs:
+      - {root: hf_repo, path: MANIFEST.json}
+    outputs:
+      - {root: gh_repo, path: eval/results.json}
+      - {root: gh_repo, path: launch/chart.png}
+    gate:
+      summary: "A script-computed number exists that a journalist can print, with its chart and the script that draws it."
+      checks:
+        - {id: S9.results, type: file_exists, root: gh_repo, path: [eval/results.json, launch/chart.png]}
+        - {id: S9.number, type: metric, root: gh_repo, path: eval/results.json, field: headline_metric.value, op: not_null}
+        - {id: S9.script, type: metric, root: gh_repo, path: eval/results.json, field: script_sha256, op: not_null}
+        - {id: S9.label, type: metric, root: gh_repo, path: eval/results.json, field: model_label, op: in, value: ["reference baseline, not a product", "no model trained"]}
+        - {id: S9.canary, type: metric, root: gh_repo, path: eval/results.json, field: canary_guid, op: not_null, applies_if: {field: "memo:qa.is_eval_set", op: is_true}}
+    thresholds:
+      - {id: T9.number, name: "Printable number", value: "at least one script-computed headline metric", adopted_from: "Bayanat Labs practice"}
+    owner: agent
+    signoff_roles: [dataset-agent]
+    cr_gates: [G7]
+    stop_conditions:
+      - "No number can be computed: the release does not ship."
+      - "The benchmark charter is not written before the run: write it first."
+    blocking: true
+
+  # ---------------------------------------------------------------------------------------------
+  - id: 10
+    key: release
+    name: Release
+    phase: ship
+    purpose: "Prepare every release item, re-verify claims on the day, and release only on the founder's go."
+    actions:
+      - "Prepare the hub page draft with JSON-LD and the paid-family link, the HF repo, a reserved Zenodo DOI, Kaggle and Masader listing drafts, and the launch bundle drafts in outbox/."
+      - "Re-verify every superlative on release day in CLAIMS.md; page, card and archive must agree."
+      - "The coordinator runs coordinator/launch_bundle_checklist.md."
+      - "The founder gives the go; only then do repos go public, the DOI get minted and listings get submitted."
+    tools: ["bayanatlabs:bl-gates", "bayanatlabs:bl-card-render", huggingface_hub]
+    inputs:
+      - {root: job, path: qa/reports/gates.json}
+    outputs:
+      - {root: job, path: qa/reports/release_checklist.json}
+      - {root: job, path: signoffs/founder_go.yaml}
+      - {root: job, path: "outbox/ (launch bundle drafts)"}
+    gate:
+      summary: "Coordinator runs the launch-bundle checklist; claims re-verified on release day (G7); the founder's go is recorded."
+      checks:
+        - {id: S10.gates, type: metric, root: job, path: qa/reports/gates.json, field: failed, op: "==", value: 0, note: "bl-gates output for G0-G7"}
+        - {id: S10.checklist, type: metric, root: job, path: qa/reports/release_checklist.json, field: unchecked_items, op: "==", value: 0}
+        - {id: S10.checklist_signoff, type: signoff, root: job, path: qa/reports/release_checklist.json, field: coordinator, role: coordinator, require_verdict: approve}
+        - {id: S10.claims_day, type: metric, root: job, path: qa/reports/release_checklist.json, field: claims_reverified_on, op: not_null}
+        - {id: S10.agree, type: metric, root: job, path: qa/reports/release_checklist.json, field: page_card_archive_mismatches, op: "==", value: 0}
+        - {id: S10.founder_go, type: signoff, root: job, path: signoffs/founder_go.yaml, field: founder, role: founder, require_verdict: go}
+    thresholds:
+      - {id: T10.day, name: "Release day", value: "Tuesday or Wednesday", adopted_from: "Bayanat Labs release practice"}
+      - {id: T10.claims, name: "Claims re-verification", value: "on release day", adopted_from: "gate G7"}
+    owner: coordinator
+    signoff_roles: [coordinator, founder]
+    cr_gates: [G7]
+    stop_conditions:
+      - "Founder says no-go: the release stays ready_to_publish; nothing is made public."
+      - "A claim fails re-verification: remove the superlative from every copy before launch."
+    blocking: true
+
+  # ---------------------------------------------------------------------------------------------
+  - id: 11
+    key: promotion_measurement
+    name: Promotion and measurement
+    phase: ship
+    purpose: "Get the release seen and measure whether it is used."
+    actions:
+      - "Agents draft posts, press notes, community posts and outreach; the founder sends or posts them."
+      - "Within 7 days: fix card issues, add 'models trained on it' links, schedule the refresh."
+      - "Add the release's row to the monthly metrics digest; at day 30 apply the 30-day rule."
+    tools: ["bayanatlabs:metrics-digest"]
+    inputs:
+      - {root: job, path: signoffs/founder_go.yaml}
+    outputs:
+      - {root: programme, path: coordinator/metrics_digest.jsonl}
+    gate:
+      summary: "A metrics row for the release is added to the digest and validates against coordinator/metrics_digest_row.schema.json."
+      checks:
+        - {id: S11.row, type: row_exists, root: programme, path: coordinator/metrics_digest.jsonl, match: {asset_id: "memo:candidate_id"}, schema: coordinator/metrics_digest_row.schema.json}
+    thresholds:
+      - {id: T11.followup, name: "Post-launch fixes", value: "within 7 days", adopted_from: "Bayanat Labs practice"}
+      - {id: T11.review, name: "Usage review", value: "day 30 (30-day rule)", adopted_from: "Bayanat Labs release practice"}
+    owner: coordinator
+    signoff_roles: [coordinator]
+    cr_gates: []
+    coordinator_check: "Metrics row present and schema-valid (no release gate G0-G7 covers promotion)."
+    stop_conditions:
+      - "Never claim a listing, acceptance or backlink before it exists."
+      - "A channel produced nothing across three consecutive launches: drop it from the default bundle (provisional rule)."
+    blocking: true
+
+  # ---------------------------------------------------------------------------------------------
+  - id: 12
+    key: maintenance
+    name: Maintenance
+    phase: maintain
+    purpose: "Keep the release lawful, correct and current, and set the next version date."
+    actions:
+      - "Prune removed, private or re-licensed items from manifests every 30 days; refresh or delete stored API data as each API's terms require."
+      - "Takedowns: acknowledge within 2 business days, remove within 30 days; platform requests within 24 h; PII, child-safety or CSAM reports within 24 h."
+      - "Quarterly refresh with a dated snapshot and changelog; re-verify every source licence and re-run the claims check for each new version."
+      - "Rotate a leaked benchmark test set within 30 days; remove withdrawn partner content within the SLA and correct the public counter."
+      - "At each version, review every index-only trigger of the policy (IO-1 terms changed, IO-2 takedown, IO-3 video no longer CC, IO-4 residual PII, IO-5 unreadable portal licence) and record the review in qa/reports/maintenance.json."
+    tools: ["bayanatlabs:maintenance-calendar"]
+    inputs:
+      - {root: programme, path: coordinator/maintenance_calendar.md}
+      - "policy/index-only-rules.yaml (triggers IO-1 to IO-5)"
+    outputs:
+      - {root: job, path: job.json}
+      - {root: job, path: qa/reports/maintenance.json}
+      - {root: hf_repo, path: CHANGELOG.md}
+    gate:
+      summary: "The next version date is set in job.json and on the release calendar; the policy's index-only triggers IO-1 to IO-5 were reviewed for this version."
+      checks:
+        - {id: S12.next_version, type: metric, root: job, path: job.json, field: release.next_version_date, op: not_null}
+        - {id: S12.calendar, type: row_exists, root: programme, path: coordinator/release_calendar.jsonl, match: {item_id: "memo:candidate_id", kind: next_version}, note: "release_calendar.csv is the seed; the coordinator keeps a JSONL mirror for machine checks"}
+        - {id: S12.changelog, type: file_exists, root: hf_repo, path: CHANGELOG.md}
+        - {id: S12.index_only_review, type: metric, root: job, path: qa/reports/maintenance.json, field: index_only_review.triggers_not_reviewed, op: "==", value: 0, note: "policy/index-only-rules.yaml: stage 12 checks IO-1 to IO-5 at each version"}
+        - {id: S12.index_only_date, type: metric, root: job, path: qa/reports/maintenance.json, field: index_only_review.reviewed_on, op: not_null}
+    thresholds:
+      - {id: T12.manifest_refresh, name: "Manifest pruning and API data refresh", value: "every 30 days", adopted_from: "Bayanat Labs practice; the terms of the APIs used"}
+      - {id: T12.takedown, name: "Takedown", value: "ack 2 business days; removal <= 30 days; platform <= 24 h; PII/child-safety/CSAM <= 24 h", adopted_from: "Bayanat Labs practice"}
+      - {id: T12.leak, name: "Leaked test set", value: "rotated within 30 days", adopted_from: "Bayanat Labs practice"}
+      - {id: T12.refresh, name: "Scheduled refresh", value: "quarterly", adopted_from: "Bayanat Labs practice"}
+      - {id: T12.index_only, name: "Index-only triggers", value: "IO-1 to IO-5 reviewed at each version and on the monthly licence spot-check", adopted_from: "policy/index-only-rules.yaml"}
+    owner: coordinator
+    signoff_roles: [coordinator, founder]
+    cr_gates: []
+    coordinator_check: "Next version date set; index-only triggers reviewed; maintenance calendar entries created (no release gate G0-G7 covers maintenance)."
+    stop_conditions:
+      - "Video no longer CC at re-verification, terms changed, takedown hit, residual PII or unreadable portal licence: move the affected items to index-only (Tier 2). An index entry that itself carries personal data is removed, not kept (policy index-only rule IO-4)."
+      - "History purge or deletion of published data: founder approval only."
+      - "Takedown dispute or legal threat: never argue publicly; send to the founder."
+    blocking: true

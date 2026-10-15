@@ -1,0 +1,146 @@
+# Bayanat Labs open-programme policy: selection rubric
+# Version 1.0.1. Reviewed by counsel, October 2026.
+# Documentation, not legal advice. Licence: CC BY 4.0.
+policy_version: 1.0.1
+document: rubric
+status: adopted_v1_counsel_reviewed_2026_10
+licence: CC-BY-4.0
+statement: Every candidate is scored on five criteria, and anything that fails the legal gate is dropped
+  regardless of score.
+scale:
+  min: 1
+  max: 5
+  anchors_at:
+  - 1
+  - 3
+  - 5
+  interpolation: Scores 2 and 4 sit between the neighbouring anchors. Integer scores only.
+formula:
+  expression: weighted_score_0_100 = sum over criteria of weight x (score - 1) / 4, with weights in percent
+    summing to 100
+  range:
+  - 0
+  - 100
+  note: A candidate scoring 1 on every criterion gets 0; 5 on every criterion gets 100. The legal gate
+    is applied separately and overrides the score.
+criteria:
+- id: impact
+  name: Impact (citations, press, developer use)
+  weight: 30
+  is_gate: false
+  anchors:
+    '1': Nobody searches for it; no downstream use
+    '3': Useful to Arabic NLP researchers
+    '5': Used by model labs, cited by press and AI assistants, pulled by leaderboards
+- id: claim_strength
+  name: Claim strength
+  weight: 20
+  is_gate: false
+  anchors:
+    '1': Many equivalents exist
+    '3': Better than incumbents on one axis
+    '5': No credible incumbent for a precise "first/largest" claim
+- id: ease
+  name: Ease
+  weight: 20
+  is_gate: false
+  anchors:
+    '1': Needs humans at scale or partner consent
+    '3': Agent-buildable with some human QA
+    '5': Agent-buildable from dumps/APIs in days
+- id: legal_cleanliness
+  name: Legal cleanliness (gate)
+  weight: 20
+  is_gate: true
+  anchors:
+    '1': 'Red legal tier: not built'
+    '3': 'Yellow: manifests and our own annotations only'
+    '5': 'Green: full content redistributable under an open licence'
+  gate_note: 'The legal_tier field drives the gate, and the more restrictive of the two readings applies:
+    a score of 1 (the red anchor) gives excluded and a score of 2 or 3 caps the release at Tier 2, whatever
+    legal_tier says (legal_gate.score_overrides).'
+- id: commercial_pull
+  name: Commercial pull
+  weight: 10
+  is_gate: false
+  anchors:
+    '1': No product link
+    '3': Feeds one service page
+    '5': Feeds a product family and a sales conversation (Voice, Search, Bench, Documents, Agents)
+legal_gate:
+  input_field: legal_tier
+  rule: Anything that fails the legal gate is dropped regardless of score.
+  stricter_reading: The more restrictive of legal_tier and the legal_cleanliness score decides; the anchors
+    say the same. Scores 4 and 5 leave legal_tier in charge.
+  score_overrides:
+  - max_score: 1
+    legal_verdict: excluded
+  - max_score: 3
+    legal_verdict: tier2_only
+  outcomes:
+  - legal_tier: red
+    legal_verdict: excluded
+    max_release_tier: null
+    meaning: 'Red in the matrix: not built. No priority is suggested.'
+  - legal_tier: yellow
+    legal_verdict: tier2_only
+    max_release_tier: 2
+    meaning: 'Yellow: manifests and our own annotations only (Tier 2). Yellow never means ''publish with
+      caveats''.'
+  - legal_tier: green
+    legal_verdict: tier1_eligible
+    max_release_tier: 1
+    meaning: 'Green: full content redistributable under an open licence (Tier 1 eligible; Tier 3 when
+      a partner permission is the basis).'
+priority_codes:
+  source_text: P0 ships within 60 days, P1 by LEAP on 12 Apr 2027, P2 within year one, P3 opportunistic
+  codes:
+  - code: P0
+    meaning: ships within 60 days
+  - code: P1
+    meaning: by LEAP on 12 Apr 2027
+  - code: P2
+    meaning: within year one
+  - code: P3
+    meaning: opportunistic
+effort_codes:
+  source_text: S under one agent-week, M one to four agent-weeks, L one to three agent-months, XL longer
+    or needing a partner
+  codes:
+  - code: S
+    meaning: under one agent-week
+  - code: M
+    meaning: one to four agent-weeks
+  - code: L
+    meaning: one to three agent-months
+  - code: XL
+    meaning: longer or needing a partner
+  day_conversion:
+    status: Bayanat Labs convention for mapping agent-day estimates to codes
+    agent_days_per_week: 5
+    agent_days_per_month: 20
+    S: under 5 agent-days
+    M: 5 to 20 agent-days
+    L: 21 to 60 agent-days
+    XL: over 60 agent-days, or any plan that needs a partner
+priority_thresholds:
+  status: Adopted for v1.0, provisional. The coordinator decides each case.
+  evaluated_in_order: true
+  rules:
+  - priority: P0
+    min_weighted_score: 75
+    effort_in:
+    - S
+    - M
+  - priority: P1
+    min_weighted_score: 60
+  - priority: P2
+    min_weighted_score: 45
+  - priority: P3
+    min_weighted_score: 0
+  note: A score of 75 or more with effort L or XL falls to the next rule (P1). Excluded (red) candidates
+    get no priority.
+tie_breaker:
+  field: seo_demand
+  rule: Search demand (seo_demand) has no rubric criterion. Treat it as an Impact sub-signal and as the
+    tie-breaker between equal weighted scores. It never changes the weighted score.

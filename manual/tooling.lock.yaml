@@ -1,0 +1,2623 @@
+# manual/tooling.lock.yaml - Bayanat Labs operating manual, tooling lock v0.1.0-draft
+# Generated file. Licence readings are documentation, not legal advice.
+lockfile: Bayanat Labs operating manual tooling lock
+manual_item: operating manual
+lock_version: 0.1.0-draft
+generated_at: '2026-10-14T22:45:18Z'
+generated_by: the operating manual's lock builder
+status: draft lock; every licence is re-verified at each manual version and at each dataset version (see rule)
+disclaimer: Licence readings are documentation, not legal advice. Items marked licence_verify or flagged need confirmation
+  before release.
+semantics:
+  commercial_safe:
+    'yes': licence permits commercial use the way the stage uses the tool; notice or attribution duties only
+    conditional: commercial use only if 'condition' holds (gate acceptance, internal-only use, a model pin, a recorded legal
+      decision)
+    'no': licence bars commercial use (NC) or is research-only
+    unknown: no licence found
+  blocked_for_release_path: true = the tool or model must not produce released artefacts as things stand (NC or unknown licence,
+    or unclear rights)
+  hash: 'pypi: sha256 of the sdist and the cp312 macOS-arm64 / manylinux-x86_64 / pure-Python wheels of the pinned version
+    (full list: the PyPI JSON API); hf: commit sha plus LFS sha256 of weight files; github/binary: git commit of the pinned
+    tag'
+counts:
+  entries: 57
+  by_kind:
+    pypi: 24
+    binary: 4
+    github: 5
+    hf-model: 23
+    hf-dataset: 1
+  by_commercial_safe:
+    'yes': 37
+    conditional: 12
+    'no': 6
+    unknown: 2
+  blocked_for_release_path: 16
+  gated: 3
+rule: No tool or model flagged NC or unknown may produce released artefacts. Re-verify every licence at each manual version
+  and at each dataset version.
+tools:
+- key: yt-dlp
+  name: yt-dlp
+  kind: pypi
+  version: 2026.8.19
+  source_url: https://pypi.org/project/yt-dlp/2026.8.19/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: yt_dlp-2026.8.19-py3-none-any.whl
+      sha256: 1d57897e94c6665a0a6f9bc54b34e584284e32c034ffab3a7df25d8f7b24eedf
+    - filename: yt_dlp-2026.8.19.tar.gz
+      sha256: 9e213e48cea35c66b378e4447903f118f6392a5fa380a2b6d7070ec86f4e0af1
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-08-19T23:48:56.925874Z'
+  repo_tag_commit:
+    repo: yt-dlp/yt-dlp
+    ref: 2026.08.19
+    commit: 3a08beaf031ab68f966401ead017ac81fe8486cf
+  upstream_repo:
+    repo: yt-dlp/yt-dlp
+    pushed_at: '2026-10-10T21:15:52Z'
+    archived: false
+  licence: Unlicense
+  licence_basis: PyPI license_expression 'Unlicense'; repo LICENSE detected as Unlicense
+  licence_evidence_url: https://raw.githubusercontent.com/yt-dlp/yt-dlp/3a08beaf031ab68f966401ead017ac81fe8486cf/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/yt-dlp/json
+  - gh api repos/yt-dlp/yt-dlp/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: 'Public-domain dedication. The licence is not the constraint: the terms of the site a video comes
+    from still apply, so a download needs the recorded decision that check S2.media_download_decision reads.'
+  blocked_for_release_path: false
+  flags:
+  - acquisition-decision
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 2
+    name: Acquisition
+  release_path_role: false
+  notes: Creative Commons video download only where check S2.media_download_decision passes
+- key: huggingface_hub
+  name: huggingface_hub
+  kind: pypi
+  version: 2.2.0
+  source_url: https://pypi.org/project/huggingface_hub/2.2.0/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: huggingface_hub-2.2.0-py3-none-any.whl
+      sha256: 1667f145dc56dc210d60966069397df9ecfca9607a5d43db88b308c89dae56b3
+    - filename: huggingface_hub-2.2.0.tar.gz
+      sha256: 5d1b47537394e4215cb858aa12fd493d0f7ef7f58990f5dcd24bc173107b2871
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-10-08T15:30:57.914406Z'
+  repo_tag_commit:
+    repo: huggingface/huggingface_hub
+    ref: v2.2.0
+    commit: acfdf30d99441317270cca6e9362dd7f9ff47c55
+  upstream_repo:
+    repo: huggingface/huggingface_hub
+    pushed_at: '2026-10-14T20:28:31Z'
+    archived: false
+  licence: Apache-2.0
+  licence_basis: PyPI license 'Apache-2.0' and classifier; repo LICENSE Apache-2.0
+  licence_evidence_url: https://raw.githubusercontent.com/huggingface/huggingface_hub/acfdf30d99441317270cca6e9362dd7f9ff47c55/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/huggingface_hub/json
+  - gh api repos/huggingface/huggingface_hub/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 2
+    name: Acquisition
+  - id: 8
+    name: Packaging
+  - id: 10
+    name: Release
+  release_path_role: false
+  notes: hf_hub_download for calibration data; uploads at release (founder go only)
+- key: datasets
+  name: datasets
+  kind: pypi
+  version: 5.1.0
+  source_url: https://pypi.org/project/datasets/5.1.0/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: datasets-5.1.0-py3-none-any.whl
+      sha256: 86fd08b280485aab82894d2c81842c4151d93b575efea0054315104cb7bc3cec
+    - filename: datasets-5.1.0.tar.gz
+      sha256: 1561347daa8841b51351ef2ad1647b4ee4af406852c0f7bd1df587ac1ca7888e
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-10-05T15:32:29.892972Z'
+  repo_tag_commit:
+    repo: huggingface/datasets
+    ref: 5.1.0
+    commit: efe6ea4f88260b1a5066f28a9c90d82365a29f42
+  upstream_repo:
+    repo: huggingface/datasets
+    pushed_at: '2026-10-13T15:45:23Z'
+    archived: false
+  licence: Apache-2.0
+  licence_basis: PyPI license 'Apache 2.0' (free text) and classifier; repo LICENSE Apache-2.0
+  licence_evidence_url: https://raw.githubusercontent.com/huggingface/datasets/efe6ea4f88260b1a5066f28a9c90d82365a29f42/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/datasets/json
+  - gh api repos/huggingface/datasets/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive. google/fleurs ships a loading script that datasets>=4 does not run; fetch FLEURS files
+    with hf_hub_download instead.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 8
+    name: Packaging
+  release_path_role: false
+  notes: load_dataset smoke test at packaging
+- key: ffmpeg
+  name: FFmpeg
+  kind: binary
+  version: n9.0.2
+  source_url: https://github.com/FFmpeg/FFmpeg/tree/946fcce07b6dcd0331c8cc609192aeff5e1924f8
+  hash:
+    algorithm: git commit sha1
+    commit: 946fcce07b6dcd0331c8cc609192aeff5e1924f8
+    commit_date: '2026-09-17T23:19:50Z'
+  upstream_repo:
+    repo: FFmpeg/FFmpeg
+    pushed_at: '2026-10-14T21:09:24Z'
+    archived: false
+  licence: LGPL-2.1-or-later
+  licence_verify: Builds configured with --enable-gpl are GPL-2.0-or-later; check the build actually installed on the GPU
+    box (ffmpeg -version shows the configure line).
+  licence_basis: LICENSE.md at tag n9.0.2 (GitHub reports NOASSERTION)
+  licence_evidence_url: https://raw.githubusercontent.com/FFmpeg/FFmpeg/946fcce07b6dcd0331c8cc609192aeff5e1924f8/LICENSE.md
+  metadata_sources:
+  - gh api repos/FFmpeg/FFmpeg/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Used as an external tool, not distributed; LGPL/GPL duties arise only on distribution of the binary.
+  blocked_for_release_path: false
+  flags:
+  - copyleft
+  - added-dependency
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: false
+  notes: FLAC 16 kHz mono conversion and loudness normalisation (added as a dependency or fallback of a listed tool)
+- key: silero-vad
+  name: Silero VAD
+  kind: pypi
+  version: 6.2.3
+  source_url: https://pypi.org/project/silero-vad/6.2.3/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: silero_vad-6.2.3-py3-none-any.whl
+      sha256: 7b7f5436cfcb02fae583a05b512ea96467fd449fe54cb49a5e4f06c51a1e43b8
+    - filename: silero_vad-6.2.3.tar.gz
+      sha256: d7a23b09202be4953915cb9173089bb307eed0418a9bd4794d9ec5af07fa1996
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-09-23T11:37:20.002180Z'
+  repo_tag_commit:
+    repo: snakers4/silero-vad
+    ref: v6.2.3
+    commit: 5cd7945676eb32225748052e2e6a0580e4686a08
+  upstream_repo:
+    repo: snakers4/silero-vad
+    pushed_at: '2026-09-29T10:20:28Z'
+    archived: false
+  licence: MIT
+  licence_basis: PyPI license and license_expression empty; classifier 'MIT License'; repo LICENSE MIT (weights ship inside
+    the package)
+  licence_evidence_url: https://raw.githubusercontent.com/snakers4/silero-vad/5cd7945676eb32225748052e2e6a0580e4686a08/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/silero-vad/json
+  - gh api repos/snakers4/silero-vad/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive; model weights are part of the MIT-licensed package.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: true
+  notes: VAD into 2-20 s chunks (model weights ship inside the package)
+- key: demucs
+  name: Demucs
+  kind: pypi
+  version: 4.1.0
+  source_url: https://pypi.org/project/demucs/4.1.0/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: demucs-4.1.0-py3-none-any.whl
+      sha256: 4916a804702033ce934a6cdfa7e38dde03f7a7a6e85f41d0120eefe9e2966758
+    - filename: demucs-4.1.0.tar.gz
+      sha256: d94c4f7dac886595b66af405c0fd1756fa00c297183f1cf021fd2eeedeeb67b2
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-07-11T14:52:25.934971Z'
+  repo_tag_commit:
+    repo: adefossez/demucs
+    ref: v4.1.0
+    commit: 6a604bb002d12c4fbabb303ba64db40b5c5743f0
+  upstream_repo:
+    repo: adefossez/demucs
+    pushed_at: '2026-08-31T20:20:01Z'
+    archived: false
+  related_repos:
+  - repo: facebookresearch/demucs
+    pushed_at: '2024-04-24T20:25:19Z'
+    archived: true
+    licence_api: MIT
+  licence: MIT
+  licence_basis: PyPI license 'MIT License' and classifier; repo adefossez/demucs LICENSE MIT; facebookresearch/demucs is
+    archived (last push 2024-04-24) and the PyPI project now points to adefossez/demucs
+  licence_evidence_url: https://raw.githubusercontent.com/adefossez/demucs/6a604bb002d12c4fbabb303ba64db40b5c5743f0/LICENSE
+  other_evidence:
+  - url: https://raw.githubusercontent.com/adefossez/demucs/6a604bb002d12c4fbabb303ba64db40b5c5743f0/README.md
+  metadata_sources:
+  - https://pypi.org/pypi/demucs/json
+  - gh api repos/adefossez/demucs/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: conditional
+  commercial_safe_reason: 'Code and released weights are MIT per the README, but the default htdemucs weights were trained
+    on MUSDB HQ plus an extra set of 800 songs whose terms are not stated (MUSDB18 terms: verify). Allowed only internally
+    on music-flagged segments to improve ASR; separated audio is never released (manual choice C-17).'
+  condition: internal-only; never on the release path
+  blocked_for_release_path: true
+  flags:
+  - training-data-unclear
+  - internal-only
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: false
+  notes: music separation on music-flagged segments, internal ASR only (manual choice C-17)
+- key: audio-separator
+  name: audio-separator (UVR-MDX-Net runner)
+  kind: pypi
+  version: 0.47.0
+  source_url: https://pypi.org/project/audio-separator/0.47.0/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: audio_separator-0.47.0-py3-none-any.whl
+      sha256: 756f3b620d78e581a117c6b6d96fe4f0eafc3432ab2824cb11532b4868bfd9a8
+    - filename: audio_separator-0.47.0.tar.gz
+      sha256: 08ec182cdd856fe7b70e0ec18a625fb49cde35be102203a6d0b12da6abfcbc35
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-08-27T02:15:30.181860Z'
+  repo_tag_commit:
+    repo: nomadkaraoke/python-audio-separator
+    ref: v0.47.0
+    commit: c7f2a5c8c3beea1f9ec9ab7206caaebc05f45ac4
+  upstream_repo:
+    repo: nomadkaraoke/python-audio-separator
+    pushed_at: '2026-10-01T23:59:54Z'
+    archived: false
+  licence: MIT
+  licence_basis: PyPI license 'MIT' and classifier; repo LICENSE MIT
+  licence_evidence_url: https://raw.githubusercontent.com/nomadkaraoke/python-audio-separator/c7f2a5c8c3beea1f9ec9ab7206caaebc05f45ac4/LICENSE
+  other_evidence:
+  - url: https://raw.githubusercontent.com/nomadkaraoke/python-audio-separator/c7f2a5c8c3beea1f9ec9ab7206caaebc05f45ac4/README.md
+  metadata_sources:
+  - https://pypi.org/pypi/audio-separator/json
+  - gh api repos/nomadkaraoke/python-audio-separator/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: conditional
+  commercial_safe_reason: Code is MIT. Its default model (model_bs_roformer_ep_317_sdr_12.9755) is a community model whose
+    licence is not stated in the package (verify); always pass --model_filename for a pinned UVR-MDX-Net model. Internal-only
+    use as for Demucs.
+  condition: pin --model_filename UVR-MDX-NET-Voc_FT.onnx (or another model with a stated licence); internal-only
+  blocked_for_release_path: true
+  flags:
+  - default-model-unclear
+  - internal-only
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: false
+  notes: runs UVR-MDX-Net models on music-flagged segments, internal ASR only
+- key: uvr-mdx-net-models
+  name: UVR-MDX-Net model weights
+  kind: github
+  version: UVR-MDX-NET-Voc_FT.onnx (release all_public_uvr_models)
+  source_url: https://github.com/TRvlvr/model_repo/releases/tag/all_public_uvr_models
+  hash:
+    algorithm: none (GitHub release assets carry no digest; not downloaded in this task)
+    asset: UVR-MDX-NET-Voc_FT.onnx
+    asset_size: 66762490
+    note: record sha256 at first download
+  upstream_repo:
+    repo: TRvlvr/model_repo
+    pushed_at: '2022-12-19T03:48:31Z'
+    archived: false
+  related_repos:
+  - repo: Anjok07/ultimatevocalremovergui
+    pushed_at: '2026-10-06T22:39:26Z'
+    archived: false
+    licence_api: null
+  licence: LicenseRef-UVR-models-MIT-by-statement
+  licence_basis: TRvlvr/model_repo has no LICENSE file (GitHub licence API 404). The UVR GUI README says the UVR team trained
+    the models and asks third-party developers to honour the MIT licence by crediting UVR.
+  licence_evidence_url: https://raw.githubusercontent.com/Anjok07/ultimatevocalremovergui/4e2f28e02f0c2d69d926facd0186a379bb7799ac/README.md
+  metadata_sources:
+  - gh api repos/TRvlvr/model_repo/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: conditional
+  commercial_safe_reason: Licence comes from a README statement, not a licence file attached to the weights; training data
+    is undocumented. Release assets carry no digest, so the weights cannot be hash-pinned without downloading them. Internal-only
+    use on music-flagged segments.
+  condition: internal-only; credit UVR in internal docs; record the file sha256 at first download
+  blocked_for_release_path: true
+  flags:
+  - no-licence-file
+  - training-data-unclear
+  - internal-only
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: false
+  notes: model files audio-separator downloads (weights licence to verify)
+- key: torch
+  name: PyTorch
+  kind: pypi
+  version: 2.14.1
+  source_url: https://pypi.org/project/torch/2.14.1/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: torch-2.14.1-cp312-cp312-macosx_14_0_arm64.whl
+      sha256: 420dbf314c180ee4b86e9bc00aee5746a7d6e5bacdd7df925af671ed393f0b2e
+    - filename: torch-2.14.1-cp312-cp312-manylinux_2_28_x86_64.whl
+      sha256: 23011fe29a99b591eabb3a31a25080c62e2c2f0690a3c798744e5489dae50451
+    files_listed: 2
+    files_total: 24
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-09-30T17:43:48.426734Z'
+  repo_tag_commit:
+    repo: pytorch/pytorch
+    ref: v2.14.1
+    commit: 5c4886908584029761b579af026dcfb627c84070
+  upstream_repo:
+    repo: pytorch/pytorch
+    pushed_at: '2026-10-14T20:51:29Z'
+    archived: false
+  licence: Apache-2.0 AND Apache-2.0 WITH LLVM-exception AND BSD-2-Clause AND BSD-3-Clause AND BSL-1.0 AND MIT
+  licence_basis: PyPI license_expression (GitHub reports NOASSERTION for the BSD-style LICENSE)
+  licence_evidence_url: https://raw.githubusercontent.com/pytorch/pytorch/5c4886908584029761b579af026dcfb627c84070/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/torch/json
+  - gh api repos/pytorch/pytorch/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive components only.
+  blocked_for_release_path: false
+  flags:
+  - added-dependency
+  stage_source: 'tooling part (key not listed in manual/stages.yaml: alternative, fallback or blocked model)'
+  stages:
+  - id: 3
+    name: Normalisation
+  - id: 6
+    name: Enrichment
+  release_path_role: false
+  notes: runtime for VAD, diarisation, ASR, alignment (added as a dependency or fallback of a listed tool)
+- key: camel-tools
+  name: CAMeL Tools
+  kind: pypi
+  version: 1.6.0
+  source_url: https://pypi.org/project/camel-tools/1.6.0/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: camel_tools-1.6.0-py3-none-any.whl
+      sha256: 17e51cf959dd2efcce034db610d796fb5e5068061b5bf0bde3c4493d9d426efe
+    - filename: camel_tools-1.6.0.tar.gz
+      sha256: ed9382b9423467460560a07799de0329b3b15e6b88cfffb5224913fd11646f16
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-06-08T11:54:34.210102Z'
+  repo_tag_commit:
+    repo: CAMeL-Lab/camel_tools
+    ref: v1.6.0
+    commit: be79ca9fc493f0df795375a7255bafef246a802d
+  upstream_repo:
+    repo: CAMeL-Lab/camel_tools
+    pushed_at: '2026-10-14T17:27:54Z'
+    archived: false
+  licence: MIT
+  licence_basis: PyPI license 'MIT' and classifier; repo LICENSE MIT. Data packages are licensed separately (camel-tools-data
+    catalogue 1.6).
+  licence_evidence_url: https://raw.githubusercontent.com/CAMeL-Lab/camel_tools/be79ca9fc493f0df795375a7255bafef246a802d/LICENSE
+  other_evidence:
+  - url: https://raw.githubusercontent.com/CAMeL-Lab/camel-tools-data/main/catalogue-1.6.json
+  metadata_sources:
+  - https://pypi.org/pypi/camel-tools/json
+  - gh api repos/CAMeL-Lab/camel_tools/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: conditional
+  commercial_safe_reason: 'Code is MIT, but the data catalogue mixes licences: dialectid-model26/model6 and disambig-bert-*
+    MIT; morphology-db-glf-01 and -lev-01 CC BY 4.0; morphology-db-msa-r13, -egy-r13 and disambig-mle-calima-* GPL v2; morphology-db-msa-s31
+    under a corpus-provider licence; ner-arabert and sentiment-analysis-arabert under a model-specific licence. Install named
+    packages only, never ''camel_data -i all'' (it pulls packages under those licences). The DID models are trained on MADAR,
+    a research-only dataset (whether labels from such a model may ship commercially is not settled).'
+  condition: install only MIT / CC BY / GPL v2 (internal) data packages; no data packages under corpus-provider or model-specific
+    licences; DID labels follow the camelbert-did-madar26 condition
+  blocked_for_release_path: false
+  flags:
+  - mixed-data-licences
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 3
+    name: Normalisation
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: Arabic normalisation helpers, morphology, dialect ID (code MIT; data packages separate)
+- key: fasttext
+  name: fastText (library)
+  kind: pypi
+  version: 0.9.3
+  source_url: https://pypi.org/project/fasttext/0.9.3/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: fasttext-0.9.3.tar.gz
+      sha256: eb03f2ef6340c6ac9e4398a30026f05471da99381b307aafe2f56e4cd26baaef
+    files_listed: 1
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2024-06-12T09:44:40.646465Z'
+  repo_tag_commit:
+    repo: facebookresearch/fastText
+    ref: v0.9.2
+    commit: 5b5943c118b0ec5fb9cd8d20587de2b2d3966dfe
+  upstream_repo:
+    repo: facebookresearch/fastText
+    pushed_at: '2024-03-22T21:40:44Z'
+    archived: true
+  licence: MIT
+  licence_basis: PyPI license 'MIT' and classifier; repo LICENSE MIT
+  licence_evidence_url: https://raw.githubusercontent.com/facebookresearch/fastText/5b5943c118b0ec5fb9cd8d20587de2b2d3966dfe/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/fasttext/json
+  - gh api repos/facebookresearch/fastText/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: 'Permissive. The repo was archived (last push 2024-03-22) and PyPI 0.9.3 dates from 2024-06-12:
+    maintenance risk, not a licence issue.'
+  blocked_for_release_path: false
+  flags:
+  - unmaintained
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: false
+  notes: runtime for GlotLID
+- key: glotlid
+  name: GlotLID
+  kind: hf-model
+  version: 85cd6716494360367b75f642b5bc78667605d0b4
+  source_url: https://huggingface.co/cis-lmu/glotlid/tree/85cd6716494360367b75f642b5bc78667605d0b4
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: 85cd6716494360367b75f642b5bc78667605d0b4
+    lfs_sha256:
+    - file: model.bin
+      size: 1687094687
+      sha256: a818b6bd42a628ab47d3dfc1578c7ea615c45381f3494c42535e31e8c4cafc9e
+    - file: model_v1.bin
+      size: 1382536178
+      sha256: 8624f1d95916209e6f0973757f8ab704570bd7f589d9ec454d76187bb6035c41
+    - file: model_v2.bin
+      size: 1697042258
+      sha256: 7b186ecd9c78dca5b8ee5bcd29f35e0cfbd6258b1512484efddd0a6329c6be38
+    - file: model_v3.bin
+      size: 1687094687
+      sha256: a818b6bd42a628ab47d3dfc1578c7ea615c45381f3494c42535e31e8c4cafc9e
+  last_modified: '2024-04-18T11:18:42.000Z'
+  upstream_repo:
+    repo: cisnlp/GlotLID
+    pushed_at: '2026-04-15T04:05:52Z'
+    archived: false
+  licence: LicenseRef-Apache-2.0-plus-notices
+  licence_basis: HF cardData.license 'other', license_name 'apache-2.0-plus-notices'; LICENSE file = Apache-2.0 text plus
+    notices on training data
+  licence_evidence_url: https://huggingface.co/cis-lmu/glotlid/raw/85cd6716494360367b75f642b5bc78667605d0b4/LICENSE
+  other_evidence:
+  - url: https://huggingface.co/cis-lmu/glotlid/raw/85cd6716494360367b75f642b5bc78667605d0b4/README.md
+  metadata_sources:
+  - gh api repos/cisnlp/GlotLID/license
+  - https://huggingface.co/api/models/cis-lmu/glotlid?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: 'Custom ''other'' licence read in full: it is the Apache-2.0 text with added notices that the model
+    stores statistical n-gram weights, ships no training data, gives no warranty on training-data licensing, and offers a
+    rights-holder exclusion contact. The notices add no use restriction (summary; documentation, not legal advice).'
+  blocked_for_release_path: false
+  flags:
+  - custom-licence-read
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: true
+  notes: language ID (lang_prob)
+- key: fasttext-lid-218
+  name: fastText language identification (NLLB LID)
+  kind: hf-model
+  version: 3af127d4124fc58b75666f3594bb5143b9757e78
+  source_url: https://huggingface.co/facebook/fasttext-language-identification/tree/3af127d4124fc58b75666f3594bb5143b9757e78
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: 3af127d4124fc58b75666f3594bb5143b9757e78
+    lfs_sha256:
+    - file: model.bin
+      size: 1176355829
+      sha256: 8ded5749a2ad79ae9ab7c9190c7c8b97ff20d54ad8b9527ffa50107238fc7f6a
+  last_modified: '2023-06-09T12:39:43.000Z'
+  licence: CC-BY-NC-4.0
+  licence_basis: HF cardData.license; card License section
+  licence_evidence_url: https://huggingface.co/facebook/fasttext-language-identification/raw/3af127d4124fc58b75666f3594bb5143b9757e78/README.md
+  other_evidence:
+  - url: https://creativecommons.org/licenses/by-nc/4.0/legalcode.en
+  metadata_sources:
+  - https://huggingface.co/api/models/facebook/fasttext-language-identification?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'no'
+  commercial_safe_reason: Non-commercial. Use GlotLID for language ID.
+  blocked_for_release_path: true
+  replacement: glotlid
+  flags:
+  - NC
+  stage_source: 'tooling part (key not listed in manual/stages.yaml: alternative, fallback or blocked model)'
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: true
+  notes: alternative language-ID model, 'fastText' (check licence before use)
+- key: datasketch
+  name: datasketch
+  kind: pypi
+  version: 2.0.0
+  source_url: https://pypi.org/project/datasketch/2.0.0/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: datasketch-2.0.0-py3-none-any.whl
+      sha256: aea5ffafcce776e03d085740e78b874e778d779b07ee11ca636ca51b3fef09ed
+    - filename: datasketch-2.0.0.tar.gz
+      sha256: e0570e170f7e64b8d6fb1cc2e4ce36a9f7036c5100167e50a0770addc50558c2
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-07-05T06:36:29.222348Z'
+  repo_tag_commit:
+    repo: ekzhu/datasketch
+    ref: v2.0.0
+    commit: 3da96a591c954952c9dd367567db720cfdc151e0
+  upstream_repo:
+    repo: ekzhu/datasketch
+    pushed_at: '2026-10-10T06:50:40Z'
+    archived: false
+  licence: MIT
+  licence_basis: PyPI license 'MIT' and classifier; repo LICENSE MIT
+  licence_evidence_url: https://raw.githubusercontent.com/ekzhu/datasketch/3da96a591c954952c9dd367567db720cfdc151e0/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/datasketch/json
+  - gh api repos/ekzhu/datasketch/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 4
+    name: Deduplication
+  release_path_role: true
+  notes: MinHash-LSH, 5-gram, Jaccard 0.8
+- key: datatrove
+  name: datatrove
+  kind: pypi
+  version: 0.10.1
+  source_url: https://pypi.org/project/datatrove/0.10.1/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: datatrove-0.10.1-py3-none-any.whl
+      sha256: b0846fc28482b25c9dbeaa09445066ff68266b58d762e9344c64fe5f6d92d14c
+    - filename: datatrove-0.10.1.tar.gz
+      sha256: 609e8e00138ee2f316a1d1d3464a8302565e2a4d937a48be7254be50b7196f5c
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-09-30T08:20:43.235822Z'
+  repo_tag_commit:
+    repo: huggingface/datatrove
+    ref: v0.10.1
+    commit: 1977fbb0f3c163d43cace334b073dda17fa3ef26
+  upstream_repo:
+    repo: huggingface/datatrove
+    pushed_at: '2026-10-06T16:30:02Z'
+    archived: false
+  licence: Apache-2.0
+  licence_basis: PyPI license 'Apache-2.0' and classifier; repo LICENSE Apache-2.0
+  licence_evidence_url: https://raw.githubusercontent.com/huggingface/datatrove/1977fbb0f3c163d43cace334b073dda17fa3ef26/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/datatrove/json
+  - gh api repos/huggingface/datatrove/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stage_note: tooling inventory had [3, 4]; stages.yaml placement used
+  stages:
+  - id: 4
+    name: Deduplication
+  release_path_role: true
+  notes: MinHash dedup and FineWeb-style filters
+- key: chromaprint
+  name: Chromaprint (fpcalc)
+  kind: binary
+  version: v1.6.1
+  source_url: https://github.com/acoustid/chromaprint/tree/aed8eba2202dd9d7b3b0a56c77904cc805490d72
+  hash:
+    algorithm: git commit sha1
+    commit: aed8eba2202dd9d7b3b0a56c77904cc805490d72
+    commit_date: '2026-07-28T06:12:40Z'
+  upstream_repo:
+    repo: acoustid/chromaprint
+    pushed_at: '2026-10-14T15:18:24Z'
+    archived: false
+  licence: LGPL-2.1-only AND MIT
+  licence_verify: LICENSE.md says 'LGPL 2.1' without 'or later'; the FFT library chosen at build time adds its own licence.
+  licence_basis: 'LICENSE.md at v1.6.1: own code MIT, bundled FFmpeg parts LGPL 2.1, so the whole is LGPL 2.1 (GitHub reports
+    NOASSERTION)'
+  licence_evidence_url: https://raw.githubusercontent.com/acoustid/chromaprint/aed8eba2202dd9d7b3b0a56c77904cc805490d72/LICENSE.md
+  metadata_sources:
+  - gh api repos/acoustid/chromaprint/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Used as an external tool (fpcalc); fingerprints are our derived data. Do not vendor Chromaprint
+    binaries into CC data repos.
+  blocked_for_release_path: false
+  flags:
+  - copyleft
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 4
+    name: Deduplication
+  release_path_role: true
+  notes: audio fingerprints for dedup; used as a tool, never vendored into data repos
+- key: pyacoustid
+  name: pyacoustid
+  kind: pypi
+  version: 1.3.1
+  source_url: https://pypi.org/project/pyacoustid/1.3.1/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: pyacoustid-1.3.1-py3-none-any.whl
+      sha256: 4436732937ac40e4b2fec4808fc81934c0e07ad9e3f0ef5f2b225517c99bb1e4
+    - filename: pyacoustid-1.3.1.tar.gz
+      sha256: bb0ecae40109c0aa80f709e33c66c83ec36b2fd84658f9fad056a34538f79e8a
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-04-09T18:05:58.180790Z'
+  repo_tag_commit:
+    repo: beetbox/pyacoustid
+    ref: v1.3.1
+    commit: a08a28d5614bfa37d5e27fa1ff1b5d5c2e4fa7ca
+  upstream_repo:
+    repo: beetbox/pyacoustid
+    pushed_at: '2026-05-19T22:31:41Z'
+    archived: false
+  licence: MIT
+  licence_basis: PyPI license_expression 'MIT' and classifier; repo LICENSE MIT
+  licence_evidence_url: https://raw.githubusercontent.com/beetbox/pyacoustid/a08a28d5614bfa37d5e27fa1ff1b5d5c2e4fa7ca/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/pyacoustid/json
+  - gh api repos/beetbox/pyacoustid/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive. Use only its local fingerprint functions; do not send fingerprints to the AcoustID web
+    service without reading its terms (verify).
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 4
+    name: Deduplication
+  release_path_role: false
+  notes: Python bindings to Chromaprint/fpcalc
+- key: presidio-analyzer
+  name: Presidio Analyzer
+  kind: pypi
+  version: 2.2.364
+  source_url: https://pypi.org/project/presidio-analyzer/2.2.364/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: presidio_analyzer-2.2.364-py3-none-any.whl
+      sha256: 0a9eeb60ccc416c505367b4989d056becb84ef082703ee3361c046fb75941739
+    - filename: presidio_analyzer-2.2.364.tar.gz
+      sha256: 51f27bacf199fb9777ade9552c0f0111e00a1d73cfe2d4797fc05c998de1e0b6
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-07-22T07:54:34.868975Z'
+  repo_tag_commit:
+    repo: data-privacy-stack/presidio
+    ref: 2.2.364
+    commit: 779dbd286d5ef4d1fbe2514275fb1bce358f2417
+  upstream_repo:
+    repo: data-privacy-stack/presidio
+    pushed_at: '2026-10-09T05:18:46Z'
+    archived: false
+  licence: MIT
+  licence_basis: PyPI license_expression 'MIT' and classifier; repo (now data-privacy-stack/presidio) LICENSE MIT
+  licence_evidence_url: https://raw.githubusercontent.com/data-privacy-stack/presidio/779dbd286d5ef4d1fbe2514275fb1bce358f2417/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/presidio-analyzer/json
+  - gh api repos/data-privacy-stack/presidio/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive. The repository moved from microsoft/presidio to data-privacy-stack/presidio; pin by
+    PyPI version and tag commit.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 5
+    name: Safety and PII
+  release_path_role: true
+  notes: PII detection with the Bayanat Labs Arabic recogniser pack
+- key: presidio-anonymizer
+  name: Presidio Anonymizer
+  kind: pypi
+  version: 2.2.364
+  source_url: https://pypi.org/project/presidio-anonymizer/2.2.364/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: presidio_anonymizer-2.2.364-py3-none-any.whl
+      sha256: f3edfe80b5e83a22976439727e9d449c796b12efdf6cd70a6db860d4942a6b72
+    - filename: presidio_anonymizer-2.2.364.tar.gz
+      sha256: eced015f1195f79a91ad11b34a531ceca2e5c673ed57e97649efea3d3293155d
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-07-22T07:54:34.797235Z'
+  repo_tag_commit:
+    repo: data-privacy-stack/presidio
+    ref: 2.2.364
+    commit: 779dbd286d5ef4d1fbe2514275fb1bce358f2417
+  upstream_repo:
+    repo: data-privacy-stack/presidio
+    pushed_at: '2026-10-09T05:18:46Z'
+    archived: false
+  licence: MIT
+  licence_basis: PyPI license_expression 'MIT' and classifier; repo LICENSE MIT
+  licence_evidence_url: https://raw.githubusercontent.com/data-privacy-stack/presidio/779dbd286d5ef4d1fbe2514275fb1bce358f2417/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/presidio-anonymizer/json
+  - gh api repos/data-privacy-stack/presidio/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 5
+    name: Safety and PII
+  release_path_role: true
+  notes: typed placeholder replacement ([PHONE], [IBAN])
+- key: pyannote.audio
+  name: pyannote.audio
+  kind: pypi
+  version: 4.0.7
+  source_url: https://pypi.org/project/pyannote.audio/4.0.7/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: pyannote_audio-4.0.7-py3-none-any.whl
+      sha256: 852ea15c4d85bc34773e618267603ffca6a521669a74d33742692cc67fc700d6
+    - filename: pyannote_audio-4.0.7.tar.gz
+      sha256: 3a903dfb5ca711d134cc2522561c9158b186836f5d62e8a57c46c6648e8a8229
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-06-30T14:28:51.779727Z'
+  repo_tag_commit:
+    repo: pyannote/pyannote-audio
+    ref: 4.0.7
+    commit: b749285c5cdd4636b2edc7f766f1352c8dde9369
+  upstream_repo:
+    repo: pyannote/pyannote-audio
+    pushed_at: '2026-10-07T20:23:46Z'
+    archived: false
+  licence: MIT
+  licence_basis: PyPI license, license_expression and classifiers all empty; licence taken from repo LICENSE (MIT)
+  licence_evidence_url: https://raw.githubusercontent.com/pyannote/pyannote-audio/b749285c5cdd4636b2edc7f766f1352c8dde9369/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/pyannote.audio/json
+  - gh api repos/pyannote/pyannote-audio/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Toolkit code is MIT. The pretrained pipelines are separate HF repos with their own gate (see pyannote-community-1).
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: diarisation toolkit
+- key: pyannote-community-1
+  name: pyannote speaker-diarization-community-1
+  kind: hf-model
+  version: 3533c8cf8e369892e6b79ff1bf80f7b0286a54ee
+  source_url: https://huggingface.co/pyannote/speaker-diarization-community-1/tree/3533c8cf8e369892e6b79ff1bf80f7b0286a54ee
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: 3533c8cf8e369892e6b79ff1bf80f7b0286a54ee
+    lfs_sha256:
+    - file: embedding/pytorch_model.bin
+      size: 26646242
+      sha256: 6f10ff60898a1d185fa22e1d11e0bfa8a92efec811f11bca48cb8cafebefd929
+    - file: plda/plda.npz
+      size: 133852
+      sha256: 9b77bcd840692710dd3496f62ecfeed8d8e5f002fd991b785079b244eab7d255
+    - file: plda/xvec_transform.npz
+      size: 134376
+      sha256: 325f1ce8e48f7e55e9c8aa47e05d2766b7c48c4b25b8de8dd751e7a4cc5fbe8f
+    - file: segmentation/pytorch_model.bin
+      size: 5906507
+      sha256: 7ad24338d844fb95985486eb1a464e32d229f6d7a03c9abe60f978bacf3f816e
+  last_modified: '2025-09-29T08:43:24.000Z'
+  licence: CC-BY-4.0
+  licence_basis: 'HF cardData.license ''cc-by-4.0''; gated: auto'
+  licence_evidence_url: https://huggingface.co/pyannote/speaker-diarization-community-1
+  other_evidence:
+  - url: https://creativecommons.org/licenses/by/4.0/legalcode.en
+  metadata_sources:
+  - https://huggingface.co/api/models/pyannote/speaker-diarization-community-1?blobs=true
+  gated:
+    gated: true
+    type: auto
+    terms_url: https://huggingface.co/pyannote/speaker-diarization-community-1
+    fields:
+    - Company/university
+    - Use case
+    marketing_email_consent: true
+  commercial_safe: conditional
+  commercial_safe_reason: Licence permits commercial use with attribution, but the files sit behind an automatic HF gate.
+    The gate asks for company/university and use case, and says that by providing details 'you agree that we may email you
+    occasionally' about pyannote updates, premium pipelines and services. Accepting is a founder action; access was not requested.
+    Sub-component READMEs (embedding/, plda/) are behind the gate and were not read (verify their licences once access exists).
+  condition: founder accepts the gate on the Bayanat Labs HF account; attribution in cards; re-read embedding/README.md and
+    plda/README.md after access
+  blocked_for_release_path: true
+  flags:
+  - gated
+  - terms-acceptance
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: diarisation pipeline (speaker pseudo-IDs, overlap_flag)
+- key: pyannote-3.1
+  name: pyannote speaker-diarization-3.1 (fallback)
+  kind: hf-model
+  version: 84fd25912480287da0247647c3d2b4853cb3ee5d
+  source_url: https://huggingface.co/pyannote/speaker-diarization-3.1/tree/84fd25912480287da0247647c3d2b4853cb3ee5d
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: 84fd25912480287da0247647c3d2b4853cb3ee5d
+    lfs_sha256: []
+    note: LFS file hashes not visible without accepting the gate
+  last_modified: '2024-05-10T19:43:23.000Z'
+  licence: MIT
+  licence_basis: 'HF cardData.license ''mit''; gated: auto'
+  licence_evidence_url: https://huggingface.co/pyannote/speaker-diarization-3.1
+  metadata_sources:
+  - https://huggingface.co/api/models/pyannote/speaker-diarization-3.1?blobs=true
+  gated:
+    gated: true
+    type: auto
+    terms_url: https://huggingface.co/pyannote/speaker-diarization-3.1
+    fields:
+    - Company/university
+    - Website
+    marketing_email_consent: true
+  commercial_safe: conditional
+  commercial_safe_reason: MIT, but gated the same way (company/university and website; the maintainers 'will occasionnally
+    email' about premium pipelines and paid services). Fallback only if community-1 is declined; needs segmentation-3.0 (also
+    gated) and wespeaker-voxceleb-resnet34-LM.
+  condition: founder accepts the gate
+  blocked_for_release_path: true
+  flags:
+  - gated
+  - terms-acceptance
+  - fallback
+  stage_source: 'tooling part (key not listed in manual/stages.yaml: alternative, fallback or blocked model)'
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: fallback pipeline if community-1 conditions are not accepted (added as a dependency or fallback of a listed tool)
+- key: pyannote-segmentation-3.0
+  name: pyannote segmentation-3.0 (fallback dependency)
+  kind: hf-model
+  version: e66f3d3b9eb0873085418a7b813d3b369bf160bb
+  source_url: https://huggingface.co/pyannote/segmentation-3.0/tree/e66f3d3b9eb0873085418a7b813d3b369bf160bb
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: e66f3d3b9eb0873085418a7b813d3b369bf160bb
+    lfs_sha256:
+    - file: pytorch_model.bin
+      size: 5905440
+      sha256: da85c29829d4002daedd676e012936488234d9255e65e86dfab9bec6b1729298
+  last_modified: '2024-05-10T19:35:46.000Z'
+  licence: MIT
+  licence_basis: 'HF cardData.license ''mit''; LICENSE file present but behind the gate; gated: auto'
+  licence_evidence_url: https://huggingface.co/pyannote/segmentation-3.0
+  metadata_sources:
+  - https://huggingface.co/api/models/pyannote/segmentation-3.0?blobs=true
+  gated:
+    gated: true
+    type: auto
+    terms_url: https://huggingface.co/pyannote/segmentation-3.0
+    fields:
+    - Company/university
+    - Website
+    marketing_email_consent: true
+  commercial_safe: conditional
+  commercial_safe_reason: MIT, gated like speaker-diarization-3.1. Fallback dependency only.
+  condition: founder accepts the gate
+  blocked_for_release_path: true
+  flags:
+  - gated
+  - terms-acceptance
+  - fallback
+  stage_source: 'tooling part (key not listed in manual/stages.yaml: alternative, fallback or blocked model)'
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: segmentation model used by speaker-diarization-3.1 (added as a dependency or fallback of a listed tool)
+- key: wespeaker-resnet34
+  name: pyannote wespeaker-voxceleb-resnet34-LM (fallback dependency)
+  kind: hf-model
+  version: 837717ddb9ff5507820346191109dc79c958d614
+  source_url: https://huggingface.co/pyannote/wespeaker-voxceleb-resnet34-LM/tree/837717ddb9ff5507820346191109dc79c958d614
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: 837717ddb9ff5507820346191109dc79c958d614
+    lfs_sha256:
+    - file: pytorch_model.bin
+      size: 26645418
+      sha256: 366edf44f4c80889a3eb7a9d7bdf02c4aede3127f7dd15e274dcdb826b143c56
+  last_modified: '2024-05-10T19:36:24.000Z'
+  licence: CC-BY-4.0
+  licence_basis: HF cardData.license 'cc-by-4.0'; card says the WeNet pretrained model follows the VoxCeleb dataset licence
+    (CC BY 4.0)
+  licence_evidence_url: https://huggingface.co/pyannote/wespeaker-voxceleb-resnet34-LM/raw/837717ddb9ff5507820346191109dc79c958d614/README.md
+  metadata_sources:
+  - https://huggingface.co/api/models/pyannote/wespeaker-voxceleb-resnet34-LM?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Attribution licence; not gated. Fallback dependency only.
+  blocked_for_release_path: false
+  flags:
+  - fallback
+  stage_source: 'tooling part (key not listed in manual/stages.yaml: alternative, fallback or blocked model)'
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: speaker embedding used by speaker-diarization-3.1 (added as a dependency or fallback of a listed tool)
+- key: faster-whisper
+  name: faster-whisper
+  kind: pypi
+  version: 1.2.1
+  source_url: https://pypi.org/project/faster-whisper/1.2.1/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: faster_whisper-1.2.1-py3-none-any.whl
+      sha256: 79a66ad50688c0b794dd501dc340a736992a6342f7f95e5811be60b5224a26a7
+    files_listed: 1
+    files_total: 1
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2025-10-31T11:35:47.794651Z'
+  repo_tag_commit:
+    repo: SYSTRAN/faster-whisper
+    ref: v1.2.1
+    commit: 65882eee9f5cdbeeb2d877f1131d48cf241b327d
+  upstream_repo:
+    repo: SYSTRAN/faster-whisper
+    pushed_at: '2026-10-13T07:02:49Z'
+    archived: false
+  licence: MIT
+  licence_basis: PyPI license 'MIT' and classifier; repo LICENSE MIT
+  licence_evidence_url: https://raw.githubusercontent.com/SYSTRAN/faster-whisper/65882eee9f5cdbeeb2d877f1131d48cf241b327d/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/faster-whisper/json
+  - gh api repos/SYSTRAN/faster-whisper/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stage_note: tooling inventory had [6, 7]; stages.yaml placement used
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: true
+  notes: primary ASR runner (CTranslate2)
+- key: ctranslate2
+  name: CTranslate2
+  kind: pypi
+  version: 4.8.3
+  source_url: https://pypi.org/project/ctranslate2/4.8.3/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: ctranslate2-4.8.3-cp312-cp312-macosx_11_0_arm64.whl
+      sha256: 116b7d90fbd704e990ba21f87b484dbdd3b1d9836fb7e642f4939237322bac83
+    - filename: ctranslate2-4.8.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
+      sha256: 7e161eb031fcf2a5d81ce3a1cd8be4954c7df758d96cfaba57aeecc69a0c00ae
+    files_listed: 2
+    files_total: 35
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-10-13T05:56:52.823827Z'
+  repo_tag_commit:
+    repo: OpenNMT/CTranslate2
+    ref: v4.8.3
+    commit: 8d91aa08225004755360daa43deb62b35b1ed65d
+  upstream_repo:
+    repo: OpenNMT/CTranslate2
+    pushed_at: '2026-10-13T05:57:04Z'
+    archived: false
+  licence: MIT
+  licence_basis: PyPI license 'MIT' (no classifier); repo LICENSE MIT
+  licence_evidence_url: https://raw.githubusercontent.com/OpenNMT/CTranslate2/8d91aa08225004755360daa43deb62b35b1ed65d/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/ctranslate2/json
+  - gh api repos/OpenNMT/CTranslate2/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: 'tooling part (key not listed in manual/stages.yaml: alternative, fallback or blocked model)'
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: false
+  notes: inference engine under faster-whisper
+- key: whisper-large-v3
+  name: Whisper large-v3
+  kind: hf-model
+  version: 06f233fe06e710322aca913c1bc4249a0d71fce1
+  source_url: https://huggingface.co/openai/whisper-large-v3/tree/06f233fe06e710322aca913c1bc4249a0d71fce1
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: 06f233fe06e710322aca913c1bc4249a0d71fce1
+    lfs_sha256:
+    - file: model.fp32-00001-of-00002.safetensors
+      size: 4993448880
+      sha256: 08e0005225b3dbaf55dd13ac62926cc7e02c1025d66fa375e6fb305ff79cd4f9
+    - file: model.fp32-00002-of-00002.safetensors
+      size: 1180663192
+      sha256: 630ca774672856d2e0e39a702e590f635a1cfc5726a64b6578ab46dd367369a9
+    - file: model.safetensors
+      size: 3087130976
+      sha256: a8e94b85976e5864ba3e9525c7e6c83b2a1eca42d4b797a0c7c24d778e40fd95
+    - file: pytorch_model.bin
+      size: 3087394553
+      sha256: 8f3dd0108a56caf505b47740a385a6f61be03e670f4fc34e21e3d2bc98d7b6d1
+    - file: pytorch_model.fp32-00001-of-00002.bin
+      size: 4993677094
+      sha256: fed9e023b3519cba5b7279bdfbfd81aacfeb001f04bbe0cd9b8d1995a900b0d8
+    - file: pytorch_model.fp32-00002-of-00002.bin
+      size: 1180725482
+      sha256: aadd3bdfecf9bc81e6ef6acf3c1ccaf3124c82eb06a94190064a28fdee096d64
+  last_modified: '2024-08-12T10:20:10.000Z'
+  upstream_repo:
+    repo: openai/whisper
+    pushed_at: '2026-08-31T17:19:19Z'
+    archived: false
+  licence: Apache-2.0
+  licence_basis: HF cardData.license 'apache-2.0'. The openai/whisper GitHub README says code and model weights are MIT. Both
+    are permissive; the lock records the licence of the HF repo the weights are downloaded from.
+  licence_evidence_url: https://huggingface.co/openai/whisper-large-v3/raw/06f233fe06e710322aca913c1bc4249a0d71fce1/README.md
+  other_evidence:
+  - url: https://raw.githubusercontent.com/openai/whisper/31243bad24cc746f07d4c8bfdd2d974872cb1803/README.md
+  metadata_sources:
+  - gh api repos/openai/whisper/license
+  - https://huggingface.co/api/models/openai/whisper-large-v3?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive under either statement. The openai/whisper repository releases code and weights under
+    MIT; the HF card says Apache-2.0 (discrepancy recorded, no effect on commercial use).
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stage_note: tooling inventory had [6, 7, 9]; stages.yaml placement used
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: true
+  notes: primary ASR weights
+- key: faster-whisper-large-v3
+  name: faster-whisper-large-v3 (CTranslate2 conversion)
+  kind: hf-model
+  version: edaa852ec7e145841d8ffdb056a99866b5f0a478
+  source_url: https://huggingface.co/Systran/faster-whisper-large-v3/tree/edaa852ec7e145841d8ffdb056a99866b5f0a478
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: edaa852ec7e145841d8ffdb056a99866b5f0a478
+    lfs_sha256:
+    - file: model.bin
+      size: 3087284237
+      sha256: 69f74147e3334731bc3a76048724833325d2ec74642fb52620eda87352e3d4f1
+  last_modified: '2023-11-23T09:41:12.000Z'
+  licence: MIT
+  licence_basis: HF cardData.license 'mit'
+  licence_evidence_url: https://huggingface.co/Systran/faster-whisper-large-v3/raw/edaa852ec7e145841d8ffdb056a99866b5f0a478/README.md
+  metadata_sources:
+  - https://huggingface.co/api/models/Systran/faster-whisper-large-v3?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive CTranslate2 conversion of Whisper large-v3.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stage_note: tooling inventory had [6, 7]; stages.yaml placement used
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: true
+  notes: CTranslate2 weights faster-whisper loads for large-v3
+- key: nemo_toolkit
+  name: NVIDIA NeMo
+  kind: pypi
+  version: 3.0.0
+  source_url: https://pypi.org/project/nemo_toolkit/3.0.0/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: nemo_toolkit-3.0.0-py3-none-any.whl
+      sha256: f1d8238e35909464cf426e5792af3113a7060de419f194b83bedd81cbe909394
+    - filename: nemo_toolkit-3.0.0.tar.gz
+      sha256: d4cf6d3fc3c3bf28b29efbdeb3d2a32ea2564a642269effd56d9b7a6fe087d91
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-08-07T00:12:28.629204Z'
+  repo_tag_commit:
+    repo: NVIDIA-NeMo/Speech
+    ref: v3.0.0
+    commit: fd6a877539710e2b98f28c43272ff81312f83417
+  upstream_repo:
+    repo: NVIDIA-NeMo/Speech
+    pushed_at: '2026-10-14T20:01:26Z'
+    archived: false
+  licence: Apache-2.0
+  licence_basis: PyPI license (full Apache text) and classifier; GitHub resolves the PyPI homepage NVIDIA-NeMo/NeMo to NVIDIA-NeMo/Speech,
+    LICENSE Apache-2.0
+  licence_evidence_url: https://raw.githubusercontent.com/NVIDIA-NeMo/Speech/fd6a877539710e2b98f28c43272ff81312f83417/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/nemo_toolkit/json
+  - gh api repos/NVIDIA-NeMo/Speech/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive. The repository was renamed or split (NVIDIA-NeMo/NeMo now resolves to NVIDIA-NeMo/Speech);
+    pin by PyPI version.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stage_note: tooling inventory had [6, 9]; stages.yaml placement used
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: true
+  notes: runner for the NVIDIA Arabic second ASR system and fine-tunes
+- key: nvidia-ar-fastconformer-pcd
+  name: NVIDIA FastConformer hybrid Arabic (pcd v1.0)
+  kind: hf-model
+  version: 7f32349d952f42a28dce979ba73270aa2bbdfa89
+  source_url: https://huggingface.co/nvidia/stt_ar_fastconformer_hybrid_large_pcd_v1.0/tree/7f32349d952f42a28dce979ba73270aa2bbdfa89
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: 7f32349d952f42a28dce979ba73270aa2bbdfa89
+    lfs_sha256:
+    - file: stt_ar_fastconformer_hybrid_large_pcd_v1.0.nemo
+      size: 459233280
+      sha256: d29d19d7c054a5fc010ac6815e9cbb0dd1b21a30e0a7f7f2982e1fecaf0c3e31
+  last_modified: '2025-10-21T15:45:43.000Z'
+  licence: CC-BY-4.0
+  licence_basis: HF cardData.license 'cc-by-4.0'; card License section and 'ready for commercial and non-commercial use'
+  licence_evidence_url: https://huggingface.co/nvidia/stt_ar_fastconformer_hybrid_large_pcd_v1.0/raw/7f32349d952f42a28dce979ba73270aa2bbdfa89/README.md
+  metadata_sources:
+  - https://huggingface.co/api/models/nvidia/stt_ar_fastconformer_hybrid_large_pcd_v1.0?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: 'Attribution licence. This is the current HF id of the model referred to as ''NVIDIA Conformer-CTC-ar''
+    (a hybrid FastConformer with diacritics). Training data per card: MASC 690 h, Common Voice 17.0 Arabic 65 h, FLEURS Arabic
+    5 h, a recitation corpus 390 h. FLEURS is in its training set, so FLEURS-based calibration over-states its accuracy (timing
+    is unaffected); the licence of the recitation corpus is unclear (verify before relying on this model for a flagship claim).'
+  blocked_for_release_path: false
+  flags:
+  - training-data-note
+  stage_source: 'tooling part (key not listed in manual/stages.yaml: alternative, fallback or blocked model)'
+  stages:
+  - id: 6
+    name: Enrichment
+  - id: 7
+    name: Human QA
+  release_path_role: true
+  notes: Arabic second ASR system ('NVIDIA Conformer-CTC-ar' in older references; id verified on HF)
+- key: nvidia-ar-fastconformer-pc
+  name: NVIDIA FastConformer hybrid Arabic (pc v1.0)
+  kind: hf-model
+  version: 3e748b4d91935672f19fc4d6cba38fff9ef013c5
+  source_url: https://huggingface.co/nvidia/stt_ar_fastconformer_hybrid_large_pc_v1.0/tree/3e748b4d91935672f19fc4d6cba38fff9ef013c5
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: 3e748b4d91935672f19fc4d6cba38fff9ef013c5
+    lfs_sha256:
+    - file: stt_ar_fastconformer_hybrid_large_pc_v1.0.nemo
+      size: 424164993
+      sha256: d5c50c74ec1860b5f68fce310a89bb9ec2034dfdd818374b2ab2f43f17856d86
+  last_modified: '2025-10-23T13:48:25.000Z'
+  licence: CC-BY-4.0
+  licence_basis: HF cardData.license 'cc-by-4.0'; card License section
+  licence_evidence_url: https://huggingface.co/nvidia/stt_ar_fastconformer_hybrid_large_pc_v1.0/raw/3e748b4d91935672f19fc4d6cba38fff9ef013c5/README.md
+  metadata_sources:
+  - https://huggingface.co/api/models/nvidia/stt_ar_fastconformer_hybrid_large_pc_v1.0?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: 'Attribution licence. No diacritics; training data per card: MASC 690 h, Common Voice 17.0 Arabic
+    65 h, FLEURS Arabic 5 h (FLEURS overlap as above).'
+  blocked_for_release_path: false
+  flags:
+  - training-data-note
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: true
+  notes: Arabic second ASR system, variant with punctuation and capitalisation, no diacritics (verify)
+- key: nemotron-3.5-asr
+  name: Nemotron 3.5 ASR streaming 0.6B
+  kind: hf-model
+  version: ea30d66debe3740a08b573244286791d423d6b3e
+  source_url: https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b/tree/ea30d66debe3740a08b573244286791d423d6b3e
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: ea30d66debe3740a08b573244286791d423d6b3e
+    lfs_sha256:
+    - file: model.safetensors
+      size: 2552062944
+      sha256: 9eebdd6590289cb3030f310858f3df93256600a800a3e8200c5993d5f967e174
+    - file: nemotron-3.5-asr-streaming-0.6b.nemo
+      size: 2368284501
+      sha256: 210214ed94039bf6bfbb9a047c7fa289628db75b103e2bf6381fa78285436a74
+  last_modified: '2026-09-10T16:49:07.000Z'
+  licence: LicenseRef-OpenMDW-1.1
+  licence_basis: HF cardData.license 'other', license_name 'openmdw-1.1', link https://openmdw.ai/license/1-1/ (SPDX list
+    3.29.0 has OpenMDW-1.0 but not 1.1)
+  licence_evidence_url: https://openmdw.ai/license/1-1/
+  other_evidence:
+  - url: https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b/raw/ea30d66debe3740a08b573244286791d423d6b3e/README.md
+  metadata_sources:
+  - https://huggingface.co/api/models/nvidia/nemotron-3.5-asr-streaming-0.6b?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: 'Custom licence read in full: a permissive grant to deal in the model materials ''without restriction'';
+    on distribution keep the agreement and notices; rights end if you sue claiming the materials infringe a patent or copyright;
+    no restrictions on outputs; you are responsible for clearing third-party rights. The card says ''ready for commercial
+    use'' and lists Arabic (ar-AR) as transcription-ready (summary; documentation, not legal advice).'
+  blocked_for_release_path: false
+  flags:
+  - custom-licence-read
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 3
+    name: Normalisation
+  - id: 9
+    name: Baseline or benchmark
+  release_path_role: true
+  notes: '''Nemotron 3.5 ASR'' base for fine-tuning on own pseudo-labels (Arabic coverage to verify)'
+- key: artst-asr-v3
+  name: ArTST ASR v3 (MBZUAI)
+  kind: hf-model
+  version: d845595653a28d16ef0a98419e506fe43f5035c8
+  source_url: https://huggingface.co/MBZUAI/artst_asr_v3/tree/d845595653a28d16ef0a98419e506fe43f5035c8
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: d845595653a28d16ef0a98419e506fe43f5035c8
+    lfs_sha256:
+    - file: model.safetensors
+      size: 619242064
+      sha256: cd930e51c4f5b9c877bed1aac9c44449d845a421b4bb0983412966abeb88db64
+    - file: spm_char.model
+      size: 499646
+      sha256: 4f9b2a645d6c0253e3926a9c512f1397811ce97ab7639ed984ed5dd130bb58c2
+  last_modified: '2025-09-10T11:40:08.000Z'
+  upstream_repo:
+    repo: mbzuai-nlp/ArTST
+    pushed_at: '2025-07-10T12:56:40Z'
+    archived: false
+  licence: CC-BY-NC-4.0
+  licence_basis: HF cardData.license 'cc-by-nc-4.0'; GitHub mbzuai-nlp/ArTST has no licence file (licence API 404)
+  licence_evidence_url: https://huggingface.co/MBZUAI/artst_asr_v3/raw/d845595653a28d16ef0a98419e506fe43f5035c8/README.md
+  other_evidence:
+  - url: https://raw.githubusercontent.com/mbzuai-nlp/ArTST/53b7f768b2ffe748912190c10f03168cc4001820/README.md
+  metadata_sources:
+  - gh api repos/mbzuai-nlp/ArTST/license
+  - https://huggingface.co/api/models/MBZUAI/artst_asr_v3?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'no'
+  commercial_safe_reason: Non-commercial. Fine-tuned on MGB2. Cannot serve as the Arabic second ASR system for released silver
+    transcripts.
+  blocked_for_release_path: true
+  replacement: nvidia-ar-fastconformer-pc
+  flags:
+  - NC
+  stage_source: 'tooling part (key not listed in manual/stages.yaml: alternative, fallback or blocked model)'
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: true
+  notes: Arabic second ASR system option
+- key: artst-asr-v3-qasr
+  name: ArTST ASR v3 QASR fine-tune (MBZUAI)
+  kind: hf-model
+  version: 236ad1d9c1ee2c053488efcaa82e4a657d8239a2
+  source_url: https://huggingface.co/MBZUAI/artst_asr_v3_qasr/tree/236ad1d9c1ee2c053488efcaa82e4a657d8239a2
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: 236ad1d9c1ee2c053488efcaa82e4a657d8239a2
+    lfs_sha256:
+    - file: model.safetensors
+      size: 619242064
+      sha256: 7734baeed04c54b422c5fd83032b8e646bf606e4ec0723767bb9a99f18d306e7
+    - file: spm_char.model
+      size: 499646
+      sha256: 4f9b2a645d6c0253e3926a9c512f1397811ce97ab7639ed984ed5dd130bb58c2
+  last_modified: '2025-09-10T11:41:21.000Z'
+  licence: CC-BY-NC-4.0
+  licence_basis: HF cardData.license 'cc-by-nc-4.0'
+  licence_evidence_url: https://huggingface.co/MBZUAI/artst_asr_v3_qasr/raw/236ad1d9c1ee2c053488efcaa82e4a657d8239a2/README.md
+  metadata_sources:
+  - https://huggingface.co/api/models/MBZUAI/artst_asr_v3_qasr?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'no'
+  commercial_safe_reason: Non-commercial, and fine-tuned on QASR, a research-only dataset.
+  blocked_for_release_path: true
+  replacement: nvidia-ar-fastconformer-pc
+  flags:
+  - NC
+  - research-only-training-data
+  stage_source: 'tooling part (key not listed in manual/stages.yaml: alternative, fallback or blocked model)'
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: true
+  notes: ArTST variant fine-tuned on QASR (QASR is non-commercial; check)
+- key: ctc-forced-aligner
+  name: ctc-forced-aligner (MahmoudAshraf97)
+  kind: github
+  version: 64293cc6d711e57666c4a8b098e9fd93b381fd88
+  source_url: https://github.com/MahmoudAshraf97/ctc-forced-aligner/tree/64293cc6d711e57666c4a8b098e9fd93b381fd88
+  hash:
+    algorithm: git commit sha1
+    commit: 64293cc6d711e57666c4a8b098e9fd93b381fd88
+    commit_date: '2026-09-07T13:35:25Z'
+  upstream_repo:
+    repo: MahmoudAshraf97/ctc-forced-aligner
+    pushed_at: '2026-09-07T13:35:26Z'
+    archived: false
+  licence: BSD-2-Clause
+  licence_basis: repo LICENSE (BSD-2-Clause) added 2026-09-07 (commit f3f9247); tags v0.1, v0.2 and v0.3.0 predate it, so
+    the lock pins commit 64293cc. The PyPI name 'ctc-forced-aligner' (1.0.2) belongs to a different project (deskpai/ctc_forced_aligner)
+    with no licence metadata.
+  licence_evidence_url: https://raw.githubusercontent.com/MahmoudAshraf97/ctc-forced-aligner/64293cc6d711e57666c4a8b098e9fd93b381fd88/LICENSE
+  other_evidence:
+  - url: https://raw.githubusercontent.com/MahmoudAshraf97/ctc-forced-aligner/64293cc6d711e57666c4a8b098e9fd93b381fd88/README.md
+  metadata_sources:
+  - gh api repos/MahmoudAshraf97/ctc-forced-aligner/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: conditional
+  commercial_safe_reason: Code is BSD-2-Clause, but its README states the default model is CC-BY-NC 4.0 and says to use a
+    different model for commercial use. Always pass --alignment_model jonatasgrosman/wav2vec2-large-xlsr-53-arabic (the README's
+    own Arabic example). Install from git at the pinned commit, never 'pip install ctc-forced-aligner'.
+  condition: pin commit 64293cc; never use the default MMS model; install from git
+  blocked_for_release_path: false
+  flags:
+  - default-model-NC
+  - pypi-name-collision
+  stage_source: manual/stages.yaml
+  stage_note: tooling inventory had [6]; stages.yaml placement used
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: true
+  notes: 'CTC forced alignment of manual captions PyPI name collision: ''ctc-forced-aligner'' 1.0.2 on PyPI is a different
+    project (https://github.com/deskpai/ctc_forced_aligner); install from git.'
+- key: mms-300m-forced-aligner
+  name: MMS-300m forced-aligner checkpoint (ctc-forced-aligner default)
+  kind: hf-model
+  version: 49402e9577b1158620820667c218cd494cc44486
+  source_url: https://huggingface.co/MahmoudAshraf/mms-300m-1130-forced-aligner/tree/49402e9577b1158620820667c218cd494cc44486
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: 49402e9577b1158620820667c218cd494cc44486
+    lfs_sha256:
+    - file: model.safetensors
+      size: 1261930388
+      sha256: 9aa5229a1af4d7714285cfa14bcaab6af2a39a9e810b475722b24975d5cb1dab
+    - file: pytorch_model.bin
+      size: 1262019174
+      sha256: 41f8ceea323a46161f63ef6e0a2bf5773129f775f8e4aaa2e6a1727d7311921e
+  last_modified: '2026-04-15T14:57:12.000Z'
+  licence: CC-BY-NC-4.0
+  licence_basis: HF cardData.license 'cc-by-nc-4.0'; converted from the MMS-300M forced-alignment checkpoint
+  licence_evidence_url: https://huggingface.co/MahmoudAshraf/mms-300m-1130-forced-aligner/raw/49402e9577b1158620820667c218cd494cc44486/README.md
+  other_evidence:
+  - url: https://creativecommons.org/licenses/by-nc/4.0/legalcode.en
+  metadata_sources:
+  - https://huggingface.co/api/models/MahmoudAshraf/mms-300m-1130-forced-aligner?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'no'
+  commercial_safe_reason: Non-commercial; it is ctc-forced-aligner's default model.
+  blocked_for_release_path: true
+  replacement: wav2vec2-xlsr-53-arabic
+  flags:
+  - NC
+  stage_source: 'tooling part (key not listed in manual/stages.yaml: alternative, fallback or blocked model)'
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: true
+  notes: default alignment model of ctc-forced-aligner
+- key: wav2vec2-xlsr-53-arabic
+  name: wav2vec2-large-xlsr-53-arabic (jonatasgrosman)
+  kind: hf-model
+  version: af46c2d8531b8dcbb5e23b952f739b372c2e5d2d
+  source_url: https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-arabic/tree/af46c2d8531b8dcbb5e23b952f739b372c2e5d2d
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: af46c2d8531b8dcbb5e23b952f739b372c2e5d2d
+    lfs_sha256:
+    - file: pytorch_model.bin
+      size: 1262142936
+      sha256: a0b26f6d9d3edfde1784aef863c192a8cc1e438a23b45910ab648531ebe1857b
+  last_modified: '2022-12-14T01:57:28.000Z'
+  licence: Apache-2.0
+  licence_basis: HF cardData.license 'apache-2.0'
+  licence_evidence_url: https://huggingface.co/jonatasgrosman/wav2vec2-large-xlsr-53-arabic/raw/af46c2d8531b8dcbb5e23b952f739b372c2e5d2d/README.md
+  metadata_sources:
+  - https://huggingface.co/api/models/jonatasgrosman/wav2vec2-large-xlsr-53-arabic?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive. Fine-tuned from facebook/wav2vec2-large-xlsr-53 on Common Voice 6.1 Arabic (CC0) and
+    the Arabic Speech Corpus (HF card of halabi2016/arabic_speech_corpus says cc-by-4.0; verify). Commercial-safe alignment
+    model for ctc-forced-aligner.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stage_note: tooling inventory had [6]; stages.yaml placement used
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: true
+  notes: candidate Arabic wav2vec2 alignment model for commercial-safe alignment
+- key: mms-1b-all
+  name: MMS-1b-all (Meta)
+  kind: hf-model
+  version: 3d33597edbdaaba14a8e858e2c8caa76e3cec0cd
+  source_url: https://huggingface.co/facebook/mms-1b-all/tree/3d33597edbdaaba14a8e858e2c8caa76e3cec0cd
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: 3d33597edbdaaba14a8e858e2c8caa76e3cec0cd
+    lfs_sha256:
+    - file: adapter.abi.bin
+      size: 8987533
+      sha256: 62057713443c0d7d227555908d255af4bd670ba0ef2e50ab76fbaae544e963f0
+    - file: adapter.abi.safetensors
+      size: 8926640
+      sha256: a6dd8c7e2846465daec297311635207f660e1dca36c00b00522ad707dafb985b
+    - file: adapter.abk.bin
+      size: 8936269
+      sha256: 90858fb0979616d427b89dbc35b537cc7395cba7ae217ee54ca398b13d4188b4
+    - file: adapter.abk.safetensors
+      size: 8875400
+      sha256: b03fdebd47ae088e1f1398ae89d964f00b7204cc36e124b8d9cb494bc418523f
+    - file: adapter.abp.bin
+      size: 8885069
+      sha256: edfb2a45ebe598b0569e3cacbb809b37ad3e4136be558ff15888d09758940285
+    - file: adapter.abp.safetensors
+      size: 8824152
+      sha256: ece0b00ca2ef03902be1fccd9ca718d420f84fb86bde1a428620a37075db9238
+    - file: adapter.aca.bin
+      size: 8895309
+      sha256: f0b3e22d0d52c2577c7b3a71168f3cea96d90034f84452db165c64154b018ce4
+    - file: adapter.aca.safetensors
+      size: 8834400
+      sha256: af1020f78f93b946b8896825a2a1020f42e4dfb23812ace921ce9682e7a9ff27
+    - file: adapter.acd.bin
+      size: 8859469
+      sha256: 9e54c514dc8746e9c0c363334c241df4ac73e1b01386f3ed90f676323e1a11c6
+    - file: adapter.acd.safetensors
+      size: 8798532
+      sha256: 0d1f40bab81db1349726043f2e9c439c0c9b12548fffa9b224ce39f7efc9cc74
+    - file: adapter.ace.bin
+      size: 8931149
+      sha256: 5dd78c1d7d553c6e913a2a86bc268eee2712b037e283e0ca7a47405109700251
+    - file: adapter.ace.safetensors
+      size: 8870276
+      sha256: da15ecc40a73efd688b1b6c322ae59ae07b834e320f7b5962c0707c85a8e2515
+  last_modified: '2023-06-15T10:45:44.000Z'
+  licence: CC-BY-NC-4.0
+  licence_basis: 'HF cardData.license ''cc-by-nc-4.0''; card ''License: CC-BY-NC 4.0'''
+  licence_evidence_url: https://huggingface.co/facebook/mms-1b-all/raw/3d33597edbdaaba14a8e858e2c8caa76e3cec0cd/README.md
+  metadata_sources:
+  - https://huggingface.co/api/models/facebook/mms-1b-all?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'no'
+  commercial_safe_reason: Non-commercial. MMS checkpoints fail the commercial test; alignment uses a commercially usable Arabic
+    wav2vec2 model.
+  blocked_for_release_path: true
+  replacement: wav2vec2-xlsr-53-arabic
+  flags:
+  - NC
+  stage_source: 'tooling part (key not listed in manual/stages.yaml: alternative, fallback or blocked model)'
+  stages:
+  - id: 3
+    name: Normalisation
+  release_path_role: true
+  notes: '''MMS model'' option for alignment'
+- key: dnsmos
+  name: DNSMOS P.835 (DNS Challenge ONNX models)
+  kind: github
+  version: master @ 591184a9fcb2 (no release tags)
+  source_url: https://github.com/microsoft/DNS-Challenge/tree/591184a9fcb2cbdec02520fed81a32bbbf9d73ff
+  hash:
+    algorithm: git commit sha1
+    commit: 591184a9fcb2cbdec02520fed81a32bbbf9d73ff
+    commit_date: '2024-03-29T21:03:16Z'
+    files:
+    - path: DNSMOS/DNSMOS/bak_ovr.onnx
+      size: 742375
+      git_blob_sha1: 5d228885198ed1a2383dcba250e1d4337bdbb9bf
+    - path: DNSMOS/DNSMOS/model_v8.onnx
+      size: 224860
+      git_blob_sha1: 15f1da4d9142bffa65ac6e9dc2e89857fc85b845
+    - path: DNSMOS/DNSMOS/sig.onnx
+      size: 742203
+      git_blob_sha1: 37e508243b1b47cd8245ab2096b05e7a2842101a
+    - path: DNSMOS/DNSMOS/sig_bak_ovr.onnx
+      size: 1157965
+      git_blob_sha1: 814b8dc6dafa729c0b821a64bef2e7156dc0c01a
+  upstream_repo:
+    repo: microsoft/DNS-Challenge
+    pushed_at: '2024-07-25T10:19:06Z'
+    archived: false
+  licence: CC-BY-4.0 AND MIT
+  licence_verify: No licence statement names the ONNX model files themselves; the repo grants CC BY 4.0 for 'documentation
+    and other content' and MIT for 'code'.
+  licence_basis: repo LICENSE (CC BY 4.0) and LICENSE-CODE (MIT); README Legal Notices
+  licence_evidence_url: https://raw.githubusercontent.com/microsoft/DNS-Challenge/591184a9fcb2cbdec02520fed81a32bbbf9d73ff/LICENSE
+  other_evidence:
+  - url: https://raw.githubusercontent.com/microsoft/DNS-Challenge/591184a9fcb2cbdec02520fed81a32bbbf9d73ff/LICENSE-CODE
+  - url: https://raw.githubusercontent.com/microsoft/DNS-Challenge/591184a9fcb2cbdec02520fed81a32bbbf9d73ff/README.md
+  - url: https://raw.githubusercontent.com/microsoft/DNS-Challenge/591184a9fcb2cbdec02520fed81a32bbbf9d73ff/DNSMOS/README.md
+  metadata_sources:
+  - gh api repos/microsoft/DNS-Challenge/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: conditional
+  commercial_safe_reason: Both repo licences allow commercial use, but neither names the DNSMOS ONNX weights, and the repo
+    was last pushed 2024-07-25. Treat the weights as CC BY 4.0 (attribution in cards); scores (dnsmos_ovrl) are our derived
+    data. Whether the weights fall under the repo grant is still to be confirmed.
+  condition: attribution to Microsoft DNS Challenge in every card that reports DNSMOS; confirmation that the ONNX files are
+    covered
+  blocked_for_release_path: false
+  flags:
+  - model-licence-implied
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: dnsmos_ovrl / sig / bak scores
+- key: onnxruntime
+  name: ONNX Runtime
+  kind: pypi
+  version: 1.31.0
+  source_url: https://pypi.org/project/onnxruntime/1.31.0/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: onnxruntime-1.31.0-cp312-cp312-macosx_14_0_arm64.whl
+      sha256: aaab9b3af536b06ca27ab5e35e3d429c97457ce76cf298af103f687e8b9975c0
+    - filename: onnxruntime-1.31.0-cp312-cp312-manylinux_2_28_x86_64.whl
+      sha256: 5e129d6c56abd53e659cb70f00a108d6824086470ff99c2e47a82e5786563db3
+    files_listed: 2
+    files_total: 24
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-10-09T04:18:03.504315Z'
+  repo_tag_commit:
+    repo: microsoft/onnxruntime
+    ref: v1.31.0
+    commit: 402979ac1bef89dcd55add41eaa7277c407599eb
+  upstream_repo:
+    repo: microsoft/onnxruntime
+    pushed_at: '2026-10-14T20:46:35Z'
+    archived: false
+  licence: MIT
+  licence_basis: PyPI license 'MIT License' and classifier; repo LICENSE MIT
+  licence_evidence_url: https://raw.githubusercontent.com/microsoft/onnxruntime/402979ac1bef89dcd55add41eaa7277c407599eb/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/onnxruntime/json
+  - gh api repos/microsoft/onnxruntime/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive runtime for DNSMOS.
+  blocked_for_release_path: false
+  flags:
+  - added-dependency
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: false
+  notes: runtime for DNSMOS ONNX models (added as a dependency or fallback of a listed tool)
+- key: torchaudio
+  name: TorchAudio (SQUIM)
+  kind: pypi
+  version: 2.11.0
+  source_url: https://pypi.org/project/torchaudio/2.11.0/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: torchaudio-2.11.0-cp312-cp312-macosx_11_0_arm64.whl
+      sha256: a1cf1acc883bee9cb906a933572fed6a8a933f86ef34e9ea7d803f72317e8c1b
+    - filename: torchaudio-2.11.0-cp312-cp312-manylinux_2_28_x86_64.whl
+      sha256: 6503c0bdb29daf2e6281bb70ea2dfe2c3553b782b619eb5d73bdadd8a3f7cecf
+    files_listed: 2
+    files_total: 28
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-03-23T18:13:15.703348Z'
+  repo_tag_commit:
+    repo: pytorch/audio
+    ref: v2.11.0
+    commit: 34c52a67e8941bbd8e6adaca0eb0b9eabec11d78
+  upstream_repo:
+    repo: pytorch/audio
+    pushed_at: '2026-10-14T11:40:31Z'
+    archived: false
+  licence: BSD-2-Clause
+  licence_basis: PyPI license empty; classifier 'BSD License'; repo LICENSE BSD-2-Clause
+  licence_evidence_url: https://raw.githubusercontent.com/pytorch/audio/34c52a67e8941bbd8e6adaca0eb0b9eabec11d78/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/torchaudio/json
+  - gh api repos/pytorch/audio/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Code is permissive. Pretrained SQUIM weights carry their own licences (see squim-objective, squim-subjective).
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: TorchAudio-SQUIM STOI/PESQ/SI-SDR proxies (weights licence per torchaudio docs)
+- key: squim-objective
+  name: TorchAudio SQUIM_OBJECTIVE weights (squim_objective_dns2020.pth)
+  kind: binary
+  version: torchaudio v2.11.0 (squim_objective_dns2020.pth)
+  source_url: https://download.pytorch.org/torchaudio/models/squim_objective_dns2020.pth
+  hash:
+    algorithm: none (file not downloaded in this task)
+    pinned_by:
+      repo: pytorch/audio
+      ref: v2.11.0
+      commit: 34c52a67e8941bbd8e6adaca0eb0b9eabec11d78
+    note: record sha256 of the .pth at first download on the GPU box
+  upstream_repo:
+    repo: pytorch/audio
+    pushed_at: '2026-10-14T11:40:31Z'
+    archived: false
+  licence: CC-BY-4.0
+  licence_basis: 'torchaudio v2.11.0 src/torchaudio/pipelines/_squim_pipeline.py docstring: weights under CC BY 4.0 (trained
+    on DNS 2020)'
+  licence_evidence_url: https://raw.githubusercontent.com/pytorch/audio/34c52a67e8941bbd8e6adaca0eb0b9eabec11d78/src/torchaudio/pipelines/_squim_pipeline.py
+  metadata_sources:
+  - gh api repos/pytorch/audio/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Attribution licence; reference-free STOI/PESQ/SI-SDR estimates are derived data.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: reference-free STOI / PESQ / SI-SDR estimates; weights downloaded by torchaudio from download.pytorch.org
+- key: squim-subjective
+  name: TorchAudio SQUIM_SUBJECTIVE weights (squim_subjective_bvcc_daps.pth)
+  kind: binary
+  version: torchaudio v2.11.0 (squim_subjective_bvcc_daps.pth)
+  source_url: https://download.pytorch.org/torchaudio/models/squim_subjective_bvcc_daps.pth
+  hash:
+    algorithm: none (file not downloaded in this task)
+    pinned_by:
+      repo: pytorch/audio
+      ref: v2.11.0
+      commit: 34c52a67e8941bbd8e6adaca0eb0b9eabec11d78
+    note: record sha256 of the .pth at first download on the GPU box
+  upstream_repo:
+    repo: pytorch/audio
+    pushed_at: '2026-10-14T11:40:31Z'
+    archived: false
+  licence: CC-BY-NC-4.0
+  licence_basis: 'torchaudio v2.11.0 _squim_pipeline.py docstring: weights under CC BY-NC 4.0 (trained on BVCC and DAPS)'
+  licence_evidence_url: https://raw.githubusercontent.com/pytorch/audio/34c52a67e8941bbd8e6adaca0eb0b9eabec11d78/src/torchaudio/pipelines/_squim_pipeline.py
+  other_evidence:
+  - url: https://creativecommons.org/licenses/by-nc/4.0/legalcode.en
+  metadata_sources:
+  - gh api repos/pytorch/audio/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'no'
+  commercial_safe_reason: Non-commercial weights. Use SQUIM_OBJECTIVE only; a 'TorchAudio-SQUIM' step must not include SQUIM_SUBJECTIVE.
+  blocked_for_release_path: true
+  replacement: squim-objective
+  flags:
+  - NC
+  stage_source: 'tooling part (key not listed in manual/stages.yaml: alternative, fallback or blocked model)'
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: reference-based MOS estimate; weights downloaded by torchaudio from download.pytorch.org
+- key: adi20-whisper
+  name: ADI-20 Whisper dialect-ID model (Elyadata)
+  kind: hf-model
+  version: 04f139246fe0584b25d9b9ac0476f5c3f7cfd0b2
+  source_url: https://huggingface.co/Elyadata/ADI-whisper-ADI20/tree/04f139246fe0584b25d9b9ac0476f5c3f7cfd0b2
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: 04f139246fe0584b25d9b9ac0476f5c3f7cfd0b2
+    lfs_sha256:
+    - file: attention_pooling.ckpt
+      size: 6740
+      sha256: 0e015a4ed868bc4dfcec47af51a95b622037fc13becb702cc8171a223dfddfe8
+    - file: brain.ckpt
+      size: 50
+      sha256: 3888629ac8efb67b3b056f3fe0d026702b046af2a15e965378332f7d63c5ca8f
+    - file: dataloader-TRAIN.ckpt
+      size: 5
+      sha256: 6a21369bcca05a0d5c2a7eb0ba00bd5dd34c28915c8c3da30553ee4043b3d5a6
+    - file: optimizer.ckpt
+      size: 218582
+      sha256: cdd58ef92828f25761d1f03453a16225327b46a9e13fb978c72e966a17cbf617
+    - file: output_mlp.ckpt
+      size: 103723
+      sha256: a9d99ccddfc47f7160b7a630ef475327c769eaa4b0e1fa302c7e152e377dad5c
+    - file: whisper.ckpt
+      size: 2548162402
+      sha256: 5721aa93158f312d0f694a573b72ed736dce9e33217c9f01d06e8d2cb149cc17
+    - file: whisper_opt.ckpt
+      size: 5080804356
+      sha256: 68e246d6bf1425e5e864514f09a6c2dcd5f342939f5178923578edd00493445b
+  last_modified: '2025-11-25T14:46:03.000Z'
+  upstream_repo:
+    repo: elyadata/ADI-20
+    pushed_at: '2026-06-12T13:51:26Z'
+    archived: false
+  licence: NOASSERTION
+  licence_basis: HF card has no license field (cardData.license missing); GitHub elyadata/ADI-20 has no licence file (licence
+    API 404)
+  licence_evidence_url: https://huggingface.co/Elyadata/ADI-whisper-ADI20/raw/04f139246fe0584b25d9b9ac0476f5c3f7cfd0b2/README.md
+  other_evidence:
+  - url: https://raw.githubusercontent.com/elyadata/ADI-20/ee312c68817f6239bb4d73c8e4a9e1a27b2b7f0a/README.md
+  metadata_sources:
+  - gh api repos/elyadata/ADI-20/license
+  - https://huggingface.co/api/models/Elyadata/ADI-whisper-ADI20?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: unknown
+  commercial_safe_reason: No licence on the model or the recipes, so no licence grant was found (documentation, not legal
+    advice). Training data (ADI-17 plus the additional ADI-20 material, referenced by video IDs) is shared as manifests only;
+    the README says 'For licencing reasons, we do not share the audio files'. It is the model the ADI-20 README links to.
+  blocked_for_release_path: true
+  replacement: 'none clean found. Checked on HF 2026-10-14: badrex/mms-300m-arabic-dialect-identifier (card cc-by-4.0, but
+    base model facebook/mms-300m is cc-by-nc-4.0); tiantiaf/voxlect-arabic-dialect-whisper-large-v3 (openrail, use-based restrictions;
+    read before use); IbrahimAmin/hubert-arabic-spoken-dialect-classifier (card apache-2.0, trained on ADI17 and QASR).'
+  flags:
+  - unknown-licence
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: speech dialect ID, top-3 with probabilities
+- key: sentence-aldi
+  name: Sentence-ALDi
+  kind: hf-model
+  version: 78a80ed2c7f2af01f7edb06605e167c7a99debd0
+  source_url: https://huggingface.co/VARabi/Sentence-ALDi/tree/78a80ed2c7f2af01f7edb06605e167c7a99debd0
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: 78a80ed2c7f2af01f7edb06605e167c7a99debd0
+    lfs_sha256:
+    - file: optimizer.pt
+      size: 1302854789
+      sha256: bb7b05699b568108461a3e8d6d9e24788a0edb5976994b84e1311d25c6baa6fc
+    - file: pytorch_model.bin
+      size: 651441269
+      sha256: aba1e23ea7f0ba7f424f3c69b922b42409b699cc42ebee9a33b5dcdc51c6c6e5
+    - file: rng_state.pth
+      size: 14575
+      sha256: d9327307ae12330b94a75b0a30d0943899ed791da5c8fd404aec07bf839d1df8
+    - file: scheduler.pt
+      size: 627
+      sha256: bf501303f049f96d13ee57ddac5410f72a079229358bfc0084c90a64ba044efe
+    - file: training_args.bin
+      size: 3515
+      sha256: bbc8625719231c0cb60062ac046e1d8ffa4236ab87e5315c7b722394df689979
+  last_modified: '2026-09-22T20:05:51.000Z'
+  upstream_repo:
+    repo: AMR-KELEG/ALDi
+    pushed_at: '2024-09-15T15:11:31Z'
+    archived: false
+  licence: NOASSERTION
+  licence_basis: HF card has no license field (the card's License line is commented out); GitHub AMR-KELEG/ALDi has no licence
+    file (licence API 404)
+  licence_evidence_url: https://huggingface.co/VARabi/Sentence-ALDi/raw/78a80ed2c7f2af01f7edb06605e167c7a99debd0/README.md
+  other_evidence:
+  - url: https://raw.githubusercontent.com/AMR-KELEG/ALDi/d783d0c1cff22aad8edb5f6009fd80b96b19d1c2/README.md
+  metadata_sources:
+  - gh api repos/AMR-KELEG/ALDi/license
+  - https://huggingface.co/api/models/VARabi/Sentence-ALDi?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: unknown
+  commercial_safe_reason: No licence on model or code. Fine-tuned from MARBERT on AOC-ALDi (derived from the AOC corpus of
+    reader comments; terms not checked).
+  blocked_for_release_path: true
+  replacement: none with a clear licence found
+  flags:
+  - unknown-licence
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: Arabic level of dialectness score
+- key: camelbert-did-madar26
+  name: CAMeLBERT-Mix DID MADAR-26
+  kind: hf-model
+  version: 0a6f7d73d22bfe014a029d4a29f60c3c31d85ad2
+  source_url: https://huggingface.co/CAMeL-Lab/bert-base-arabic-camelbert-mix-did-madar-corpus26/tree/0a6f7d73d22bfe014a029d4a29f60c3c31d85ad2
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: 0a6f7d73d22bfe014a029d4a29f60c3c31d85ad2
+    lfs_sha256:
+    - file: optimizer.pt
+      size: 872870730
+      sha256: 664ab443c4f4bbfdf8199cc31e9efc3f3774401ebe8553e8db9b1c0ba77dabe5
+    - file: pytorch_model.bin
+      size: 436459917
+      sha256: 13993e45dfaa873d0e5d7bae7a92fded87bf6539c9ae8c10e4575097df07985e
+    - file: scheduler.pt
+      size: 326
+      sha256: 89a7b2895340bad6dc702f94e4d47001ebab74ee2203746d157540df4e87a0f1
+    - file: training_args.bin
+      size: 1397
+      sha256: 939f5f588e71b04f86d857acccd25cc371f2b4a9903387e4b81c4e199f8f59d8
+  last_modified: '2025-10-27T14:06:40.000Z'
+  licence: Apache-2.0
+  licence_basis: HF cardData.license 'apache-2.0'; card says fine-tuned on MADAR Corpus 26
+  licence_evidence_url: https://huggingface.co/CAMeL-Lab/bert-base-arabic-camelbert-mix-did-madar-corpus26/raw/0a6f7d73d22bfe014a029d4a29f60c3c31d85ad2/README.md
+  metadata_sources:
+  - https://huggingface.co/api/models/CAMeL-Lab/bert-base-arabic-camelbert-mix-did-madar-corpus26?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: conditional
+  commercial_safe_reason: 'The model licence is permissive, but MADAR is a research-only dataset, and whether labels from
+    a model trained on it may ship commercially is not settled: internal pre-labelling only until a recorded decision allows
+    release use.'
+  condition: a recorded decision allows release use of labels from a model trained on research-only data; until then internal
+    pre-labels only, never shipped as dialect labels
+  blocked_for_release_path: true
+  flags:
+  - research-only-training-data
+  - legal-decision
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: text dialect ID (city level, MADAR-trained)
+- key: camelbert-did-nadi
+  name: CAMeLBERT-Mix DID NADI
+  kind: hf-model
+  version: cc503d0d5753536c644b157852932e825048635e
+  source_url: https://huggingface.co/CAMeL-Lab/bert-base-arabic-camelbert-mix-did-nadi/tree/cc503d0d5753536c644b157852932e825048635e
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: cc503d0d5753536c644b157852932e825048635e
+    lfs_sha256:
+    - file: optimizer.pt
+      size: 872839970
+      sha256: 1e9fcdd45c0b172d453e94e0960861a0a59867bd68b9c29d331442aac123b033
+    - file: pytorch_model.bin
+      size: 436444537
+      sha256: 536809cb29d1416e0ae34b27e11d15718c9414fa325157f31eda31d7132723b5
+    - file: scheduler.pt
+      size: 326
+      sha256: d65d2c871523b6ee588c9f6d581bd283838a260385ed7707db33ff79f60f9774
+    - file: training_args.bin
+      size: 1388
+      sha256: 76140491bee99d35c545192620f87c95e7b4066640bb87bc815a7450d9f0ec42
+  last_modified: '2021-10-17T11:05:12.000Z'
+  licence: Apache-2.0
+  licence_basis: HF cardData.license 'apache-2.0'; card says fine-tuned on the NADI country-level dataset
+  licence_evidence_url: https://huggingface.co/CAMeL-Lab/bert-base-arabic-camelbert-mix-did-nadi/raw/cc503d0d5753536c644b157852932e825048635e/README.md
+  metadata_sources:
+  - https://huggingface.co/api/models/CAMeL-Lab/bert-base-arabic-camelbert-mix-did-nadi?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: conditional
+  commercial_safe_reason: 'Same issue as MADAR: NADI is a research-only dataset.'
+  condition: as camelbert-did-madar26
+  blocked_for_release_path: true
+  flags:
+  - research-only-training-data
+  - legal-decision
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: text dialect ID (country level, NADI-trained)
+- key: vllm
+  name: vLLM
+  kind: pypi
+  version: 0.31.0
+  source_url: https://pypi.org/project/vllm/0.31.0/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: vllm-0.31.0-cp38-abi3-manylinux_2_28_x86_64.whl
+      sha256: 39132b433967f0962d03d8a5f633b9bee6b32708f566c7d5637b79f8d0ef3433
+    - filename: vllm-0.31.0.tar.gz
+      sha256: dde46f1efbe846e5bd0c5c4ec6ec71842c42254c7ff3d9bebb2a57028715d380
+    files_listed: 2
+    files_total: 3
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-10-05T07:40:41.009965Z'
+  repo_tag_commit:
+    repo: vllm-project/vllm
+    ref: v0.31.0
+    commit: db9527a46873454610df6dbedf79a36d6bf1a7f6
+  upstream_repo:
+    repo: vllm-project/vllm
+    pushed_at: '2026-10-14T20:33:36Z'
+    archived: false
+  licence: Apache-2.0
+  licence_basis: PyPI license_expression 'Apache-2.0'; repo LICENSE Apache-2.0
+  licence_evidence_url: https://raw.githubusercontent.com/vllm-project/vllm/db9527a46873454610df6dbedf79a36d6bf1a7f6/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/vllm/json
+  - gh api repos/vllm-project/vllm/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive. vllm 0.31.0 requires Python >=3.10,<3.15.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: false
+  notes: serving Qwen3 / ALLaM for punctuation and label suggestions
+- key: qwen3-8b
+  name: Qwen3-8B
+  kind: hf-model
+  version: b968826d9c46dd6066d109eabc6255188de91218
+  source_url: https://huggingface.co/Qwen/Qwen3-8B/tree/b968826d9c46dd6066d109eabc6255188de91218
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: b968826d9c46dd6066d109eabc6255188de91218
+    lfs_sha256:
+    - file: model-00001-of-00005.safetensors
+      size: 3996250744
+      sha256: 31d6a825ae35f11fb85b195b4c42c146c051e446433125a215336abdf95cbf5f
+    - file: model-00002-of-00005.safetensors
+      size: 3993160032
+      sha256: 5991236cea6fe21f3d43cab0f0e84448734fbbe0789816202989f2ddc9d18282
+    - file: model-00003-of-00005.safetensors
+      size: 3959604768
+      sha256: c5185c4794be2d8a9784d5753c9922db38df478ce11f9ed0b415b7304d896836
+    - file: model-00004-of-00005.safetensors
+      size: 3187841392
+      sha256: b5ee7de71fbf17db3d5704e0c8f2bc7d005ca9e1d7ca2aeb19827b0cfcaa917a
+    - file: model-00005-of-00005.safetensors
+      size: 1244659840
+      sha256: 20c2d6366ab85c90786ccdd829cd2b9e7d30ef3b2ebbb998280e7e4014b542ff
+  last_modified: '2025-07-26T03:49:13.000Z'
+  upstream_repo:
+    repo: QwenLM/Qwen3
+    pushed_at: '2026-01-09T03:05:47Z'
+    archived: false
+  licence: Apache-2.0
+  licence_basis: HF cardData.license 'apache-2.0' with license_link to LICENSE; LICENSE file in repo
+  licence_evidence_url: https://huggingface.co/Qwen/Qwen3-8B/raw/b968826d9c46dd6066d109eabc6255188de91218/LICENSE
+  other_evidence:
+  - url: https://huggingface.co/Qwen/Qwen3-8B/raw/b968826d9c46dd6066d109eabc6255188de91218/README.md
+  metadata_sources:
+  - gh api repos/QwenLM/Qwen3/license
+  - https://huggingface.co/api/models/Qwen/Qwen3-8B?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive. Suggestions are machine labels under the 5% CER change guard and are recorded in annotation_origin.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: punctuation and label suggestions under the 5% CER change guard
+- key: qwen3-4b-instruct-2507
+  name: Qwen3-4B-Instruct-2507
+  kind: hf-model
+  version: cdbee75f17c01a7cc42f958dc650907174af0554
+  source_url: https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507/tree/cdbee75f17c01a7cc42f958dc650907174af0554
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: cdbee75f17c01a7cc42f958dc650907174af0554
+    lfs_sha256:
+    - file: model-00001-of-00003.safetensors
+      size: 3957900840
+      sha256: 75311d91bb08cf0b882913da464a1e722a31fb44db35208663487efb7a3d8ed6
+    - file: model-00002-of-00003.safetensors
+      size: 3987450520
+      sha256: 0b48adbb1f60e901153d91907ba11ce63bd4b8b584482e730f48808d055dfba1
+    - file: model-00003-of-00003.safetensors
+      size: 99630640
+      sha256: 7dd39ccca5e4de123c74c14af44c9bf2eb75df33b4614382af0134528e060d5d
+  last_modified: '2025-09-17T06:56:53.000Z'
+  licence: Apache-2.0
+  licence_basis: HF cardData.license 'apache-2.0' with license_link; LICENSE file in repo
+  licence_evidence_url: https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507/raw/cdbee75f17c01a7cc42f958dc650907174af0554/LICENSE
+  other_evidence:
+  - url: https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507/raw/cdbee75f17c01a7cc42f958dc650907174af0554/README.md
+  metadata_sources:
+  - https://huggingface.co/api/models/Qwen/Qwen3-4B-Instruct-2507?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive. Smaller instruct option; newer Qwen3.5/3.6/3.8 releases exist on HF but were not assessed;
+    the manual names Qwen3.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: 'tooling part (key not listed in manual/stages.yaml: alternative, fallback or blocked model)'
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: smaller Qwen3 instruct option for the same job
+- key: allam-7b-instruct
+  name: ALLaM-7B-Instruct-preview
+  kind: hf-model
+  version: a28dd1e67420cde72d3629c8633a974cf7d9c366
+  source_url: https://huggingface.co/humain-ai/ALLaM-7B-Instruct-preview/tree/a28dd1e67420cde72d3629c8633a974cf7d9c366
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: a28dd1e67420cde72d3629c8633a974cf7d9c366
+    lfs_sha256:
+    - file: model-00001-of-00003.safetensors
+      size: 4976733512
+      sha256: 8b665e3f2e218378d4932477709c17e52587b9c6223c84e4895a724012b4eae9
+    - file: model-00002-of-00003.safetensors
+      size: 4991431432
+      sha256: 960bfd93156cafd55879e933eac752054505c2e192ab46b1df9ae273e7e9709f
+    - file: model-00003-of-00003.safetensors
+      size: 4032988136
+      sha256: 425d60e4c3fd8037b7fc448c87609d946ce39629984ed2bac042fa7686078e0e
+    - file: tokenizer.model
+      size: 1228714
+      sha256: feff3deb3537c4a47b77585053ad2aa00484da7907b188e0111cbed1f4592e67
+  last_modified: '2025-07-14T09:06:47.000Z'
+  licence: Apache-2.0
+  licence_verify: Card metadata says apache-2.0 but the card text says 'Please see the LICENSE file' and the repo has no LICENSE
+    file at the pinned commit.
+  licence_basis: HF cardData.license 'apache-2.0'
+  licence_evidence_url: https://huggingface.co/humain-ai/ALLaM-7B-Instruct-preview/raw/a28dd1e67420cde72d3629c8633a974cf7d9c366/README.md
+  metadata_sources:
+  - https://huggingface.co/api/models/humain-ai/ALLaM-7B-Instruct-preview?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: conditional
+  commercial_safe_reason: Metadata licence is permissive but the licence file the card refers to is missing. Use only as internal
+    tooling (national models appear in public outputs only by opt-in); verify the licence with the publisher before relying
+    on it.
+  condition: licence file confirmed; internal tooling only
+  blocked_for_release_path: false
+  flags:
+  - licence-file-missing
+  - national-model
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 6
+    name: Enrichment
+  release_path_role: true
+  notes: Arabic LLM option for punctuation and label suggestions (internal tooling use only)
+- key: mlcroissant
+  name: mlcroissant
+  kind: pypi
+  version: 1.1.1
+  source_url: https://pypi.org/project/mlcroissant/1.1.1/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: mlcroissant-1.1.1-py2.py3-none-any.whl
+      sha256: d7a69c6568ed05f36cdb485669c42b20ac08f63046ea3c36eb84cc02c8b83bd1
+    - filename: mlcroissant-1.1.1.tar.gz
+      sha256: 1e42053eee457cccf2412bbea7bdd6d312fdf68ba31d350957ebc8850aa95ca1
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-10-05T09:59:41.208234Z'
+  repo_tag_commit:
+    repo: mlcommons/croissant
+    ref: v1.1.1
+    commit: 5d3c11907c9264a1bc4d2d37b5c38b21c99dfa18
+  upstream_repo:
+    repo: mlcommons/croissant
+    pushed_at: '2026-10-05T13:36:13Z'
+    archived: false
+  licence: Apache-2.0
+  licence_basis: PyPI license, license_expression and classifiers all empty; licence taken from repo mlcommons/croissant LICENSE.md
+    (Apache-2.0)
+  licence_evidence_url: https://raw.githubusercontent.com/mlcommons/croissant/5d3c11907c9264a1bc4d2d37b5c38b21c99dfa18/LICENSE.md
+  metadata_sources:
+  - https://pypi.org/pypi/mlcroissant/json
+  - gh api repos/mlcommons/croissant/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 8
+    name: Packaging
+  release_path_role: false
+  notes: Croissant metadata validation
+- key: lighteval
+  name: lighteval
+  kind: pypi
+  version: 0.13.0
+  source_url: https://pypi.org/project/lighteval/0.13.0/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: lighteval-0.13.0-py3-none-any.whl
+      sha256: 2552944f09e90680394f051bc109ca951cff694002ac3365c99fd6b6bb394dcf
+    - filename: lighteval-0.13.0.tar.gz
+      sha256: 156ae469a9ea472f2a08ac5c6b0f06a44de2a097b91149c9da3a23e8d793b345
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2025-11-24T15:54:14.964478Z'
+  repo_tag_commit:
+    repo: huggingface/lighteval
+    ref: v0.13.0
+    commit: 7c1cd62716b0a198a630c26d781430c54726cd02
+  upstream_repo:
+    repo: huggingface/lighteval
+    pushed_at: '2026-10-06T09:36:52Z'
+    archived: false
+  licence: MIT
+  licence_basis: PyPI license 'MIT License' and classifier; repo LICENSE MIT
+  licence_evidence_url: https://raw.githubusercontent.com/huggingface/lighteval/7c1cd62716b0a198a630c26d781430c54726cd02/LICENSE
+  metadata_sources:
+  - https://pypi.org/pypi/lighteval/json
+  - gh api repos/huggingface/lighteval/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 9
+    name: Baseline or benchmark
+  release_path_role: false
+  notes: benchmark task files
+- key: lm_eval
+  name: lm-evaluation-harness
+  kind: pypi
+  version: 0.4.13
+  source_url: https://pypi.org/project/lm_eval/0.4.13/
+  hash:
+    algorithm: sha256 (PyPI digests for the pinned version)
+    files:
+    - filename: lm_eval-0.4.13-py3-none-any.whl
+      sha256: 5daaa1973bf874005f64f28d3834b875f6886f0d6475878e6a6c821994a5286a
+    - filename: lm_eval-0.4.13.tar.gz
+      sha256: f592269f21a5e173d7993ae01267f61fc84be393cee1f51779e3e104a70c967e
+    files_listed: 2
+    files_total: 2
+    full_list: PyPI JSON API for the pinned version (urls[])
+  upload_time: '2026-08-31T20:42:37.071106Z'
+  repo_tag_commit:
+    repo: EleutherAI/lm-evaluation-harness
+    ref: v0.4.13
+    commit: ddd67220430a2470529f25fd5c05a576ca1057a0
+  upstream_repo:
+    repo: EleutherAI/lm-evaluation-harness
+    pushed_at: '2026-09-14T10:51:06Z'
+    archived: false
+  licence: MIT
+  licence_basis: PyPI license 'MIT' (no classifier); repo LICENSE.md MIT
+  licence_evidence_url: https://raw.githubusercontent.com/EleutherAI/lm-evaluation-harness/ddd67220430a2470529f25fd5c05a576ca1057a0/LICENSE.md
+  metadata_sources:
+  - https://pypi.org/pypi/lm_eval/json
+  - gh api repos/EleutherAI/lm-evaluation-harness/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Permissive.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: manual/stages.yaml
+  stages:
+  - id: 9
+    name: Baseline or benchmark
+  release_path_role: false
+  notes: benchmark task files
+- key: fleurs
+  name: FLEURS (Google)
+  kind: hf-dataset
+  version: 70bb2e84b976b7e960aa89f1c648e09c59f894dd
+  source_url: https://huggingface.co/datasets/google/fleurs/tree/70bb2e84b976b7e960aa89f1c648e09c59f894dd
+  hash:
+    algorithm: hf-commit (git sha1) plus LFS sha256 per weight file
+    commit: 70bb2e84b976b7e960aa89f1c648e09c59f894dd
+    lfs_sha256:
+    - file: data/ar_eg/audio/dev.tar.gz
+      size: 162715645
+      sha256: 22271b3500c0e952aedbf0a6d7d3b959a91e1f02612293dce761fe5c87b66117
+    - file: data/ar_eg/audio/test.tar.gz
+      size: 243532527
+      sha256: 787dc348725c0924ff58c8e379d4ef41a7e488dc2ab2990a0eba4a063856edb1
+    - file: data/ar_eg/audio/train.tar.gz
+      size: 1113698891
+      sha256: b19fa9435c0d7587bf0ede7c9da134567b2eb55a06e2e7523547f0a6fcb3eef7
+    - file: parquet-data/ar_eg/test-00000-of-00001.parquet
+      size: 297291130
+      sha256: 3386d58ff9619c2b1395dcaed0a476363fae15420bc68b7ca4870cffdff9936d
+    - file: parquet-data/ar_eg/train-00000-of-00001.parquet
+      size: 1381311999
+      sha256: 37f2e1edb0db32e398d8746b66943f93f55f085d01899fc41557fc7fd90acecc
+    - file: parquet-data/ar_eg/validation-00000-of-00001.parquet
+      size: 200005156
+      sha256: 8b792937003d26852c567d1b413de5174ad677146f4b93dc480c17f8c398ecd3
+  last_modified: '2026-05-15T09:35:34.000Z'
+  licence: CC-BY-4.0
+  licence_basis: HF cardData.license ['cc-by-4.0']
+  licence_evidence_url: https://huggingface.co/datasets/google/fleurs/raw/70bb2e84b976b7e960aa89f1c648e09c59f894dd/README.md
+  metadata_sources:
+  - https://huggingface.co/api/datasets/google/fleurs?blobs=true
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Attribution licence; used internally for calibration timing only, nothing redistributed. Note the
+    NVIDIA Arabic models list FLEURS Arabic in their training data.
+  blocked_for_release_path: false
+  flags: []
+  stage_source: not used in a pipeline stage
+  stages: []
+  release_path_role: false
+  notes: calibration audio (ar_eg), internal timing only, never redistributed
+- key: emilia-pipe
+  name: Emilia-Pipe (Amphion)
+  kind: github
+  version: v0.1.1-alpha
+  source_url: https://github.com/open-mmlab/Amphion/tree/6e9d34f498b41f12f889923566ddaafd6f50e8cc
+  hash:
+    algorithm: git commit sha1
+    commit: 6e9d34f498b41f12f889923566ddaafd6f50e8cc
+    commit_date: '2024-02-23T15:03:35Z'
+  upstream_repo:
+    repo: open-mmlab/Amphion
+    pushed_at: '2026-03-25T14:11:57Z'
+    archived: false
+  licence: MIT
+  licence_basis: repo open-mmlab/Amphion LICENSE MIT
+  licence_evidence_url: https://raw.githubusercontent.com/open-mmlab/Amphion/6e9d34f498b41f12f889923566ddaafd6f50e8cc/LICENSE
+  metadata_sources:
+  - gh api repos/open-mmlab/Amphion/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Reference precedent only; not run in the pipeline.
+  blocked_for_release_path: false
+  flags:
+  - reference-only
+  stage_source: not used in a pipeline stage
+  stages: []
+  release_path_role: false
+  notes: reference precedent only; not run
+- key: mosel
+  name: MOSEL
+  kind: github
+  version: v1.0
+  source_url: https://github.com/hlt-mt/mosel/tree/8f06af018cf16d22c78e5cb79326c3f9590388ab
+  hash:
+    algorithm: git commit sha1
+    commit: 8f06af018cf16d22c78e5cb79326c3f9590388ab
+    commit_date: '2024-10-29T11:00:47Z'
+  upstream_repo:
+    repo: hlt-mt/mosel
+    pushed_at: '2025-10-03T13:15:59Z'
+    archived: false
+  licence: Apache-2.0
+  licence_basis: repo hlt-mt/mosel LICENSE Apache-2.0
+  licence_evidence_url: https://raw.githubusercontent.com/hlt-mt/mosel/8f06af018cf16d22c78e5cb79326c3f9590388ab/LICENSE
+  metadata_sources:
+  - gh api repos/hlt-mt/mosel/license
+  gated:
+    gated: false
+    terms_url: null
+  commercial_safe: 'yes'
+  commercial_safe_reason: Reference precedent only; not run in the pipeline.
+  blocked_for_release_path: false
+  flags:
+  - reference-only
+  stage_source: not used in a pipeline stage
+  stages: []
+  release_path_role: false
+  notes: reference precedent only; not run
+pending_in_house:
+- key: bayanatlabs:arabic-normalize
+  kind: in-house
+  status: Bayanat Labs tool, not yet released; not version-pinned in this lock
+  licence_planned: Apache-2.0 for code; names always carry the Bayanat Labs name or prefix (never a bare 'bayanat' name)
+  stages:
+  - id: 3
+    name: Normalisation
+  note: Bayanat-Norm v1 (arabic-normalize). PyPI JSON for the bare name 'arabic-normalize' returned 404 on 2026-10-14 (name
+    not taken then; verify before release).
+- key: bayanatlabs:arabic-recogniser-pack
+  kind: in-house
+  status: Bayanat Labs tool, not yet released; not version-pinned in this lock
+  licence_planned: Apache-2.0 for code; names always carry the Bayanat Labs name or prefix (never a bare 'bayanat' name)
+  stages:
+  - id: 5
+    name: Safety and PII
+  note: Bayanat Labs Arabic recogniser pack for Presidio.
+- key: bayanatlabs:bl-card-lint
+  kind: in-house
+  status: Bayanat Labs tool, not yet released; not version-pinned in this lock
+  licence_planned: Apache-2.0 for code; names always carry the Bayanat Labs name or prefix (never a bare 'bayanat' name)
+  stages:
+  - id: 8
+    name: Packaging
+- key: bayanatlabs:bl-card-render
+  kind: in-house
+  status: Bayanat Labs tool, not yet released; not version-pinned in this lock
+  licence_planned: Apache-2.0 for code; names always carry the Bayanat Labs name or prefix (never a bare 'bayanat' name)
+  stages:
+  - id: 10
+    name: Release
+- key: bayanatlabs:bl-gates
+  kind: in-house
+  status: Bayanat Labs tool, not yet released; not version-pinned in this lock
+  licence_planned: Apache-2.0 for code; names always carry the Bayanat Labs name or prefix (never a bare 'bayanat' name)
+  stages:
+  - id: 10
+    name: Release
+- key: bayanatlabs:bl-manifest
+  kind: in-house
+  status: Bayanat Labs tool, not yet released; not version-pinned in this lock
+  licence_planned: Apache-2.0 for code; names always carry the Bayanat Labs name or prefix (never a bare 'bayanat' name)
+  stages:
+  - id: 8
+    name: Packaging
+- key: bayanatlabs:bl-score
+  kind: in-house
+  status: Bayanat Labs tool, not yet released; not version-pinned in this lock
+  licence_planned: Apache-2.0 for code; names always carry the Bayanat Labs name or prefix (never a bare 'bayanat' name)
+  stages:
+  - id: 0
+    name: Scoping memo
+- key: bayanatlabs:discover
+  kind: in-house
+  status: Bayanat Labs tool, not yet released; not version-pinned in this lock
+  licence_planned: Apache-2.0 for code; names always carry the Bayanat Labs name or prefix (never a bare 'bayanat' name)
+  stages:
+  - id: 1
+    name: Discovery
+- key: bayanatlabs:eval
+  kind: in-house
+  status: Bayanat Labs tool, not yet released; not version-pinned in this lock
+  licence_planned: Apache-2.0 for code; names always carry the Bayanat Labs name or prefix (never a bare 'bayanat' name)
+  stages:
+  - id: 9
+    name: Baseline or benchmark
+- key: bayanatlabs:fetch
+  kind: in-house
+  status: Bayanat Labs tool, not yet released; not version-pinned in this lock
+  licence_planned: Apache-2.0 for code; names always carry the Bayanat Labs name or prefix (never a bare 'bayanat' name)
+  stages:
+  - id: 2
+    name: Acquisition
+- key: bayanatlabs:maintenance-calendar
+  kind: in-house
+  status: Bayanat Labs tool, not yet released; not version-pinned in this lock
+  licence_planned: Apache-2.0 for code; names always carry the Bayanat Labs name or prefix (never a bare 'bayanat' name)
+  stages:
+  - id: 12
+    name: Maintenance
+- key: bayanatlabs:metrics-digest
+  kind: in-house
+  status: Bayanat Labs tool, not yet released; not version-pinned in this lock
+  licence_planned: Apache-2.0 for code; names always carry the Bayanat Labs name or prefix (never a bare 'bayanat' name)
+  stages:
+  - id: 11
+    name: Promotion and measurement
+- key: bayanatlabs:qa-sampler
+  kind: in-house
+  status: Bayanat Labs tool, not yet released; not version-pinned in this lock
+  licence_planned: Apache-2.0 for code; names always carry the Bayanat Labs name or prefix (never a bare 'bayanat' name)
+  stages:
+  - id: 7
+    name: Human QA

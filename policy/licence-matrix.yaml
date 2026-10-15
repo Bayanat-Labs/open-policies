@@ -1,0 +1,320 @@
+# Bayanat Labs open-programme policy: licence matrix
+# Version 1.0.1. Reviewed by counsel, October 2026.
+# Documentation, not legal advice. Licence: CC BY 4.0.
+policy_version: 1.0.1
+document: licence-matrix
+status: adopted_v1_counsel_reviewed_2026_10
+licence: CC-BY-4.0
+output_licence_tags:
+  description: Licence tags Bayanat Labs puts on what it releases.
+  rows:
+  - id: OUT-01
+    content_type: Manifests, IDs, timestamps, metadata
+    hf_licence_tag: cc0-1.0
+    spdx_id: CC0-1.0
+    required_record_fields:
+    - source_url
+    - source_license
+    rationale: Pure facts; AudioSet releases the same fields under CC BY 4.0, and we waive even attribution
+    separate_repo: false
+    source: Bayanat Labs practice, adopted as policy
+  - id: OUT-02
+    content_type: Our annotations, transcripts of CC content, segmentations, labels
+    hf_licence_tag: cc-by-4.0
+    spdx_id: CC-BY-4.0
+    required_record_fields:
+    - source_url
+    - source_license
+    - annotation_origin
+    rationale: Companies adopt it; CC FAQ confirms TDM-friendly
+    separate_repo: false
+    source: Bayanat Labs practice, adopted as policy
+  - id: OUT-03
+    content_type: Structured reference data (gazetteer, lexicons, validators' test suites)
+    hf_licence_tag: cc-by-4.0
+    alternative_hf_licence_tag: cdla-permissive-2.0
+    spdx_id: CC-BY-4.0
+    alternative_spdx_id: CDLA-Permissive-2.0
+    tag_text: '`cc-by-4.0` or `cdla-permissive-2.0`'
+    required_record_fields:
+    - source_url
+    - source_license
+    rationale: CDLA explicitly frees model outputs
+    separate_repo: false
+    source: Bayanat Labs practice, adopted as policy
+  - id: OUT-04
+    content_type: Wikipedia-derived text
+    hf_licence_tag: cc-by-sa-4.0
+    spdx_id: CC-BY-SA-4.0
+    tag_text: '`cc-by-sa-4.0` with page URL and revision ID per record'
+    required_record_fields:
+    - page_url
+    - revision_id
+    - source_license
+    rationale: Wikimedia terms of use §7
+    separate_repo: false
+    separate_config: true
+    source: Bayanat Labs practice, adopted as policy
+  - id: OUT-05
+    content_type: Web-text packaging (crawl-derived text)
+    hf_licence_tag: odc-by
+    spdx_id: ODC-By-1.0
+    tag_text: '`odc-by` with per-document `source_url`'
+    required_record_fields:
+    - source_url
+    - source_license
+    rationale: FineWeb norm; does not pretend to license contents
+    separate_repo: false
+    conditions: 'Only under the web-text packaging exception: per-document source URLs and a takedown
+      route. Never CC0.'
+    source: Bayanat Labs practice, adopted as policy
+  - id: OUT-06
+    content_type: GPL-licensed inputs
+    hf_licence_tag: gpl-3.0
+    spdx_id: GPL-3.0-only
+    spdx_id_note: The Hugging Face tag gpl-3.0 does not say 'only' or 'or later'; SPDX deprecates the
+      bare GPL-3.0 id. Record GPL-3.0-only or GPL-3.0-or-later from each source's own notice, and keep
+      the source's GPL version (for example GPL-2.0).
+    tag_text: kept in a separate repo tagged `gpl-3.0`
+    required_record_fields:
+    - source_url
+    - source_license
+    rationale: Never mixed into CC repos
+    separate_repo: true
+    source: Bayanat Labs practice, adopted as policy
+  - id: OUT-07
+    content_type: Verbatim-only inputs (terms that forbid modification)
+    hf_licence_tag: other
+    spdx_id: null
+    spdx_id_note: 'No SPDX id: the source''s own terms go in LICENSE (non-SPDX by design; use a LicenseRef-
+      id in SPDX documents).'
+    tag_text: '`other` with the source terms in `LICENSE`'
+    required_record_fields:
+    - source_url
+    - source_license
+    rationale: Their terms forbid modification
+    separate_repo: false
+    source: Bayanat Labs practice, adopted as policy
+  - id: OUT-08
+    content_type: ODbL-derived data
+    hf_licence_tag: odbl
+    spdx_id: ODbL-1.0
+    required_record_fields:
+    - source_url
+    - source_license
+    rationale: Inherited share-alike database licence
+    separate_repo: false
+    separate_config: true
+    source: Bayanat Labs practice, adopted as policy
+  - id: OUT-09
+    content_type: CC BY media whose licence version is shown per item (audio clips)
+    hf_licence_tag: cc-by-3.0
+    spdx_id: CC-BY-3.0
+    alternative_hf_licence_tag: cc-by-4.0
+    alternative_spdx_id: CC-BY-4.0
+    tag_text: '`cc-by-3.0` or `cc-by-4.0`: per item, the CC BY version the item''s page shows at collection;
+      separate config'
+    required_record_fields:
+    - source_url
+    - source_license
+    - licence_shown_at_collection
+    - channel_attribution
+    - licence_reverified_at
+    rationale: Some hosts label media only 'CC BY' and link a single legal code, so each item keeps the
+      version label and legal-code link its page shows at collection, with attribution; Bayanat Labs transcripts
+      and labels are cc-by-4.0
+    separate_repo: false
+    separate_config: true
+    conditions: At collection, we record in licence_shown_at_collection the licence label and the legal-code
+      link the item's page shows (for example the CC BY 4.0 URL); the per-record source_license follows
+      that record, never an assumed version. Every release has a takedown route.
+    source: Bayanat Labs practice, adopted as policy
+  - id: OUT-10
+    content_type: Bayanat Labs-authored data and docs (synthetic data, written text, guidelines, templates,
+      reports, policy text)
+    hf_licence_tag: cc-by-4.0
+    spdx_id: CC-BY-4.0
+    required_record_fields:
+    - source_license
+    - synthetic
+    rationale: 'Bayanat Labs-authored data and docs: CC BY 4.0'
+    conditions: Synthetic data in releases comes only from generators under Apache-2.0 or MIT, logged
+      per record with generator, version, prompt and seed.
+    separate_repo: false
+    source: Bayanat Labs practice, adopted as policy
+  - id: OUT-11
+    content_type: Corrections to non-commercial sets
+    hf_licence_tag: inherit_source
+    spdx_id: inherit_source
+    required_record_fields:
+    - source_url
+    - source_license
+    - derivative_of
+    rationale: NC derivatives inherit the source licence and are labelled as derivatives; never a Bayanat
+      Labs NC licence
+    separate_repo: false
+    separate_config: true
+    source: Bayanat Labs practice, adopted as policy
+  - id: OUT-12
+    content_type: Partner-licensed content (Tier 3)
+    hf_licence_tag: as_agreed
+    spdx_id: as_agreed
+    required_record_fields:
+    - source_url
+    - source_license
+    - permission_doc_id
+    rationale: Content released under a written permission (CC BY or a custom open licence agreed with
+      the partner)
+    separate_repo: false
+    source: Bayanat Labs practice, adopted as policy
+code_licence:
+  hf_licence_tag: apache-2.0
+  spdx_id: Apache-2.0
+  rule: 'Code: Apache-2.0.'
+  source: Bayanat Labs practice, adopted as policy
+output_rules:
+  source_text: Never `cc-by-nc` for our own work, never Apache/MIT for data, never a custom licence; derivatives
+    of non-commercial sources inherit the source licence and are labelled as derivatives. Where sources
+    mix, the card states "Underlying content is not licensed by Bayanat Labs; see per-record fields",
+    as the CC FAQ recommends.
+  never:
+  - id: NEVER-01
+    rule: Never `cc-by-nc` for our own work
+    forbidden_tags:
+    - cc-by-nc-4.0
+    - cc-by-nc-sa-4.0
+    - cc-by-nc-nd-4.0
+    - cc-by-nc-3.0
+    - cc-by-nc-sa-3.0
+    - cc-by-nc-nd-3.0
+    - cc-by-nc-2.0
+  - id: NEVER-02
+    rule: never Apache/MIT for data
+    forbidden_tags_for_data:
+    - apache-2.0
+    - mit
+  - id: NEVER-03
+    rule: never a custom licence
+    applies_to: Bayanat Labs' own work (partners may use their own licence for their content, Tier 3)
+  - id: NEVER-04
+    rule: never ND on our own work
+    source: Bayanat Labs practice, adopted as policy
+  - id: NEVER-05
+    rule: never CC0 on web-crawl derivatives
+    source: Bayanat Labs practice, adopted as policy
+  - id: NEVER-06
+    rule: never relicense upstream content
+    source: Bayanat Labs practice, adopted as policy
+  nc_derivatives: derivatives of non-commercial sources inherit the source licence and are labelled as
+    derivatives
+  mixed_sources_statement: Underlying content is not licensed by Bayanat Labs; see per-record fields
+  mixed_sources_rule: Where sources mix, the card states "Underlying content is not licensed by Bayanat
+    Labs; see per-record fields", as the CC FAQ recommends.
+  per_record_field: source_license
+  bayanat_authored_data_and_docs: cc-by-4.0
+  code: apache-2.0
+input_licences:
+  description: What Bayanat Labs may ingest. This is not a list of release tags.
+  source: Bayanat Labs practice, adopted as policy
+  allowlist_source_text: 'Allowlist: CC0, CC BY, CC BY-SA, ODC-BY, ODbL, PD, the Saudi Open Data License,
+    written permission.'
+  allowlist:
+  - id: IN-A01
+    name: CC0
+    spdx_ids:
+    - CC0-1.0
+    spdx_status: spdx
+    conditions: null
+  - id: IN-A02
+    name: CC BY
+    spdx_ids:
+    - CC-BY-4.0
+    - CC-BY-3.0
+    - CC-BY-2.5
+    - CC-BY-2.0
+    - CC-BY-1.0
+    spdx_status: spdx_family
+    conditions: 'Keep the version of each source. Media labelled per item: keep, per item, the CC BY version
+      the item''s page shows at collection and record it in licence_shown_at_collection.'
+  - id: IN-A03
+    name: CC BY-SA
+    spdx_ids:
+    - CC-BY-SA-4.0
+    - CC-BY-SA-3.0
+    - CC-BY-SA-2.5
+    - CC-BY-SA-2.0
+    - CC-BY-SA-1.0
+    spdx_status: spdx_family
+    conditions: 'Share-alike is inherited: separate SA config, never mixed with CC BY content.'
+  - id: IN-A04
+    name: ODC-BY
+    spdx_ids:
+    - ODC-By-1.0
+    spdx_status: spdx
+    conditions: null
+  - id: IN-A05
+    name: ODbL
+    spdx_ids:
+    - ODbL-1.0
+    spdx_status: spdx
+    conditions: Separate config; ODbL obligations propagate.
+  - id: IN-A06
+    name: PD
+    spdx_ids: []
+    spdx_status: non_spdx_status
+    conditions: 'Public domain is a legal status, not a licence. Verified per work: author death in or
+      before 1955 for the commercial core; statutory exclusion for laws and official documents. Dedications
+      such as CC0 or PDDL are separate SPDX licences.'
+  - id: IN-A07
+    name: the Saudi Open Data License
+    spdx_ids: []
+    spdx_status: non_spdx_licence
+    conditions: Attribution, the licence copy and notices kept intact. Sources under it stay index-only
+      (IO-5) until its text has been read and filed. Keep separate from CC BY data.
+  - id: IN-A08
+    name: written permission
+    spdx_ids: []
+    spdx_status: non_spdx_agreement
+    conditions: A signed permission on file before collection; referenced in permission_doc_id.
+  blocklist_source_text: 'Blocklist: NC (unless intentional), ND, unknown, all rights reserved.'
+  blocklist:
+  - id: IN-B01
+    name: NC (unless intentional)
+    spdx_ids:
+    - CC-BY-NC-4.0
+    - CC-BY-NC-SA-4.0
+    - CC-BY-NC-ND-4.0
+    - CC-BY-NC-3.0
+    - CC-BY-NC-SA-3.0
+    spdx_status: spdx_family
+    exception: NC and research-only sets are run only by an academic partner under its own agreement;
+      Bayanat Labs keeps no copies and publishes no scores on them.
+  - id: IN-B02
+    name: ND
+    spdx_ids:
+    - CC-BY-ND-4.0
+    - CC-BY-ND-3.0
+    - CC-BY-NC-ND-4.0
+    spdx_status: spdx_family
+    exception: Verbatim-only inputs whose terms forbid modification ship unmodified under `other` (OUT-07).
+  - id: IN-B03
+    name: unknown
+    spdx_ids:
+    - NOASSERTION
+    spdx_status: non_spdx_status
+    exception: null
+  - id: IN-B04
+    name: all rights reserved
+    spdx_ids: []
+    spdx_status: non_spdx_status
+    exception: Manifest or link only (IDs and URLs) until written permission exists.
+  rules:
+  - id: IN-R01
+    rule: Mixed licences are split into per-licence subsets.
+    source: Bayanat Labs practice, adopted as policy
+  - id: IN-R02
+    rule: SA data stays separate from CC BY data.
+    source: Bayanat Labs practice, adopted as policy
+  - id: IN-R03
+    rule: Propagate SA and NC obligations to the release config.
+    source: Bayanat Labs practice, adopted as policy

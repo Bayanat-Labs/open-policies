@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Bayanat-Labs/open-policies/policy/schemas/principles.schema.json",
+  "title": "Bayanat Labs operating principles (principles.yaml)",
+  "type": "object",
+  "required": [
+    "policy_version",
+    "document",
+    "status",
+    "principles"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "policy_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "document": {
+      "const": "principles"
+    },
+    "status": {
+      "type": "string"
+    },
+    "licence": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object"
+    },
+    "principles": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "number",
+          "short",
+          "text"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^PR-[1-5]$"
+          },
+          "number": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "short": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 20
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

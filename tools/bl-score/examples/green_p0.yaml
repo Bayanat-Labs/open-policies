@@ -1,0 +1,23 @@
+# Illustrative example only: not a scoring decision for any real candidate.
+candidate_id: EX-001
+title: "Bayanat Labs example corpus of official documents (illustrative)"
+one_line: "Illustrative green candidate built from open dumps in days."
+scores:
+  impact: 5
+  claim_strength: 4
+  ease: 5
+  legal_cleanliness: 5
+  commercial_pull: 4
+legal_tier: green
+effort: S
+seo_demand: 4
+justifications:
+  impact: "Illustrative: researchers and model labs would pull it."
+  claim_strength: "Illustrative: better than incumbents on more than one axis."
+  ease: "Illustrative: agent-buildable from dumps in days."
+  legal_cleanliness: "Illustrative: full content redistributable under an open licence."
+  commercial_pull: "Illustrative: feeds one product family."
+  legal_tier: "Illustrative: green legal tier."
+  effort: "Illustrative: under one agent-week."
+scored_by: "example"
+scored_on: "2026-10-14"

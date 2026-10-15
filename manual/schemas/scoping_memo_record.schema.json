@@ -1,0 +1,893 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bayanatlabs.com/open/schemas/scoping_memo_record/v1.json",
+  "title": "Bayanat Labs scoping memo record (stage 0): scoping_memo.yaml",
+  "description": "Machine-readable record of the stage-0 scoping memo (manual/SCOPING_MEMO.md), saved as scoping_memo.yaml next to scoping_memo.md. The rubric scores, legal tier and effort code live in a separate file, scoping_memo.score.yaml, in the exact format of the bl-score CLI (schema: manual/scoping_memo.schema.json), because bl-score rejects unknown fields; bl-score's JSON output is saved as scoping_memo.score.json. Gate checks read memo: values from this record. The flags read by conditional checks (uses_video_host, video_media_download, consented_audio, has_images, uses_llm_suggestions, third_party_sources) are required, and the evaluator treats a missing flag as an error, never as n/a. Legal positions are cited only by the ID of a recorded decision in the organisation's legal record. Manual v0.1.0. Schema Apache-2.0. Documentation, not legal advice.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "manual_version",
+    "candidate_id",
+    "title",
+    "priority",
+    "product_link",
+    "claim_to_make",
+    "incumbents",
+    "sources",
+    "release_tier",
+    "licence_plan",
+    "profile",
+    "modalities",
+    "uses_video_host",
+    "video_media_download",
+    "consented_audio",
+    "has_images",
+    "uses_llm_suggestions",
+    "third_party_sources",
+    "qa",
+    "ranges",
+    "budget",
+    "owner",
+    "dates",
+    "risks",
+    "stop_conditions",
+    "decision",
+    "score_tool_sha256"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "manual_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Operating manual version the memo follows, e.g. 1.0.0"
+    },
+    "candidate_id": {
+      "type": "string",
+      "pattern": "^[A-Z]{2,3}-[0-9]{3}$",
+      "description": "Candidate identifier (two or three capital letters, a hyphen and three digits); must equal candidate_id in scoping_memo.score.yaml"
+    },
+    "title": {
+      "type": "string",
+      "pattern": "^Bayanat Labs ",
+      "description": "Working title; always starts with 'Bayanat Labs'; must equal the title in scoping_memo.score.yaml"
+    },
+    "priority": {
+      "enum": [
+        "P0",
+        "P1",
+        "P2",
+        "P3"
+      ],
+      "description": "Decided by the coordinator. P0 ships within 60 days; P1 by LEAP (12 Apr 2027); P2 within year one; P3 opportunistic"
+    },
+    "merged_ext_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "name_collision_checked": {
+      "type": "boolean",
+      "description": "HF, GitHub, PyPI and Masader searched for the name"
+    },
+    "product_link": {
+      "type": "object",
+      "required": [
+        "family"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "family": {
+          "enum": [
+            "Align",
+            "Voice",
+            "Agents",
+            "Documents",
+            "Search",
+            "Knowledge",
+            "Bench",
+            "Vision",
+            "Voice Studio",
+            "none"
+          ]
+        },
+        "page": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        }
+      }
+    },
+    "claim_to_make": {
+      "type": "object",
+      "required": [
+        "wording",
+        "comparative"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "wording": {
+          "type": "string",
+          "description": "Draft only; final wording comes from CLAIMS.md after G7. Use 'No comparative claim' when none"
+        },
+        "comparative": {
+          "type": "boolean"
+        },
+        "claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "first_or_only_search_log": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Path to the saved search of HF, Masader, Kaggle, Zenodo, ACL Anthology and arXiv; required for a 'first' or 'only' claim"
+        }
+      }
+    },
+    "incumbents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "size",
+          "unit",
+          "licence",
+          "url",
+          "checked_at"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "size": {
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "unit": {
+            "type": "string"
+          },
+          "licence": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "checked_at": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      }
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "source_id",
+          "url",
+          "licence_route",
+          "release_tier",
+          "licence",
+          "tos_basis",
+          "terms_read_on"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "licence_route": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^IN-[AB][0-9]{2}$",
+            "description": "Input-licence ID in policy/licence-matrix.yaml (allowlist IN-A01 to IN-A08 or blocklist IN-B01 to IN-B04) that the source's licence falls under; null for Bayanat Labs' own content"
+          },
+          "release_tier": {
+            "enum": [
+              "tier1_open_content",
+              "tier2_manifests_annotations",
+              "tier3_partner_licensed"
+            ],
+            "description": "Release tier the source's content may reach (policy/tiers.yaml)"
+          },
+          "licence": {
+            "type": "string"
+          },
+          "tos_basis": {
+            "enum": [
+              "open-license",
+              "gov-open-data",
+              "written-permission",
+              "synthetic",
+              "consented",
+              "public-domain-verified",
+              "statutory-exclusion"
+            ]
+          },
+          "terms_read_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "decision_ref": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,63}$",
+            "description": "ID of the recorded decision, in the organisation's legal record (configured path), that a legal position for this source rests on: the only citable source for a legal position. Null when no recorded decision covers the point; the point is then noted in the job's work log. Free text is not accepted"
+          },
+          "open_issue": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "release_tier": {
+      "enum": [
+        "tier1_open_content",
+        "tier2_manifests_annotations",
+        "tier3_partner_licensed"
+      ]
+    },
+    "release_mode": {
+      "enum": [
+        "redistributable",
+        "license_partitioned",
+        "metadata_or_recipe_only",
+        "permission_required"
+      ]
+    },
+    "collection_basis_tier2": {
+      "type": "object",
+      "required": [
+        "basis"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "basis": {
+          "enum": [
+            "academic_partner_eu_dsm_art3_4",
+            "written_permission",
+            "lawyer_signoff",
+            "none_yet_scale_capped",
+            "not_applicable"
+          ]
+        },
+        "reference": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "licence_plan": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "config",
+          "licence",
+          "content"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "config": {
+            "type": "string"
+          },
+          "licence": {
+            "description": "Release licence tag for this config, from policy/licence-matrix.yaml output_licence_tags (OUT-01 to OUT-12). cc-by-3.0: CC BY media whose version is shown per item, the version the item's page shows at collection (OUT-09). inherit_source: corrections to non-commercial sets, which keep the source licence and are labelled as derivatives (OUT-11). as_agreed: Tier 3 partner content under the written permission (OUT-12; permission_doc_id on every row). apache-2.0 is for a config that holds code only, never data (policy NEVER-02).",
+            "enum": [
+              "cc0-1.0",
+              "cc-by-4.0",
+              "cc-by-sa-4.0",
+              "cdla-permissive-2.0",
+              "odc-by",
+              "odbl",
+              "gpl-3.0",
+              "other",
+              "apache-2.0",
+              "cc-by-3.0",
+              "inherit_source",
+              "as_agreed"
+            ]
+          },
+          "content": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "profile": {
+      "enum": [
+        "P-TXT",
+        "P-SPEECH",
+        "P-DOC",
+        "P-SYN",
+        "P-EVAL"
+      ]
+    },
+    "modalities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "text",
+          "speech",
+          "image",
+          "video",
+          "document",
+          "tabular",
+          "code"
+        ]
+      }
+    },
+    "uses_video_host": {
+      "type": "boolean",
+      "default": false,
+      "description": "True when any source is a video host"
+    },
+    "video_media_download": {
+      "type": "boolean",
+      "default": false,
+      "description": "True only for Creative Commons video whose automated download a recorded decision permits (check S2.media_download_decision)"
+    },
+    "media_download_decision_ref": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]{0,63}$",
+      "description": "ID of the recorded decision, in the organisation's legal record, that permits the media download (check S2.media_download_decision); null when no download is planned"
+    },
+    "consented_audio": {
+      "type": "boolean",
+      "default": false
+    },
+    "has_images": {
+      "type": "boolean",
+      "default": false
+    },
+    "uses_llm_suggestions": {
+      "type": "boolean",
+      "default": false
+    },
+    "third_party_sources": {
+      "type": "boolean",
+      "description": "True when any source is a third-party host, API, dump or dataset. False only when every source is Bayanat Labs' own authored, generated or consented content and nothing is fetched from the web; then the web-etiquette checks (S1.rights_signals, S1.probe, S2.user_agent, S2.rate, S2.rate_gov) are n/a and S2.pinned_upstream applies instead"
+    },
+    "unit_of_independence": {
+      "enum": [
+        "source",
+        "work",
+        "document",
+        "speaker",
+        "channel",
+        "template",
+        "workflow"
+      ]
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "task": {
+          "type": "string"
+        },
+        "metric": {
+          "type": "string"
+        },
+        "script": {
+          "type": "string"
+        }
+      }
+    },
+    "qa": {
+      "type": "object",
+      "required": [
+        "sample_size",
+        "sample_unit",
+        "agreement_metric",
+        "agreement_threshold",
+        "is_eval_set",
+        "pii_audit_records"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "sample_size": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Per subset, in sample_unit; the stage-7 minimums apply"
+        },
+        "sample_unit": {
+          "enum": [
+            "records",
+            "segments",
+            "hours",
+            "pages"
+          ]
+        },
+        "speech_review_fraction": {
+          "type": "number",
+          "minimum": 0.02,
+          "maximum": 1,
+          "description": "Memo picks 2-5%; the larger of this and speech_min_hours applies"
+        },
+        "speech_min_hours": {
+          "type": "number",
+          "minimum": 2
+        },
+        "agreement_metric": {
+          "enum": [
+            "kappa",
+            "krippendorff_alpha",
+            "cer_vs_gold"
+          ]
+        },
+        "agreement_threshold": {
+          "type": "number",
+          "minimum": 0.6,
+          "maximum": 1,
+          "description": "Floor 0.6, or 0.7 for eval sets; may only be tightened"
+        },
+        "is_eval_set": {
+          "type": "boolean"
+        },
+        "pii_audit_records": {
+          "type": "integer",
+          "minimum": 3000
+        },
+        "native_reviewers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "dialects"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Named before stage 7; may be null at stage 0"
+              },
+              "dialects": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "is_eval_set": {
+                "const": true
+              }
+            },
+            "required": [
+              "is_eval_set"
+            ]
+          },
+          "then": {
+            "properties": {
+              "agreement_threshold": {
+                "minimum": 0.7
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ranges": {
+      "type": "object",
+      "description": "Stage-4 ranges the gate compares with. Set before acquisition; tighten only",
+      "required": [
+        "duplicate_rate_max",
+        "langid_min_share",
+        "expected_languages"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "duplicate_rate_max": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Highest share of records removed or grouped as duplicates that the release may report"
+        },
+        "langid_min_share": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Lowest share of units whose language ID falls in expected_languages"
+        },
+        "expected_languages": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          },
+          "description": "ISO 639 codes (with script or variety tags if needed), e.g. [ar, en]"
+        }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "description": "From manual/budget.py; internal figures (the memo is never published)",
+      "required": [
+        "estimator"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "estimator": {
+          "type": "string",
+          "description": "e.g. 'manual/budget.py 0.1.0'"
+        },
+        "gpu_hours": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "gpu_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rate_usd_per_gpu_hour": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "compute_cost_usd": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "human_qa_hours": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "agent_days": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "owner": {
+      "type": "object",
+      "required": [
+        "agent",
+        "coordinator"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "agent": {
+          "type": "string"
+        },
+        "coordinator": {
+          "type": "string"
+        }
+      }
+    },
+    "dates": {
+      "type": "object",
+      "required": [
+        "memo_date",
+        "target_release"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "memo_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "target_release": {
+          "type": "string",
+          "format": "date"
+        },
+        "calendar_anchor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "next_version_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        }
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "risk",
+          "likelihood",
+          "mitigation",
+          "stop_rule"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "risk": {
+            "type": "string"
+          },
+          "likelihood": {
+            "enum": [
+              "L",
+              "M",
+              "H"
+            ]
+          },
+          "mitigation": {
+            "type": "string"
+          },
+          "stop_rule": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "stop_conditions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "deviations": {
+      "type": "array",
+      "description": "Any change to a stages.yaml default. Looser changes need written founder approval.",
+      "items": {
+        "type": "object",
+        "required": [
+          "threshold_id",
+          "default",
+          "memo_value",
+          "direction"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "threshold_id": {
+            "type": "string",
+            "description": "e.g. T7.speech_sample"
+          },
+          "default": {
+            "type": "string"
+          },
+          "memo_value": {
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "tighter",
+              "looser"
+            ]
+          },
+          "founder_approval_ref": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "direction": {
+                  "const": "looser"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "founder_approval_ref"
+              ],
+              "properties": {
+                "founder_approval_ref": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "founder_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Founder-only actions this job needs, one line each"
+    },
+    "decision": {
+      "type": "object",
+      "required": [
+        "coordinator"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "coordinator": {
+          "type": "object",
+          "required": [
+            "name",
+            "date",
+            "verdict"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "date": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date"
+            },
+            "verdict": {
+              "enum": [
+                "pending",
+                "approve",
+                "revise",
+                "reject"
+              ]
+            }
+          }
+        },
+        "legal_tier_assigned": {
+          "type": "boolean",
+          "description": "The coordinator has assigned the legal tier (check S0.legal_tier_assigned)"
+        },
+        "conflicts_noted": {
+          "type": "array",
+          "description": "Conflicts between rules noted for this job, one line each",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "score_file": {
+      "type": "string",
+      "default": "scoping_memo.score.yaml",
+      "description": "Path of the bl-score input next to this record"
+    },
+    "score_tool_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Tree hash of the bl-score code that produced scoping_memo.score.json (scripts/pin_bl_score.py). bl-score is pinned by this hash, not by its version string, because its scoring changed under an unchanged 0.1.0"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "release_tier": {
+            "const": "tier2_manifests_annotations"
+          }
+        },
+        "required": [
+          "release_tier"
+        ]
+      },
+      "then": {
+        "required": [
+          "collection_basis_tier2"
+        ],
+        "properties": {
+          "collection_basis_tier2": {
+            "properties": {
+              "basis": {
+                "not": {
+                  "const": "not_applicable"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "video_media_download": {
+            "const": true
+          }
+        },
+        "required": [
+          "video_media_download"
+        ]
+      },
+      "then": {
+        "properties": {
+          "uses_video_host": {
+            "const": true
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "third_party_sources": {
+            "const": false
+          }
+        },
+        "required": [
+          "third_party_sources"
+        ]
+      },
+      "then": {
+        "properties": {
+          "sources": {
+            "items": {
+              "properties": {
+                "tos_basis": {
+                  "enum": [
+                    "synthetic",
+                    "consented"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

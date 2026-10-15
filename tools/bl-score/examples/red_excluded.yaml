@@ -1,0 +1,17 @@
+# Illustrative example only: a red candidate is excluded even with top scores.
+candidate_id: EX-003
+title: "Bayanat Labs example with a red legal tier (illustrative)"
+scores:
+  impact: 5
+  claim_strength: 5
+  ease: 5
+  legal_cleanliness: 1
+  commercial_pull: 5
+legal_tier: red
+effort: S
+justifications:
+  impact: "Illustrative."
+  claim_strength: "Illustrative."
+  ease: "Illustrative."
+  legal_cleanliness: "Illustrative: red in the matrix, not built."
+  commercial_pull: "Illustrative."

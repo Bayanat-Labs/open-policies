@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use or adapt these policies, the operating manual or bl-score, please cite them as below."
+title: "Bayanat Labs open policies"
+abstract: "The rules Bayanat Labs follows when it chooses, licenses and publishes open Arabic data: the open-programme policy (selection rubric, release tiers, licence matrix), the gated operating manual for building open datasets, and the bl-score scoring tool. English and Arabic. Documentation, not legal advice."
+version: "1.0.1"
+date-released: "2026-10-15"
+type: software
+authors:
+  - name: "Bayanat Labs"
+    email: "hello@bayanatlabs.com"
+    website: "https://www.bayanatlabs.com"
+repository-code: "https://github.com/Bayanat-Labs/open-policies"
+url: "https://www.bayanatlabs.com/open/policy"
+license:
+  - CC-BY-4.0
+  - Apache-2.0
+keywords:
+  - Arabic data
+  - open data
+  - data licensing
+  - dataset selection rubric
+  - data provenance
+  - release process

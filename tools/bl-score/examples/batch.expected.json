@@ -1,0 +1,64 @@
+[
+  {
+    "candidate_id": "EX-006",
+    "title": "Bayanat Labs example A (illustrative)",
+    "scores": {
+      "impact": 3,
+      "claim_strength": 3,
+      "ease": 3,
+      "legal_cleanliness": 5,
+      "commercial_pull": 3
+    },
+    "legal_tier": "green",
+    "effort": "M",
+    "weighted_score_0_100": 60.0,
+    "legal_verdict": "tier1_eligible",
+    "max_release_tier": 1,
+    "suggested_priority": "P1",
+    "priority_rule": "score >= 60",
+    "seo_demand": 2,
+    "warnings": [
+      "no justifications recorded; add one line per score."
+    ],
+    "weights": {
+      "impact": 30.0,
+      "claim_strength": 20.0,
+      "ease": 20.0,
+      "legal_cleanliness": 20.0,
+      "commercial_pull": 10.0
+    },
+    "thresholds_status": "Adopted for v1.0, provisional. The coordinator decides each case.",
+    "policy_version": "1.0.1"
+  },
+  {
+    "candidate_id": "EX-007",
+    "title": "Bayanat Labs example B (illustrative)",
+    "scores": {
+      "impact": 3,
+      "claim_strength": 3,
+      "ease": 3,
+      "legal_cleanliness": 5,
+      "commercial_pull": 3
+    },
+    "legal_tier": "green",
+    "effort": "M",
+    "weighted_score_0_100": 60.0,
+    "legal_verdict": "tier1_eligible",
+    "max_release_tier": 1,
+    "suggested_priority": "P1",
+    "priority_rule": "score >= 60",
+    "seo_demand": 5,
+    "warnings": [
+      "no justifications recorded; add one line per score."
+    ],
+    "weights": {
+      "impact": 30.0,
+      "claim_strength": 20.0,
+      "ease": 20.0,
+      "legal_cleanliness": 20.0,
+      "commercial_pull": 10.0
+    },
+    "thresholds_status": "Adopted for v1.0, provisional. The coordinator decides each case.",
+    "policy_version": "1.0.1"
+  }
+]

@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bayanatlabs.com/open/schemas/metrics_digest_row/v1.json",
+  "title": "Bayanat Labs monthly metrics digest: one row per live asset per month",
+  "description": "Stage 11 gate artefact: one row per live asset per month, with the programme's usage and quality measures. null means 'not measured yet', never zero. HF downloads are not unique users, GitHub stars are not buyers and raw backlinks are not endorsements. Rows live in coordinator/metrics_digest.jsonl. Apache-2.0.",
+  "type": "object",
+  "required": ["asset_id", "slug", "version", "month", "release_date", "days_since_release", "collected_at", "collected_by",
+               "hf", "downloads_other", "search", "reach", "scholarly", "quality_ops", "commercial", "ai_panel", "verdict_30d"],
+  "additionalProperties": false,
+  "$defs": {
+    "count": {"type": ["integer", "null"], "minimum": 0},
+    "listing": {"enum": ["not_submitted", "draft_ready", "submitted", "live", "rejected", "not_applicable"]}
+  },
+  "properties": {
+    "asset_id": {"type": "string", "pattern": "^[A-Z]{2,3}-[0-9]{3}$", "description": "Candidate identifier: two or three capital letters, a hyphen and three digits"},
+    "slug": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+    "version": {"type": "string", "description": "Release version, e.g. v1.0 or 1.0"},
+    "month": {"type": "string", "pattern": "^20[0-9]{2}-(0[1-9]|1[0-2])$", "description": "Reporting month, YYYY-MM"},
+    "release_date": {"type": "string", "format": "date"},
+    "days_since_release": {"type": "integer", "minimum": 0},
+    "collected_at": {"type": "string", "format": "date-time"},
+    "collected_by": {"type": "string", "description": "Agent or person who ran the collection"},
+    "hf": {
+      "type": "object",
+      "required": ["downloads_30d", "likes", "linked_models", "linked_spaces"],
+      "additionalProperties": false,
+      "properties": {
+        "downloads_30d": {"$ref": "#/$defs/count"},
+        "likes": {"$ref": "#/$defs/count"},
+        "linked_models": {"$ref": "#/$defs/count"},
+        "linked_spaces": {"$ref": "#/$defs/count"}
+      }
+    },
+    "downloads_other": {
+      "type": "object",
+      "required": ["pypi_30d", "kaggle_views", "kaggle_downloads", "zenodo_views", "zenodo_downloads", "github_stars"],
+      "additionalProperties": false,
+      "properties": {
+        "pypi_30d": {"$ref": "#/$defs/count"},
+        "kaggle_views": {"$ref": "#/$defs/count"},
+        "kaggle_downloads": {"$ref": "#/$defs/count"},
+        "zenodo_views": {"$ref": "#/$defs/count"},
+        "zenodo_downloads": {"$ref": "#/$defs/count"},
+        "github_stars": {"$ref": "#/$defs/count"}
+      }
+    },
+    "search": {
+      "type": "object",
+      "description": "Hub page bayanatlabs.com/open/<slug>, non-brand queries only (Search Console, Bing Webmaster Tools)",
+      "required": ["nonbrand_impressions_en", "nonbrand_impressions_ar", "clicks_en", "clicks_ar"],
+      "additionalProperties": false,
+      "properties": {
+        "nonbrand_impressions_en": {"$ref": "#/$defs/count"},
+        "nonbrand_impressions_ar": {"$ref": "#/$defs/count"},
+        "clicks_en": {"$ref": "#/$defs/count"},
+        "clicks_ar": {"$ref": "#/$defs/count"},
+        "target_query_rank": {"type": ["integer", "null"], "minimum": 1}
+      }
+    },
+    "reach": {
+      "type": "object",
+      "required": ["new_referring_domains", "press_mentions", "listings"],
+      "additionalProperties": false,
+      "properties": {
+        "new_referring_domains": {"$ref": "#/$defs/count"},
+        "press_mentions": {"$ref": "#/$defs/count"},
+        "newsletter_signups": {"$ref": "#/$defs/count"},
+        "listings": {
+          "type": "object",
+          "description": "Never mark a listing live before it exists",
+          "required": ["masader", "kaggle", "google_dataset_search"],
+          "additionalProperties": false,
+          "properties": {
+            "masader": {"$ref": "#/$defs/listing"},
+            "kaggle": {"$ref": "#/$defs/listing"},
+            "google_dataset_search": {"$ref": "#/$defs/listing"},
+            "awesome_arabic_nlp": {"$ref": "#/$defs/listing"},
+            "wikidata": {"$ref": "#/$defs/listing"}
+          }
+        }
+      }
+    },
+    "scholarly": {
+      "type": "object",
+      "required": ["scholar_citations", "used_by_entries"],
+      "additionalProperties": false,
+      "properties": {
+        "scholar_citations": {"$ref": "#/$defs/count"},
+        "used_by_entries": {"$ref": "#/$defs/count"},
+        "paper_page_views": {"$ref": "#/$defs/count"}
+      }
+    },
+    "quality_ops": {
+      "type": "object",
+      "required": ["issues_opened", "issues_closed", "takedowns_received", "takedown_sla_met"],
+      "additionalProperties": false,
+      "properties": {
+        "issues_opened": {"$ref": "#/$defs/count"},
+        "issues_closed": {"$ref": "#/$defs/count"},
+        "median_days_to_repair": {"type": ["number", "null"], "minimum": 0},
+        "takedowns_received": {"$ref": "#/$defs/count"},
+        "takedown_sla_met": {"type": ["boolean", "null"]}
+      }
+    },
+    "commercial": {
+      "type": "object",
+      "description": "From the existing lead-event spec; do not build a competing tracker",
+      "required": ["product_clicks", "tagged_requests"],
+      "additionalProperties": false,
+      "properties": {
+        "product_clicks": {"$ref": "#/$defs/count"},
+        "tagged_requests": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sample": {"$ref": "#/$defs/count"},
+            "schema": {"$ref": "#/$defs/count"},
+            "pilot": {"$ref": "#/$defs/count"}
+          }
+        },
+        "qualified_inquiries": {"$ref": "#/$defs/count"}
+      }
+    },
+    "ai_panel": {
+      "type": "object",
+      "description": "Monthly AI-assistant prompt panel (54-prompt consumer panel; a separate method/asset panel once releases exist). Treat AI visibility as a hypothesis to measure.",
+      "required": ["run_date", "prompts", "method_mentions", "citations_of_url"],
+      "additionalProperties": false,
+      "properties": {
+        "panel_id": {"type": ["string", "null"]},
+        "run_date": {"type": ["string", "null"], "format": "date"},
+        "prompts": {"$ref": "#/$defs/count"},
+        "method_mentions": {"$ref": "#/$defs/count"},
+        "citations_of_url": {"$ref": "#/$defs/count"}
+      }
+    },
+    "verdict_30d": {
+      "enum": ["too_early", "scale", "improve_example", "redistribute", "narrow", "retire"],
+      "description": "30-day rule: separate lack of discovery from lack of utility"
+    },
+    "notes": {"type": ["string", "null"]}
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Bayanat-Labs/open-policies/tools/bl-score/output.schema.json",
+  "title": "bl-score output for one memo",
+  "type": "object",
+  "required": ["candidate_id", "title", "scores", "legal_tier", "effort", "weighted_score_0_100", "legal_verdict", "max_release_tier", "suggested_priority", "warnings", "policy_version"],
+  "properties": {
+    "candidate_id": {"type": "string"},
+    "title": {"type": "string"},
+    "scores": {"type": "object"},
+    "legal_tier": {"enum": ["green", "yellow", "red"]},
+    "effort": {"enum": ["S", "M", "L", "XL"]},
+    "weighted_score_0_100": {"type": "number", "minimum": 0, "maximum": 100},
+    "legal_verdict": {"enum": ["excluded", "tier2_only", "tier1_eligible"]},
+    "max_release_tier": {"enum": [null, 1, 2]},
+    "suggested_priority": {"enum": [null, "P0", "P1", "P2", "P3"]},
+    "priority_rule": {"type": ["string", "null"]},
+    "seo_demand": {"type": ["integer", "null"]},
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "weights": {"type": "object"},
+    "thresholds_status": {"type": "string"},
+    "policy_version": {"type": "string"}
+  }
+}

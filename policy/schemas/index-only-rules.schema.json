@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Bayanat-Labs/open-policies/policy/schemas/index-only-rules.schema.json",
+  "title": "Bayanat Labs publish-to-index-only rules (index-only-rules.yaml)",
+  "type": "object",
+  "required": [
+    "policy_version",
+    "document",
+    "status",
+    "source_text",
+    "rules"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "policy_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "document": {
+      "const": "index-only-rules"
+    },
+    "status": {
+      "type": "string"
+    },
+    "licence": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object"
+    },
+    "source_text": {
+      "type": "string"
+    },
+    "index_only_means": {
+      "type": "string"
+    },
+    "wiring": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rules": {
+      "type": "array",
+      "minItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "trigger",
+          "action",
+          "evidence"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^IO-[0-9]+$"
+          },
+          "trigger": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "deadline": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

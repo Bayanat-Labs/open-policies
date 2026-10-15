@@ -1,0 +1,11 @@
+# Illustrative example only: score above 75 but effort L, so the suggestion is P1.
+candidate_id: EX-004
+title: "Bayanat Labs example flagship needing months of work (illustrative)"
+scores:
+  impact: 5
+  claim_strength: 5
+  ease: 3
+  legal_cleanliness: 5
+  commercial_pull: 5
+legal_tier: green
+effort: L

@@ -1,0 +1,365 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Bayanat-Labs/open-policies/policy/schemas/rubric.schema.json",
+  "title": "Bayanat Labs selection rubric (rubric.yaml)",
+  "type": "object",
+  "required": [
+    "policy_version",
+    "document",
+    "status",
+    "statement",
+    "scale",
+    "formula",
+    "criteria",
+    "legal_gate",
+    "priority_codes",
+    "effort_codes",
+    "priority_thresholds",
+    "tie_breaker"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "policy_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"
+    },
+    "document": {
+      "const": "rubric"
+    },
+    "status": {
+      "type": "string"
+    },
+    "licence": {
+      "type": "string"
+    },
+    "source": {
+      "type": "object"
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 10
+    },
+    "scale": {
+      "type": "object",
+      "required": [
+        "min",
+        "max",
+        "anchors_at"
+      ],
+      "properties": {
+        "min": {
+          "const": 1
+        },
+        "max": {
+          "const": 5
+        },
+        "anchors_at": {
+          "const": [
+            1,
+            3,
+            5
+          ]
+        },
+        "interpolation": {
+          "type": "string"
+        }
+      }
+    },
+    "formula": {
+      "type": "object",
+      "required": [
+        "expression",
+        "range"
+      ],
+      "properties": {
+        "expression": {
+          "type": "string"
+        },
+        "range": {
+          "const": [
+            0,
+            100
+          ]
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "criteria": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "weight",
+          "is_gate",
+          "anchors"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "enum": [
+              "impact",
+              "claim_strength",
+              "ease",
+              "legal_cleanliness",
+              "commercial_pull"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "is_gate": {
+            "type": "boolean"
+          },
+          "anchors": {
+            "type": "object",
+            "required": [
+              "1",
+              "3",
+              "5"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "1": {
+                "type": "string",
+                "minLength": 3
+              },
+              "3": {
+                "type": "string",
+                "minLength": 3
+              },
+              "5": {
+                "type": "string",
+                "minLength": 3
+              }
+            }
+          },
+          "gate_note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "legal_gate": {
+      "type": "object",
+      "required": [
+        "input_field",
+        "rule",
+        "outcomes"
+      ],
+      "properties": {
+        "input_field": {
+          "const": "legal_tier"
+        },
+        "rule": {
+          "type": "string"
+        },
+        "stricter_reading": {
+          "type": "string"
+        },
+        "score_overrides": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "max_score",
+              "legal_verdict"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "max_score": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 5
+              },
+              "legal_verdict": {
+                "enum": [
+                  "excluded",
+                  "tier2_only"
+                ]
+              }
+            }
+          }
+        },
+        "outcomes": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "required": [
+              "legal_tier",
+              "legal_verdict",
+              "max_release_tier"
+            ],
+            "properties": {
+              "legal_tier": {
+                "enum": [
+                  "red",
+                  "yellow",
+                  "green"
+                ]
+              },
+              "legal_verdict": {
+                "enum": [
+                  "excluded",
+                  "tier2_only",
+                  "tier1_eligible"
+                ]
+              },
+              "max_release_tier": {
+                "type": [
+                  "integer",
+                  "null"
+                ],
+                "enum": [
+                  null,
+                  1,
+                  2
+                ]
+              },
+              "meaning": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "priority_codes": {
+      "$ref": "#/$defs/codeList"
+    },
+    "effort_codes": {
+      "$ref": "#/$defs/codeList"
+    },
+    "priority_thresholds": {
+      "type": "object",
+      "required": [
+        "status",
+        "rules"
+      ],
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "evaluated_in_order": {
+          "const": true
+        },
+        "rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "priority",
+              "min_weighted_score"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "priority": {
+                "enum": [
+                  "P0",
+                  "P1",
+                  "P2",
+                  "P3"
+                ]
+              },
+              "min_weighted_score": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              },
+              "effort_in": {
+                "type": "array",
+                "items": {
+                  "enum": [
+                    "S",
+                    "M",
+                    "L",
+                    "XL"
+                  ]
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            }
+          }
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "tie_breaker": {
+      "type": "object",
+      "required": [
+        "field",
+        "rule"
+      ],
+      "properties": {
+        "field": {
+          "type": "string"
+        },
+        "rule": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "codeList": {
+      "type": "object",
+      "required": [
+        "source_text",
+        "codes"
+      ],
+      "properties": {
+        "source_text": {
+          "type": "string"
+        },
+        "codes": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "type": "object",
+            "required": [
+              "code",
+              "meaning"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "enum": [
+                  "P0",
+                  "P1",
+                  "P2",
+                  "P3",
+                  "S",
+                  "M",
+                  "L",
+                  "XL"
+                ]
+              },
+              "meaning": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "day_conversion": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

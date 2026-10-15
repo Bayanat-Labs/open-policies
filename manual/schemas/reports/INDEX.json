@@ -1,0 +1,101 @@
+{
+  "generated_by": "scripts/gen_report_schemas.py",
+  "manual_version": "1.0.1",
+  "reports": {
+    "acquisition": {
+      "root": "job",
+      "path": "qa/reports/acquisition.json",
+      "schema": "acquisition.schema.json"
+    },
+    "dedup": {
+      "root": "job",
+      "path": "qa/reports/dedup.json",
+      "schema": "dedup.schema.json"
+    },
+    "discovery": {
+      "root": "job",
+      "path": "qa/reports/discovery.json",
+      "schema": "discovery.schema.json"
+    },
+    "eval_results": {
+      "root": "gh_repo",
+      "path": "eval/results.json",
+      "schema": "eval_results.schema.json"
+    },
+    "founder_go": {
+      "root": "job",
+      "path": "signoffs/founder_go.yaml",
+      "schema": "founder_go.schema.json"
+    },
+    "gates": {
+      "root": "job",
+      "path": "qa/reports/gates.json",
+      "schema": "gates.schema.json"
+    },
+    "job": {
+      "root": "job",
+      "path": "job.json",
+      "schema": "job.schema.json"
+    },
+    "labels": {
+      "root": "job",
+      "path": "qa/reports/labels.json",
+      "schema": "labels.schema.json"
+    },
+    "licence_check": {
+      "root": "job",
+      "path": "qa/reports/licence_check.json",
+      "schema": "licence_check.schema.json"
+    },
+    "maintenance": {
+      "root": "job",
+      "path": "qa/reports/maintenance.json",
+      "schema": "maintenance.schema.json"
+    },
+    "package": {
+      "root": "job",
+      "path": "qa/reports/package.json",
+      "schema": "package.schema.json"
+    },
+    "pii_audit": {
+      "root": "job",
+      "path": "qa/reports/pii_audit.json",
+      "schema": "pii_audit.schema.json"
+    },
+    "qa_report": {
+      "root": "job",
+      "path": "qa/reports/qa_report.json",
+      "schema": "qa_report.schema.json"
+    },
+    "qa_signoff": {
+      "root": "job",
+      "path": "qa/signoff.yaml",
+      "schema": "qa_signoff.schema.json"
+    },
+    "reid": {
+      "root": "job",
+      "path": "qa/reports/reid.json",
+      "schema": "reid.schema.json"
+    },
+    "release_checklist": {
+      "root": "job",
+      "path": "qa/reports/release_checklist.json",
+      "schema": "release_checklist.schema.json"
+    },
+    "release_published": {
+      "root": "job",
+      "path": "release/published.yaml",
+      "schema": "release_published.schema.json"
+    },
+    "safety": {
+      "root": "job",
+      "path": "qa/reports/safety.json",
+      "schema": "safety.schema.json"
+    },
+    "schema_report": {
+      "root": "job",
+      "path": "validation/schema_report.json",
+      "schema": "schema_report.schema.json"
+    }
+  }
+}

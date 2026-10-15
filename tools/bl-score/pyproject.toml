@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bl-score"
+version = "0.1.0"
+description = "Bayanat Labs open-programme scoring CLI: scoping memo YAML -> weighted score, legal gate verdict, release-tier cap and suggested priority"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "Bayanat Labs", email = "hello@bayanatlabs.com" }]
+keywords = ["bayanat labs", "open data", "arabic", "dataset selection", "rubric", "scoping memo"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Operating System :: OS Independent",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = ["pyyaml>=6.0", "jsonschema>=4.18"]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+bl-score = "bl_score.cli:main"
+
+[project.urls]
+Homepage = "https://bayanatlabs.com/open/policy"
+Source = "https://github.com/Bayanat-Labs/open-policies"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+bl_score = ["data/*.yaml", "data/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

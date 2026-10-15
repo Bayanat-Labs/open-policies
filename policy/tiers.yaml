@@ -1,0 +1,156 @@
+# Bayanat Labs open-programme policy: three release tiers
+# Version 1.0.1. Reviewed by counsel, October 2026.
+# Documentation, not legal advice. Licence: CC BY 4.0.
+policy_version: 1.0.1
+document: tiers
+status: adopted_v1_counsel_reviewed_2026_10
+licence: CC-BY-4.0
+heading: Three release tiers (the legal gate in practice)
+tiers:
+- id: tier1
+  number: 1
+  name: 'Tier 1: open content'
+  publishes: Full text or audio plus our annotations
+  licences_text: CC0 for manifests and metadata; CC BY 4.0 for our annotations; CC BY-SA 4.0 where Wikipedia-derived;
+    ODC-By for web-text packaging; per-record `source_license`
+  licences:
+  - applies_to: manifests and metadata
+    licence: CC0
+    hf_licence_tag: cc0-1.0
+  - applies_to: our annotations
+    licence: CC BY 4.0
+    hf_licence_tag: cc-by-4.0
+  - applies_to: Wikipedia-derived text
+    licence: CC BY-SA 4.0
+    hf_licence_tag: cc-by-sa-4.0
+  - applies_to: web-text packaging
+    licence: ODC-By
+    hf_licence_tag: odc-by
+  - applies_to: every record
+    licence: per-record source_license field
+    hf_licence_tag: null
+  typical_sources_text: Content under an open licence (CC0, CC BY, CC BY-SA, ODC-By, ODbL) or in the public
+    domain, and content from consented contributors
+  typical_sources:
+  - content under an open licence (CC0, CC BY, CC BY-SA, ODC-By, ODbL)
+  - public-domain works, verified per work
+  - content from consented contributors
+  collection_basis_required: false
+  release_modes:
+  - redistributable
+  - license_partitioned
+- id: tier2
+  number: 2
+  name: 'Tier 2: manifests plus our annotations'
+  publishes: IDs, URLs, timestamps, dialect/city labels, speaker turns, quality scores, topics, entity
+    tags, alignment anchors, and a one-command rebuild script. No verbatim content. Bayanat Labs relies
+    on no Saudi text-and-data-mining exception, so each Tier 2 scoping memo names its collection basis
+    (an academic partner collecting under EU DSM Art. 3/4, written rights-holder permission, or lawyer
+    sign-off) and scale stays capped until one exists
+  published_fields:
+  - IDs
+  - URLs
+  - timestamps
+  - dialect/city labels
+  - speaker turns
+  - quality scores
+  - topics
+  - entity tags
+  - alignment anchors
+  - a one-command rebuild script
+  no_verbatim_content: true
+  licences_text: CC BY 4.0 on annotations, CC0 on IDs
+  licences:
+  - applies_to: annotations
+    licence: CC BY 4.0
+    hf_licence_tag: cc-by-4.0
+  - applies_to: IDs
+    licence: CC0
+    hf_licence_tag: cc0-1.0
+  typical_sources_text: Content that is not redistributed (standard-licence, all-rights-reserved or unclear-licence
+    content), referenced by identifier
+  typical_sources:
+  - standard-licence content
+  - all-rights-reserved content
+  - content whose licence is unclear
+  collection_basis_required: true
+  collection_basis_options:
+  - an academic partner collecting under EU DSM Art. 3/4
+  - written rights-holder permission
+  - lawyer sign-off
+  scale_rule: scale stays capped until one exists
+  release_modes:
+  - metadata_or_recipe_only
+- id: tier3
+  number: 3
+  name: 'Tier 3: partner-licensed'
+  publishes: Content released under a written permission (CC BY or a custom open licence)
+  licences_text: As agreed
+  licences:
+  - applies_to: partner content
+    licence: As agreed (CC BY or a custom open licence agreed with the partner)
+    hf_licence_tag: null
+  typical_sources_text: Content licensed from a partner under a written agreement (no partner is named
+    before an agreement exists)
+  typical_sources:
+  - content licensed from a partner under a written agreement
+  typical_sources_status: No partner is named in this policy until a written agreement exists.
+  collection_basis_required: true
+  collection_basis_options:
+  - written permission on file before collection
+  permission_rule: Each Tier 3 release needs the written permission on file before collection.
+  release_modes:
+  - permission_required
+  - redistributable
+  note: The 'custom open licence' here is the partner's licence for its own content. Bayanat Labs never
+    puts a custom licence on its own work (licence-matrix.yaml).
+internal_only_rule:
+  text: Verbatim transcripts or text of content we cannot license stay internal. They may feed aggregate
+    statistics, benchmark scoring and internal tooling, but they are never published, even gated or "research
+    only". That is the line that keeps the commercial positioning (rights-aware, PDPL-compliant supplier)
+    intact.
+  allowed_internal_uses:
+  - aggregate statistics
+  - benchmark scoring
+  - internal tooling
+  never_published_even_if:
+  - gated
+  - research only
+exceptions:
+  text: 'Two written exceptions: ODC-By packaging of web text follows the FineWeb and HPLT precedent with
+    per-document source URLs and a takedown route, and corrections to non-commercial public sets are released
+    under the source''s own licence and labelled as derivatives.'
+  items:
+  - id: EXC-1
+    catalogue_ref: POLICY.md section 3
+    what: ODC-By packaging of web text
+    precedent: FineWeb and HPLT
+    conditions:
+    - per-document source URLs
+    - a takedown route
+    - never CC0
+  - id: EXC-2
+    catalogue_ref: POLICY.md section 3
+    what: corrections to non-commercial public sets
+    conditions:
+    - released under the source's own licence
+    - labelled as derivatives
+    - never under a Bayanat Labs NC licence
+unit_of_value:
+  text: 'A release is not a file. It is: dataset + 11-section card + a benchmark score or baseline model
+    trained on it + a technical post + an announcement + a listing in Masader, Kaggle and Google Dataset
+    Search.'
+  components:
+  - dataset
+  - card from the Bayanat Labs dataset-card template (FineWeb's 11 sections plus Bayanat Labs' five)
+  - a benchmark score or baseline model trained on it
+  - a technical post
+  - an announcement
+  - a listing in Masader, Kaggle and Google Dataset Search
+where_tier_surfaces:
+  text: Each card's 'What is being released (per subset, with licence tier)' and 'Licensing' sections
+    and the per-record source_license field are where the tier surfaces publicly.
+  card_sections:
+  - What is being released (per subset, with licence tier)
+  - Licensing
+  record_field: source_license
